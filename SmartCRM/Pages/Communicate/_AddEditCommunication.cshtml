@@ -1,0 +1,792 @@
+﻿@model SmartCRM.Pages.Communicate._AddEditCommunicationModel
+
+
+<form method="post" class="communicate-form" style="margin-top:25px;">
+
+    <input type="hidden" asp-for="NewCommunication.CommunicationID" />
+    <div id="accordion">
+        <div class="card level1">
+            <div class="card-header level1 section-1-header" style="border-bottom:0;" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <div class="row">
+                    <div class="col-5">
+                        <img id="section-1-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold" style="margin-left:10px;display:inline-flex;">ვის ვესაუბრო</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="Section1Head" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="Section1Content" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapseOne" class="collapse section1-collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <div id="section-1-error" style="color:red; padding-bottom: 1.25rem;">
+                                გთხოვთ, აირჩიოთ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <div id="visvesaubro-accordion">
+                                <div class="card level2">
+                                    <div class="card-header collapsed" id="section-mid-1" data-toggle="collapse" data-target="#collapse-my-users" aria-expanded="false" aria-controls="collapse-my-users">
+                                        <h5 class="mb-0">
+                                            <label id="sale-head" class="collapse-head mid">
+                                                <input value="my_users" asp-for="Cummunicate.VisVesaubro" class="btn btn-link" type="radio" data-toggle="collapse" data-target="#colOne" aria-expanded="true" aria-controls="colOne">
+                                                <i class="mid bold" style="margin-left: 10px; font-style: normal;">ჩემს მომხარებლებს</i>
+                                            </label>
+                                        </h5>
+                                    </div>
+
+                                    <div id="collapse-my-users" class="collapse" aria-labelledby="section-mid-1" data-parent="#visvesaubro-accordion">
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-5" style="position: relative;">
+                                                    <i class="select-aw fas" style="width:100%;">
+                                                        <select asp-for="NewCommunication.SegmentID"
+                                                                asp-items="@(new SelectList(Model.Segments, "ID", "Name"))"
+                                                                class="form-control segments-select">
+                                                            <option value="0" hidden>აირჩიეთ სეგმენტი</option>
+                                                        </select>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card level2" style="border-top: 0;">
+                                    <div class="card-header collapsed" id="section-mid-2" data-toggle="collapse" data-target="#collapse-new-users" aria-expanded="false" aria-controls="collapse-my-users">
+                                        <h5 class="mb-0">
+                                            <label id="sale-head" class="collapse-head mid">
+                                                <input value="new_users" asp-for="Cummunicate.VisVesaubro" class="btn btn-link" type="radio" data-toggle="collapse" data-target="#colOne" aria-expanded="true" aria-controls="colOne">
+                                                <i class="mid bold" style="margin-left: 10px; font-style: normal;">პოტენციურ მომხმარებელს</i>
+                                            </label>
+                                        </h5>
+                                    </div>
+
+                                    <div id="collapse-new-users" class="collapse" aria-labelledby="section-mid-1" data-parent="#visvesaubro-accordion">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-5 offset-1">
+                                                    <i class="select-aw-default fas" style="width:100%;">
+                                                        <select asp-for="Cummunicate.GenderRangeID" id="sqesi" class="form-control select-lg multipleselect" multiple>
+                                                            <option value="1">მდედრობითი</option>
+                                                            <option value="2">მამრობითი</option>
+                                                            <option value="0">არ არის მითითებული</option>
+                                                        </select>
+                                                    </i>
+                                                </div>
+                                                <div class="col-5">
+                                                    <i class="select-aw-default fas" style="width:100%;">
+                                                        <select asp-for="Cummunicate.AgeRangeID" id="asaki" class="form-control select-lg multipleselect" multiple>
+                                                            <option value="1">18<</option>
+                                                            <option value="2">18-25</option>
+                                                            <option value="3">25-30</option>
+                                                            <option value="4">30-35</option>
+                                                            <option value="5">35-45</option>
+                                                            <option value="6">45-65</option>
+                                                            <option value="7">65></option>
+                                                            <option value="8">არ არის მითითებული</option>
+                                                        </select>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                            @*<div class="row" style="margin-top:20px;">
+                                                    <div class="col-5 offset-1">
+                                                        <i class="select-aw-default fas" style="width:100%;">
+                                                            <select class="form-control select-lg">
+                                                                <option value="" hidden>საცხოვრებელი ადგილი</option>
+                                                            </select>
+                                                        </i>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <i class="select-aw-default fas" style="width:100%;">
+                                                            <select class="form-control select-lg">
+                                                                <option value="" hidden>რომელ სექტორში ხარჯავს</option>
+                                                            </select>
+                                                        </i>
+                                                    </div>
+                                                </div>*@
+
+                                            <div class="row" style="margin-top:25px;">
+                                                <div class="col-10 offset-1 bold">
+                                                    მიუთითეთ დამატებითი პარამეტრები
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:10px;">
+                                                <div class="col-10 offset-1 bold">
+                                                    <textarea asp-for="NewCommunication.Description" style="width:100%;text-align: left;" class="form-control" rows="5"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="position: absolute;
+                                                                     bottom: 30px;
+                                                                     color: #D2D2D2;
+                                                                     font-size: 10px;
+                                                                     width: 100%;
+                                                                     text-align: center;">
+                                                <div class="col-10 offset-1 bold">
+                                                    <span style="color:red; opacity:0.5;">*</span> შეგიძლიათ ნებისმიერი სექტორის შერჩევა, გარდა პირდაპირი კონკურენტისა
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card level1">
+            <div class="card-header level1 section-2-header" style="border-bottom:0;" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <div class="row">
+                    <div class="col-5">
+                        <img id="section-2-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold" style="margin-left:10px;display:inline-flex;">SMS</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="Section2Head" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="Section2Content" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapseTwo" class="collapse section1-collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <div id="section-2-error" style="color:red; padding-bottom: 1.25rem;">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 offset-1" style="border-radius: 15px;border: 1px solid #00000026;">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-5 offset-1">
+                                    <p style="font-weight:bold;">გაგზავნის თარიღი</p>
+                                </div>
+                                <div class="col-5">
+                                    <label class="bold" style=" display: inline-flex; margin: auto 0;">რაოდენობა</label>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 offset-1">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" style="background: none;
+                                                                border-top-left-radius: 15px;
+                                                                border-bottom-left-radius: 15px;
+                                                                border: 1px solid #80808059 !important;
+                                                                border-right: none !important;">
+                                                <i style="color: #24D2B5;" class="far fa-calendar-alt"></i>
+                                            </span>
+                                        </div>
+                                        <input id="sms-send-dt" autocomplete="off" type="text"
+                                               value="@(Model.NewCommunication.SendDate.HasValue?Model.NewCommunication.SendDate.Value.ToString("MM.dd.yyyy - HH:mm") : "")"
+                                               style="border: 1px solid #80808059;    font-size: 14px;
+                                                        color: #ababab;
+                                                        border-top-right-radius:15px; border-bottom-right-radius:15px;
+                                                        border-left:none;" />
+                                        <input id="sms-send-dt-hf" asp-for="Cummunicate.SendMsgDate" type="hidden" />
+                                    </div>
+
+                                </div>
+                                <div class="col-2">
+                                    <input style="line-height: 1.5 !important; height:100%;"
+                                           asp-for="NewCommunication.SegmentCount" min="1" type="number" oninput="validity.valid||(value='');" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:30px;">
+                                <div class="col-5 offset-1 bold">
+                                    მიუთითეთ sms ტექსტი
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:10px;">
+                                <div class="col-10 offset-1">
+                                    <textarea asp-for="NewCommunication.MsgText" style="text-align: left; border-radius: 15px;" class="form-control" id="msg_text" rows="5"></textarea>
+                                    <h6 style="text-align: right; color:grey;" class="pull-left" id="count_msg_text"></h6>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:10px;">
+                                <div class="col-5 offset-1 bold">
+                                    სატესტო ჯგუფი <img id="whomtoImg" onclick="$('#tester-group-modal').modal('show');"
+                                                       style="cursor:pointer; max-height:20px;" src="/images/edit2.png" class="light-logo" alt="homepage">
+                                </div>
+                                <div class="col-4 offset-2">
+
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:10px;">
+                                <div class="col-5 offset-1">
+                                    <button type="button" id="btn-send-test-msg" class="btn btn-send-msg" asp-page-handler="SendTestMsg">სატესტო სმს-ის გაგზავნა</button>
+                                </div>
+                                <div class="col-5">
+                                    <div class="btn" style="border:1px solid #ced4da; border-radius:25px; width: 100%; text-align: left;">
+                                        <div class="custom-control custom-checkbox" style="min-height: 0;">
+                                            <input asp-for="NewCommunication.TestGroupAdd" id="TestGroupAdd" type="checkbox" class="custom-control-input" />
+                                            <label class="custom-control-label checkbox_lbl bold" for="TestGroupAdd" style="color:#CCCCCC; font-size:14px;">სეგმენტში დამატება</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="padding: 0;">
+                                    <hr />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 offset-1 bold">
+                                    შავი სია <i class="fas fa-exclamation-triangle" data-toggle="tooltip"
+                                                data-html="true"
+                                                title="შავი სია წარმოადგენს იმ მომხმარებელთა ბაზას, რომლებმაც უარი განაცხადეს საკუთარი მონაცემების პირდაპირი მარკეტინგის მიზნით დამუშავებაზე. <br /> ასეთი სიის არსებობის შემთხვევაში, გთხოვთ ატვირთოთ მათი ტელეფონის ნომრები, რომ არ მოხდეს მათთან კომუნიკაცია.<br /> პირდაპირი მარკეტინგის მიზნით მონაცემეთა გამოყენების წესის დარღვევა წარმოადგენს  „პერსონალურ მონაცემთა დაცვის შესახებ“ საქართველოს კანონის მე-8  მუხლის დარღვევას, რაზეც ამავე კანონის 47-ე მუხლით  გათვლაიწინებულია ჯარიმა 3000 ლარი, ხოლო იგივე ქმედება, ჩადენილი იმ პირის მიერ, რომელსაც ერთი წლის განმავლობაში შეეფარდა ადმინისტრაციული სახდელი,  გათვალისწინებულია 10 000 ლარი."
+                                                data-placement="top" title="დააჭირეთ" style="COLOR: RED; margin-left:5px;"></i>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 20px;">
+                                <div class="col-5 offset-1 bold">
+                                    <div style="border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;">
+                                        <label id="black_list_show_lbl"
+                                               class="form-check-label">
+                                            <input value="1" id="updateBlackList" asp-for="Cummunicate.BlackListAdd" onclick="OpenBlackList()"
+                                                   type="radio" class="radio-percent-once btn btn-link">
+                                            შავი სიის განახლება
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div style="border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;">
+                                        <label class="form-check-label">
+                                            <input value="0" id="noneedUpdateBlackList" asp-for="Cummunicate.BlackListAdd"
+                                                   type="radio" class="radio-percent-unlim btn btn-link">
+                                            არ საჭიროებს განახლებას
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card level1">
+            <div class="card-header level1" style="border-bottom:0;" id="heading3" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                <div class="row">
+                    <div class="col-5" data-toggle="tooltip" data-placement="top"
+                         title="მიმდინარეობს გვერდის დამუშავება, შეკვეთის განსახორციელებლად გთხოვთ, დაუკავშირდეთ მომსახურე მენეჯერს">
+                        <img id="section-3-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold disabled-item" style="margin-left:10px;display:inline-flex;">NEWSLETTER</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapse3" class="collapse section1-collapse" aria-labelledby="heading3" data-parent="#accordion">
+                @*<div class="card-body">
+                    </div>*@
+            </div>
+        </div>
+        <div class="card level1">
+            <div class="card-header level1" style="border-bottom:0;" id="heading4" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                <div class="row">
+                    <div class="col-5" data-toggle="tooltip" data-placement="top"
+                         title="მიმდინარეობს გვერდის დამუშავება, შეკვეთის განსახორციელებლად გთხოვთ, დაუკავშირდეთ მომსახურე მენეჯერს">
+                        <img id="section-4-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold disabled-item" style="margin-left:10px;display:inline-flex;">FACEBOOK</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapse4" class="collapse section1-collapse" aria-labelledby="heading3" data-parent="#accordion">
+                @*<div class="card-body">
+                    </div>*@
+            </div>
+        </div>
+        <div class="card level1">
+            <div class="card-header level1" style="border-bottom:0;" id="heading5" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                <div class="row">
+                    <div class="col-5" data-toggle="tooltip" data-placement="top"
+                         title="მიმდინარეობს გვერდის დამუშავება, შეკვეთის განსახორციელებლად გთხოვთ, დაუკავშირდეთ მომსახურე მენეჯერს">
+                        <img id="section-5-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold disabled-item" style="margin-left:10px;display:inline-flex;">GOOGLE ADS</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapse5" class="collapse section1-collapse" aria-labelledby="heading3" data-parent="#accordion">
+                @*<div class="card-body">
+                    </div>*@
+            </div>
+        </div>
+        <div class="card level1">
+            <div class="card-header level1" style="border-bottom:0;" id="heading6" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                <div class="row">
+                    <div class="col-5" data-toggle="tooltip" data-placement="top"
+                         title="მიმდინარეობს გვერდის დამუშავება, შეკვეთის განსახორციელებლად გთხოვთ, დაუკავშირდეთ მომსახურე მენეჯერს">
+                        <img id="section-6-img" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                        <p class="bold disabled-item" style="margin-left:10px;display:inline-flex;">ტელემარკეტინგი</p>
+                    </div>
+                    <div style="margin-top: 7px;" class="col-7">
+                        <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                        <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+                    </div>
+                </div>
+                <h5 class="mb-0"></h5>
+            </div>
+
+            <div id="collapse6" class="collapse section1-collapse" aria-labelledby="heading3" data-parent="#accordion">
+                @*<div class="card-body">
+                    </div>*@
+            </div>
+        </div>
+        @*<div class="card level1">
+                <div class="card-header level1" style="border-bottom:0;" id="heading7" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                    <div class="row">
+                        <div class="col-5">
+                            <img id="whomtoImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                            <p class="bold" style="margin-left:10px;display:inline-flex;">შეჯამება</p>
+                        </div>
+                        <div style="margin-top: 7px;" class="col-7">
+                            <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                            <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+                        </div>
+                    </div>
+                    <h5 class="mb-0"></h5>
+                </div>
+
+                <div id="collapse7" class="collapse section1-collapse" aria-labelledby="heading3" data-parent="#accordion">
+                    <div class="card-body">
+                        <div style="text-align:left;" class="card-body">
+                            <label>კომუნიკაციის სახელი</label>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        <div class="mt-3  row">
+            <div class="col-9">
+                <input asp-for="NewCommunication.Name" placeholder="დაასათაურე" style="text-align:left;width: 100%;
+                            border: 1px solid #b5b5b5;
+                            margin-bottom: 15px" class="form-control" type="text" />
+            </div>
+            <div class="col-3 text-right">
+                <button type="button" id="save-communication" class="save btn btn-primary">შენახვა</button>
+                <button type="button" id="submit-newsegment" class="save btn btn-primary">დაწყება</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    function addDays(date, days, hours) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+
+        if (hours || !isNaN(hours)) result.setHours(hours, 0, 0, 0);
+        return result;
+    }
+
+    function Section1Text() {
+        debugger
+        var t = $("#NewCommunication_SegmentID").find(":selected").text();
+        var val = $("#NewCommunication_SegmentID").find(":selected").val();
+
+        $('#Section1Head').text('');
+
+        if ($('#Cummunicate_VisVesaubro[value="my_users"]').is(':checked')) {
+            if (val != '0') {
+                $('#section-1-img').attr('src', '/images/checked-icon.png');
+                $('.section-1-header').removeClass('active');
+                $('.section-1-header').addClass('confirmed');
+
+                $('#Section1Head').text(t);
+                $('#section-1-error').hide();
+                //$('.section-1-header').css('border-bottom', '1px solid rgba(0,0,0,.125)');
+            }
+            else {
+                $('#section-1-error').html('გთხოვთ, აირჩიოთ სეგმენტი');
+                $('#section-1-error').show();
+                if ($('.section-1-header').hasClass('confirmed')) {
+
+                    $('.section-1-header').removeClass('confirmed');
+                    $('.section-1-header').addClass('active');
+                    //$('.section-1-header').css('border-bottom', '0');
+
+                    $('#section-1-img').attr('src', '/images/edit.png');
+                }
+
+            }
+        }
+
+        if ($('#Cummunicate_VisVesaubro[value="new_users"]').is(':checked')) {
+            $('#section-1-img').attr('src', '/images/checked-icon.png');
+            $('.section-1-header').removeClass('active');
+            $('.section-1-header').addClass('confirmed');
+
+            $('#Section1Head').text('პოტენციურ მომხმარებელს');
+            $('#section-1-error').hide();
+        }
+
+    }
+
+    function Section2Text() {
+        var _confirmed_dt = false;
+        var _confirmed_count = false;
+        var _confirmed_text = false;
+
+        var _error_text = '';
+        var _dt = moment($('#sms-send-dt-hf').val(), 'DD/MM/YYYY kk:mm:ss').toDate();
+
+        var count = parseInt($("#NewCommunication_SegmentCount").val());
+
+        var text = '';
+
+        if (moment(_dt).isValid()) {
+            text = moment(_dt).format('DD MMM YYYY');
+            _confirmed_dt = true;
+        }
+        else {
+            _error_text = 'გთხოვთ, მონიშნოთ sms-ის გაგზავნის თარიღი';
+        }
+
+        if (!isNaN(count)) {
+            text = text + ' (' + count + ')';
+            _confirmed_count = true;
+        }
+        else {
+            if (_confirmed_dt) {
+                _error_text = 'გთხოვთ, მიუთითოთ რაოდენობა';
+            }
+        }
+
+        _confirmed_text = $('#msg_text').val().length > 0;
+
+
+        if (_confirmed_dt && _confirmed_count && !_confirmed_text) {
+            _error_text = 'გთხოვთ, მიუთითოთ sms ტექსტი';
+        }
+
+
+        if (_error_text.length == 0 && !$('#updateBlackList').is(':checked') && !$('#noneedUpdateBlackList').is(':checked')) {
+            _error_text = 'გთხოვთ, მონიშნოთ საჭიროებს თუ არა შავი სია განახლებას';
+        }
+
+        if (_confirmed_dt && _confirmed_count && _confirmed_text && ($('#updateBlackList').is(':checked') || $('#noneedUpdateBlackList').is(':checked'))) {
+            $('#section-2-img').attr('src', '/images/checked-icon.png');
+            $('.section-2-header').removeClass('active');
+            $('.section-2-header').addClass('confirmed');
+
+            $('#section-2-error').hide();
+        }
+        else {
+            if ($('.section-2-header').hasClass('confirmed')) {
+                //$('.section-2-header').css('border-bottom', '0');
+
+                $('#section-2-img').attr('src', '/images/edit.png');
+
+                $('.section-2-header').removeClass('confirmed');
+                $('.section-2-header').addClass('active');
+            }
+        }
+
+        if (_error_text.length > 0) {
+            $('#section-2-error').html(_error_text);
+            $('#section-2-error').show();
+        }
+
+        $('#Section2Head').text(text);
+        $('#Section2Content').text($('#msg_text').val());
+
+    }
+
+
+
+    $(function () {
+
+        Section1Text();
+        Section2Text();
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+        
+
+        $('#btn-send-test-msg').click(function () {
+
+            var data = {
+                msg: $("#msg_text").val()
+            };
+            var form_data = new FormData();
+            form_data.append('msg', data.msg);
+
+
+            blockUI();
+
+            $.ajax({
+                url: '/Communicate?handler=SendTestMsg',
+                type: 'POST',
+                dataType: 'json',
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                data: data
+            }).done(function (result) {
+
+                $.unblockUI();
+                if (result && result.result == 200) {
+                    swal(result.resultMsg, "სატესტო შეტყობინება წარმატებით გაიგზავნა", "success")
+                }
+                else {
+                    swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                }
+
+            });
+
+        });
+
+        $("#sms-send-dt").on("keypress", function (event) {
+            event.preventDefault();
+            return false;
+        });
+
+        $('#updateBlackList').on('change', function () {
+            Section2Text();
+        });
+
+        $('#noneedUpdateBlackList').on('change', function () {
+            Section2Text();
+        });
+        $('#Cummunicate_VisVesaubro[value="my_users"]').on('change', function () {
+            Section1Text();
+        });
+
+        $('#Cummunicate_VisVesaubro[value="new_users"]').on('change', function () {
+            Section1Text();
+        });
+
+
+        $('#san').on("paste", function (e, item) {
+            e.preventDefault();
+        });
+
+        $("#msg_text").on("keypress", function (event) {
+            var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+            var key = String.fromCharCode(event.which);
+
+            if (this.value.length >= 146) {
+                return false;
+            }
+
+            if (event.keyCode == 8 || event.keyCode == 91 || event.keyCode == 93 || event.keyCode == 37 || event.keyCode == 44 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 41 || event.keyCode == 33 || englishAlphabetAndWhiteSpace.test(key)) {
+                return true;
+            }
+            return false;
+        });
+        
+        $('#msg_text').on("paste", function (e, item) {
+
+            if (e.originalEvent.clipboardData.getData('text').length + e.target.value.length > 146) {
+                e.preventDefault();
+                return false;
+            }
+            var copied_data = e.originalEvent.clipboardData.getData('text');
+
+            var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+
+            for (var i = 0, length = copied_data.length; i < length; i++) {
+                var key = copied_data.charAt(i);
+                
+                if (!englishAlphabetAndWhiteSpace.test(key)) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        $('#asaki.multipleselect').multiselect({
+            nonSelectedText: 'ასაკი',
+            enableCaseInsensitiveFiltering: false,
+        });
+        $('#sqesi.multipleselect').multiselect({
+            nonSelectedText: 'სქესი',
+            enableCaseInsensitiveFiltering: false,
+        });
+
+
+        $('#NewCommunication_SegmentID').on('change', function () {
+            Section1Text();
+        });
+
+
+        $('#NewCommunication_SegmentCount').on('keyup', function () {
+            Section2Text();
+        });
+        $('#msg_text').on('keyup', function () {
+            Section2Text();
+        });
+
+
+        $('#testers-group').load('/AjaxPartialModel?handler=TesterGroups', function () {
+
+        });
+
+        $('#save-communication').click(function () {
+
+            if ($('#NewCommunication_Name').val().length == 0) {
+                swal('გთხოვთ, დაასათაუროთ კომუნიკაცია', '', "warning");
+                return;
+            }
+
+            var data = $('form').serialize();
+            //data = data + '&NewCommunication.GenderRangeID=' + $('#sqesi').val().toString();
+            //data = data + '&NewCommunication.AgeRangeID=' + $('#asaki').val().toString();
+
+            blockUI();
+
+            $.ajax({
+                url: '/Communicate',    
+                type: 'POST',
+                //contentType: 'application/json',
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                data: data
+            }).done(function (result) {
+
+                $.unblockUI();
+                if (result && result.result == 200) {
+                    location.reload();
+                }
+                else {
+                    swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                }
+
+            });
+        });
+
+        var _dt = $('#sms-send-dt').val();
+
+        
+        $('#sms-send-dt').daterangepicker({
+            showDropdowns: true,
+            minDate: addDays(new Date(), 1, 0),
+            "singleDatePicker": true,
+            "linkedCalendars": false,
+            "timePicker": true,
+            "timePicker24Hour": true,
+            autoUpdateInput: false,
+            //opens: 'center',
+            "locale": {
+                "format": 'MM.DD.YYYY - kk:mm',
+                "applyLabel": "არჩევა",
+                "cancelLabel": "",
+                "fromLabel": "დან",
+                "toLabel": "მდე",
+                "customRangeLabel": "Custom",
+                "weekLabel": "კვ",
+                "daysOfWeek": [
+                    "კვ",
+                    "ორშ",
+                    "სამ",
+                    "ოთხ",
+                    "ხუთ",
+                    "პარ",
+                    "შაბ"
+                ],
+                "monthNames": [
+                    "იანვარი",
+                    "თებერვალი",
+                    "მარტი",
+                    "აპრილი",
+                    "მაისი",
+                    "ივნისი",
+                    "ივლისი",
+                    "აგვისტო",
+                    "სექტემბერი",
+                    "ოქტომბერი",
+                    "ნოემბერი",
+                    "დეკემბერი"
+                ],
+                "firstDay": 1
+            },
+            "startDate": (_dt.length > 3 ? _dt : addDays(new Date(), 1, 12))
+
+        });
+
+        $('#sms-send-dt').on('apply.daterangepicker', function (ev, picker) {
+
+            picker.element.val(picker.startDate.format('MM.DD.YYYY - kk:mm'));
+            $('#sms-send-dt-hf').val(picker.startDate.format('DD/MM/YYYY kk:mm:ss'));
+
+            Section2Text();
+        });
+
+        var text_max = $('#msg_text').val().length > 0? 146 - $('#msg_text').val().length : 146;
+
+        
+
+        $('#count_msg_text').html(text_max + ' / 146');
+
+        $('#msg_text').keyup(function () {
+            var text_length = $('#msg_text').val().length;
+            var text_remaining = text_max - text_length;
+            $('#count_msg_text').html(text_remaining + ' / 146');
+        });
+
+
+        $('.section1-collapse.collapse').on('show.bs.collapse', function (e) {
+            if ($(this).is(e.target)) {
+                debugger;
+
+                $(this).prev().css('border-bottom', '1px solid rgba(0,0,0,.125)');
+
+                if ($(this).prev().hasClass('confirmed')) {
+
+                    return;
+                }
+
+                $(this).prev().addClass('active');
+
+
+                $(this).prev().find('img').attr('src', '/images/edit.png');
+            }
+        });
+
+        $('.section1-collapse.collapse').on('hide.bs.collapse', function (e) {
+            if ($(this).is(e.target)) {
+                $(this).prev().css('border-bottom', '0');
+                if ($(this).prev().hasClass('confirmed')) { return; }
+
+                $(this).prev().removeClass('active');
+                $(this).prev().find('img').attr('src', '/images/unchecked-icon.png');
+
+            }
+        });
+
+    });
+</script>

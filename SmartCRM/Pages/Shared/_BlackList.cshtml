@@ -1,0 +1,123 @@
+﻿@model SmartCRM.Pages.Shared._BlackListModel
+
+<form method="post" id="black-list-file" enctype="multipart/form-data">
+    <div class="form-group">
+
+        <button asp-page-handler="Export" type="button" class="btn btn-info" style="background:#24D2B5;border:1px solid #24D2B5;" onclick="document.getElementById('black-list-btn').click();">
+            <i class="fas fa-file-excel"></i>&nbsp;ატვირთვა
+        </button>
+
+        <input type="file" style="display:none;" id="black-list-btn" name="file" />
+    </div>
+</form>
+
+<div id="table-holder">
+    <table class="table" id="black-list-tb" style="height:300px;">
+        <thead>
+            <tr>
+                <th>მობილური</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var phone in Model.BlackList.Phones)
+            {
+                <tr>
+                    <td>@phone</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<script src="~/lib/datatables/datatables.min.js"></script>
+<script src="~/js/sweetalert.min.js"></script>
+<script>
+    $(function () {
+        debugger
+        var table = $('#black-list-tb').DataTable({
+            pageLength: 5,
+            "lengthChange": false,
+            "language": {
+                "search": "ძებნა",
+                "info": "ჩვენება _START_ - _END_ სულ _TOTAL_ ჩანაწერი",
+                paginate: {
+                    first: 'პირველი',
+                    previous: 'წინა',
+                    next: 'შემდეგი',
+                    last: 'ბოლო'
+                },
+                "processing": "მონაცემები იტვირთება",
+                "lengthMenu": "აჩვენე _MENU_ ჩანაწერი",
+                "zeroRecords": "",
+                "emptyTable": "",
+                "infoEmpty": "",
+                "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+            },
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "ყველა"]]
+        });
+
+
+        document.getElementById("black-list-btn").onchange = function () {
+            //document.getElementById("black-list-file").submit();
+            var _form = document.getElementById("black-list-file");
+            var data = new FormData(_form);
+            blockUI();
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '/AjaxPartialModel?handler=ImportBlackList',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 6000000,
+                success: function (data) {
+                    $.unblockUI();
+                    $('#black-list-btn').val('');
+                    if (data && data.result && data.result == 200) {
+                        swal("შავი სიის ატვირთვა დასრულდა წარმატებით", "ახალი დამატებული ნომრები:" + data.newPhoneCount +
+                            "  არავალიდური ნომრები:" + data.badPhoneCount, "success")
+
+                        debugger
+                        table.destroy();
+
+                        $('#table-holder').load('/AjaxPartialModel?handler=BlackListTable', function () {
+
+                            table = $('#black-list-tb').DataTable({
+                                pageLength: 5,
+                                "lengthChange": false,
+                                "language": {
+                                    "search": "ძებნა",
+                                    "info": "ჩვენება _START_ - _END_ სულ _TOTAL_ ჩანაწერი",
+                                    paginate: {
+                                        first: 'პირველი',
+                                        previous: 'წინა',
+                                        next: 'შემდეგი',
+                                        last: 'ბოლო'
+                                    },
+                                    "processing": "მონაცემები იტვირთება",
+                                    "lengthMenu": "აჩვენე _MENU_ ჩანაწერი",
+                                    "zeroRecords": "",
+                                    "emptyTable": "",
+                                    "infoEmpty": "",
+                                    "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+                                },
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "ყველა"]]
+                            });
+                        });
+                    }
+                },
+                error: function (e) {
+                    $('#black-list-btn').val('');
+                    $.unblockUI();
+                }
+            });
+        };
+
+
+
+
+    });
+
+</script>

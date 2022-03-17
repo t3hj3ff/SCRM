@@ -1,0 +1,305 @@
+﻿@model SmartCRM.Pages.Shared._TesterGroupModel
+<style>
+    #tester-list_filter {
+        display: none;
+    }
+
+    #tester-list th {
+        margin: auto 0;
+    }
+
+    #tester-list input[type='text'] {
+        width: 100%;
+    }
+
+    #tester-list.table tbody {
+        display: block; /*seperates the tbody from the header*/
+        height: 300px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin-right: -15px;
+    }
+
+    #tester-list.table td, #tester-list.table th {
+        padding: 0.5rem 1rem 0.5rem 1rem;
+    }
+
+    #tester-list.table td {
+        border-bottom: 1px solid #dee2e6;
+        border-top: none;
+    }
+
+
+    .dataTables_wrapper {
+         padding-top:0;
+    }
+</style>
+<div class="modal fade bs-example-modal-lg" id="tester-group-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width:80%; max-width:80%; margin: 0 auto;" id="testers-app">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:0;">
+                <h4 class="modal-title" id="myLargeModalLabel" style="color:#24D2B5; font-weight:bold; margin-left: 25px;">სატესტო ჯგუფი</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12" style="border: 1px solid #EEEFF2;border-radius: 25px;">
+                            <table class="table table-hover table-scrollable dataTable no-footer" style="height:300px;" id="tester-list">
+                                <thead>
+                                    <tr style="background: #EEEFF2; font-size:16px;
+                                            border-top-left-radius: 20px;
+                                            border-top-right-radius: 20px;" class="row" role="row">
+                                        <th class="col-1">
+                                            სახელი
+                                        </th>
+
+                                        <th class="col-3">
+                                            <div class="input-group">
+                                                <input class="form-control py-2 border-right-0 border" placeholder="ძებნა"
+                                                       style="height: 30px; min-height:30px; color: #ababab7a !important; text-align:left !important; border-radius: 30px 0px 0px 30px;"
+                                                       type="search" id="search_employes">
+                                                <span class="input-group-append" style="color: #ababab7a !important; text-align:left !important; background-color:#ffffff; border-radius: 0 30px 30px 0;">
+                                                    <div class="input-group-text bg-transparent" style="color:#ababab7a; border-radius: 0 30px 30px 0;border-left: none;">
+                                                        <i class="fa fa-search"></i>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </th>
+                                        <th class="col-3" style="text-align: center; ">ბარათის ნომერი</th>
+                                        <th class="col-2" style="text-align: center; ">
+                                            ტელეფონი
+                                        </th>
+                                        <th class="col-2" style="text-align: center; ">
+                                            მეილი
+                                        </th>
+                                        <th class="col-1" style="text-align: center; ">
+                                            @*<i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i>*@
+                                        </th>
+                                        <th style="display:none;">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="!new_tester" style="height: 50px;" class="row">
+                                        <td class="col-12" style="margin: auto 0;">
+                                            <a href="javascript:void(0)" id="add-campaign" style="color:#24D2B5;" v-on:click="addTester()">
+                                                <i class="fas fa-plus"></i> დამატება
+                                            </a>
+                                        </td>
+                                        <td style="display:none;"></td>
+                                        <td style="display:none;"></td>
+                                        <td style="display:none;"></td>
+                                        <td style="display:none;"></td>
+                                        <td style="display:none;"></td>
+                                        <td style="display:none;"></td>
+                                    </tr>
+                                    <tr class="row" v-if="new_tester">
+                                        <td style="display:none;"></td>
+                                        <td class="col-2"><input type="text" v-model="new_tester.Name" placeholder="სახელი" /></td>
+                                        <td class="col-2"><input type="text" v-model="new_tester.Surname" placeholder="გვარი" /></td>
+                                        <td class="col-3" style="text-align: center;">
+                                            <input type="text" v-model="new_tester.Card" placeholder="ბარათი" />
+                                        </td>
+                                        <td class="col-2" style="text-align: center;">
+                                            <input type="text" v-model="new_tester.Phone" placeholder="მობილური" />
+                                        </td>
+                                        <td class="col-2" style="text-align: center;">
+                                            <input type="text" v-model="new_tester.Email" placeholder="ელ.ფოსტა" />
+                                        </td>
+                                        <td class="col-1" style="text-align:center">
+                                            <a v-on:click="confirmNewTester()" href="javascript:void(0)" class="">
+                                                <i data-toggle="tooltip" data-original-title="დადასტურება"
+                                                   class="fas fa-check text-success"></i>
+                                            </a>
+                                            <a v-on:click="removeNewTester" class="">
+
+                                                <i data-toggle="tooltip" href="javascript:void(0)" data-original-title="წაშლა"
+                                                   style="color: #ff5c6c !important;"
+                                                   class="fas fa-times text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr class="row" v-for="tester in testers">
+                                        <td style="display:none;">{{tester.ID}}</td>
+                                        <td class="col-2">{{tester.Name}} </td>
+                                        <td class="col-2">{{tester.Surname}}</td>
+                                        <td class="col-3" style="text-align: center;">{{tester.Card}}</td>
+                                        <td class="col-2" style="text-align: center;">{{tester.Phone}}</td>
+                                        <td class="col-2" style="text-align: center;">{{tester.Email}}</td>
+                                        <td class="col-1" style="text-align:center">
+                                            <a v-on:click="removeTester(tester)" class="">
+                                                <i data-toggle="tooltip" href="javascript:void(0)" data-original-title="წაშლა"
+                                                   style="color: #ff5c6c !important;"
+                                                   class="fas fa-times text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/vue.js"></script>
+<script type="text/javascript">
+
+    function InitializeTestGroup(data) {
+
+        var app = new Vue({
+            el: '#testers-app',
+            data: {
+                testers: data,
+                table: {},
+                new_tester: null
+            },
+            methods: {
+                InitDataTable: function () {
+                    var _this = this;
+
+                    _this.table = $(this.$el).find('#tester-list').DataTable({
+                        //pageLength: 5,
+                        "autoWidth": false,
+                        "destroy": true,
+                        "info": false,
+                        orderCellsTop: true,
+                        fixedHeader: true,
+                        "lengthChange": false,
+                        "ordering": false,
+                        "paging": false,
+                        "language": {
+                            "search": "ძებნა",
+                            "info": "ჩვენება _START_ - _END_ სულ _TOTAL_ ჩანაწერი",
+                            paginate: {
+                                first: 'პირველი',
+                                previous: 'წინა',
+                                next: 'შემდეგი',
+                                last: 'ბოლო'
+                            },
+                            "processing": "მონაცემები იტვირთება",
+                            "lengthMenu": "აჩვენე _MENU_ ჩანაწერი",
+                            "zeroRecords": "ჩანაწერი ვერ მოიძებნა",
+                            "emptyTable": "ჩანაწერები ვერ მოიძებნა",
+                            "infoEmpty": "ჩანაწერები ვერ მოიძებნა",
+                            "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+                        },
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "ყველა"]]
+                    });
+
+                    $("#search_employes").keyup(function () {
+
+                        _this.table.search(this.value).draw();
+                    });
+                },
+                addTester: function () {
+                    this.new_tester = {};
+                },
+                removeNewTester: function () {
+                    if (confirm('დარწმუნებული ხართ რომ გსურთ ჩანაწერის გაუქმება?')) {
+                        this.new_tester = null;
+                    }
+                },
+                confirmNewTester: function () {
+                    if (confirm('დარწმუნებული ხართ რომ გსურთ ჩანაწერის შენახვა?')) {
+
+                        blockUI();
+                        var _this = this;
+
+                        $.ajax({
+                            url: '/AjaxPartialModel?handler=CreateTester',
+                            type: 'POST',
+                            dataType: 'json',
+                            headers: {
+                                RequestVerificationToken:
+                                    $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            data: this.new_tester
+                        }).done(function (result) {
+
+                            if (result && result.result == 200) {
+                                swal(result.resultMsg, result.resultMsg, "success");
+
+                                if ($.fn.DataTable.isDataTable('#tester-list')) {
+                                    _this.table.destroy();
+                                }
+
+                                _this.new_tester.ID = result.id;
+
+                                _this.testers.unshift(_this.new_tester);
+
+                                _this.new_tester = null;
+
+                                Vue.nextTick(function () {
+                                    _this.InitDataTable();
+                                })
+                            }
+                            else {
+                                swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                            }
+
+                        }).always(function () {
+                            $.unblockUI();
+                        });
+                    }
+                },
+                removeTester: function (tester) {
+                    if (confirm('დარწმუნებული ხართ რომ გსურთ ჩანაწერის წაშლა?')) {
+                        blockUI();
+                        var _this = this;
+
+                        $.ajax({
+                            url: '/AjaxPartialModel?handler=DeleteTester',
+                            type: 'POST',
+                            dataType: 'json',
+                            headers: {
+                                RequestVerificationToken:
+                                    $('input:hidden[name="__RequestVerificationToken"]').val()
+                            },
+                            data: tester
+                        }).done(function (result) {
+                            if (result && result.result == 200) {
+                                swal(result.resultMsg, result.resultMsg, "success");
+
+                                if ($.fn.DataTable.isDataTable('#tester-list')) {
+                                    _this.table.destroy();
+                                }
+
+                                var index = _this.testers.indexOf(tester);
+                                _this.testers.splice(index, 1);
+
+                                Vue.nextTick(function () {
+                                    _this.InitDataTable();
+                                })
+                            }
+                            else {
+                                swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                            }
+
+                        }).always(function () {
+                            $.unblockUI();
+                        });
+                    }
+                }
+            },
+            mounted: function () {
+                var _this = this;
+
+                this.$nextTick(function () {
+                    _this.InitDataTable();
+                });
+            }
+        });
+
+    }
+
+    InitializeTestGroup(@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Employes))));
+
+
+</script>

@@ -1,0 +1,1484 @@
+﻿@page
+@model SmartCRM.Pages.RFMModel
+@{
+    ViewData["Title"] = "RFM";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@section Styles{
+    @*<link href="~/css/bootstrap-glyphicons.css" rel="stylesheet" />*@
+    @*<link href="~/lib/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />*@
+    <style media="screen">
+        .rfm .age-btn .btn-group {
+            width: 100% !important;
+        }
+
+        .rfm #searchbox:focus {
+            box-shadow: none;
+        }
+
+        .rfm .age-btn button {
+            margin-top: 0;
+        }
+
+        .rfm .btn-group label {
+            color: #000 !important;
+        }
+
+        .rfm .multiselect-container > li > a > label {
+            width: 200px;
+            padding: 3px 10px 3px 10px;
+            font-family: "BPG Arial", sans-serif;
+        }
+
+        .rfm .btn-group {
+            width: 20%;
+        }
+
+        .rfm .multiselect {
+            background: #f8f9fa05;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .rfm .dropdown-toggle::after {
+            color: #C3C8D1 !important;
+            font-size: 25px;
+            margin-bottom: -6px;
+        }
+
+        .rfm .multiselect-selected-text {
+            color: #515151;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .rfm .multiselect-clear-filter {
+            display: none;
+        }
+
+        .rfm .multiselect-search {
+            width: 90%;
+        }
+
+        .rfm .row-1 {
+            background-color: red;
+            height: 70px;
+        }
+
+        .rfm .row-2 {
+            background-color: red;
+            height: 70px;
+        }
+
+        .rfm .row-3 {
+            background-color: red;
+            height: 70px;
+        }
+
+        .rfm .row-4 {
+            background-color: yellow;
+            height: 70px;
+        }
+
+        .rfm .row-5 {
+            background-color: yellow;
+            height: 70px;
+        }
+
+        .rfm .row-6 {
+            background-color: yellow;
+            height: 70px;
+        }
+
+        .rfm .span-btn-1 {
+            background-color: #000;
+        }
+
+        .rfm .table-heading-top {
+            /*margin-left: 9px;*/
+        }
+
+        .rfm .table-heading-bot {
+            /*margin-left: 10px;*/
+        }
+
+        .rfm .cell {
+            border: 0.01em solid #80808030;
+        }
+
+        .rfm .col-first, .rfm .col-2-first, .rfm .col-3-first {
+            background-color: #D8716A;
+        }
+
+        .rfm .col-second, .rfm .col-2-second, .rfm .col-3-second, .rfm .col-third, .rfm .col-2-third, .rfm .col-3-third {
+            background-color: #F4A372;
+        }
+
+        .rfm .col-fourth, .rfm .col-2-fourth, .rfm .col-3-fourth, .rfm .col-fifth, .rfm .col-2-fifth, .rfm .col-3-fifth, .rfm .col-sixth, .rfm .col-2-sixth, .rfm .col-3-sixth {
+            background-color: #A3BF68;
+        }
+
+        .rfm .col-4-first, .rfm .col-4-second, .rfm .col-4-third, .rfm .col-5-first, .rfm .col-5-second, .rfm .col-5-third, .rfm .col-6-first, .rfm .col-6-second, .rfm .col-6-third {
+            background-color: #BFA9A0;
+        }
+
+        .rfm .col-4-fourth, .rfm .col-5-fourth, .rfm .col-6-fourth, .rfm .col-6-fifth {
+            background-color: #F7BE61;
+        }
+
+        .rfm .col-4-fifth, .rfm .col-5-fifth, .rfm .col-4-sixth, .rfm .col-5-sixth {
+            background-color: #6DBBCF;
+        }
+
+        .rfm .col-6-sixth {
+            background-color: #9886E1;
+        }
+
+        .rfm .btn-smartcrm-custom {
+            position: absolute;
+            /*left: 45%;*/
+            /*top: 0;*/
+            z-index: 5;
+            width: 150px;
+            /*border-radius: 15px !important;*/
+        }
+
+        .rfm .btn-smartcrm-custom-1 {
+            position: absolute;
+            /*left: 45%;*/
+            /*top: 28px;*/
+            z-index: 5;
+            width: 150px;
+            /*border-radius: 15px !important;*/
+        }
+
+        .rfm .btn-smartcrm-custom-4 {
+            position: absolute;
+            /*top: 0;*/
+            height: 60px;
+            /*left: 5px;*/
+            z-index: 5;
+            width: 150px;
+            /*border-radius: 15px !important;*/
+            padding: 0 !important;
+        }
+
+        .rfm .btn-smartcrm-custom-2 {
+            position: absolute;
+            /*top: 28px;
+        left: 5px;*/
+            z-index: 5;
+            width: 150px;
+            /*border-radius: 15px !important;*/
+        }
+
+        .rfm #newSegment:hover {
+            color: #20aee3;
+        }
+
+        @@media screen and (max-width: 1295px) {
+            .rfm {
+                /*#rfm-button-1 {
+              left: 9% !important;
+              top: 0 !important;
+          }*/
+                /*#rfm-button-2 {*/
+                /*left: 28% !important;
+          }
+
+          #rfm-button-3 {
+              left: 60% !important;
+          }
+
+          #rfm-button-4 {
+              left: 59% !important;
+          }
+
+          #rfm-button-5 {
+              left: 12% !important;
+          }*/
+            }
+
+                .rfm .btn-smartcrm-custom-4 {
+                    width: 120px;
+                }
+
+                .rfm .btn-smartcrm-custom-2 {
+                    width: 120px;
+                }
+        }
+
+        .rfm .col-2 p {
+            /*display: none;*/
+            text-align: center;
+        }
+
+        .rfm .col-2:hover p {
+            /*display: block;*/
+            /*transition: 0.5s;*/
+        }
+
+        .rfm .calcBadge {
+            /*padding: 11px 15px;
+        top: 10px;
+        position: relative;*/
+        }
+
+        @@media screen {
+            .rfm .row-1 {
+                background-color: red;
+                height: 70px;
+            }
+
+            .rfm .row-2 {
+                background-color: red;
+                height: 70px;
+            }
+
+            .rfm .row-3 {
+                background-color: red;
+                height: 70px;
+            }
+
+            .rfm .row-4 {
+                background-color: yellow;
+                height: 70px;
+            }
+
+            .rfm .row-5 {
+                background-color: yellow;
+                height: 70px;
+            }
+
+            .rfm .row-6 {
+                background-color: yellow;
+                height: 70px;
+            }
+
+            .rfm .col-first, .rfm .col-2-first, .rfm .col-3-first {
+                background-color: #D8716A;
+            }
+
+            .rfm .col-second, .rfm .col-2-second, .rfm .col-3-second, .rfm .col-third, .rfm .col-2-third, .rfm .col-3-third {
+                background-color: #F4A372;
+            }
+
+            .rfm .col-fourth, .rfm .col-2-fourth, .rfm .col-3-fourth, .rfm .col-fifth, .rfm .col-2-fifth, .rfm .col-3-fifth, .rfm .col-sixth, .rfm .col-2-sixth, .rfm .col-3-sixth {
+                background-color: #A3BF68;
+            }
+
+            .rfm .col-4-first, .rfm .col-4-second, .rfm .col-4-third, .rfm .col-5-first, .rfm .col-5-second, .rfm .col-5-third, .rfm .col-6-first, .rfm .col-6-second, .rfm .col-6-third {
+                background-color: #BFA9A0;
+            }
+
+            .rfm .col-4-fourth, .rfm .col-5-fourth, .rfm .col-6-fourth, .rfm .col-6-fifth {
+                background-color: #F7BE61;
+            }
+
+            .rfm .col-4-fifth, .rfm .col-5-fifth, .rfm .col-4-sixth, .rfm .col-5-sixth {
+                background-color: #6DBBCF;
+            }
+
+            .rfm .col-6-sixth {
+                background-color: #9886E1;
+            }
+
+            .rfm *, .rfm ::after, .rfm ::before {
+                box-sizing: border-box;
+            }
+
+            .rfm button {
+                border-radius: 0;
+            }
+
+                .rfm button:focus {
+                    outline: 1px dotted;
+                    outline: 5px auto -webkit-focus-ring-color;
+                }
+
+            .rfm button {
+                margin: 0;
+                font-family: inherit;
+                font-size: inherit;
+                line-height: inherit;
+            }
+
+            .rfm button {
+                overflow: visible;
+            }
+
+            .rfm button {
+                text-transform: none;
+            }
+
+            .rfm [type=button], .rfm button {
+                -webkit-appearance: button;
+            }
+
+                .rfm [type=button]::-moz-focus-inner, .rfm button::-moz-focus-inner {
+                    padding: 0;
+                    border-style: none;
+                }
+        }
+
+        @@media screen and (prefers-reduced-motion: reduce) {
+            .rfm .btn {
+                transition: none;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:hover {
+                color: #212529;
+                text-decoration: none;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:focus {
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:disabled {
+                opacity: 0.65;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark {
+                color: #fff;
+                background-color: #2121214a;
+                border-color: #343a40;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:hover {
+                color: #fff;
+                background-color: #23272b;
+                border-color: #1d2124;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:focus {
+                box-shadow: 0 0 0 0.2rem rgba(82, 88, 93, 0.5);
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:disabled {
+                color: #fff;
+                background-color: #343a40;
+                border-color: #343a40;
+            }
+        }
+
+        @@media screen {
+            .rfm :disabled {
+                pointer-events: none !important;
+            }
+        }
+
+        @@media screen {
+            .rfm .waves-effect {
+                position: relative;
+                cursor: pointer;
+                overflow: hidden;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn {
+                -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+                padding: 0.84rem 2.14rem;
+                font-size: 0.81rem;
+                -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+                -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+                margin: 0.375rem;
+                border: 0;
+                -webkit-border-radius: 0.125rem;
+                border-radius: 0.125rem;
+                cursor: pointer;
+                text-transform: uppercase;
+                white-space: normal;
+                word-wrap: break-word;
+                color: #fff;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:active, .rfm .btn:focus, .rfm .btn:hover {
+                -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                outline: 0;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:not([disabled]):not(.disabled):active {
+                -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        @@media screen {
+            .rfm .btn.btn-md {
+                /*padding: .7rem 1.6rem;*/
+                padding: 0.3rem 0.6rem;
+                /*font-size: .7rem;*/
+            }
+        }
+
+        @@media screen {
+            .rfm .btn:disabled:active, .rfm .btn:disabled:focus, .rfm .btn:disabled:hover {
+                -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark {
+                background-color: #2121214a !important;
+                color: #fff;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:hover {
+                background-color: #2e2e2e;
+                color: #fff;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:focus {
+                -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:active, .rfm .btn-dark:focus {
+                background-color: #000;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:not([disabled]):not(.disabled):active {
+                -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                background-color: #21212185 !important;
+            }
+        }
+
+        @@media screen {
+            .rfm .btn-dark:not([disabled]):not(.disabled):active:focus {
+                -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+                box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        .rfm .cell-value {
+            color: white;
+            font-size: 9px !important;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .rfm .vertical-text-left {
+            transform: rotate(270deg);
+            transform-origin: left top 0;
+            position: absolute;
+            /*top: 456px;*/
+            top: 300px;
+            color: #A2A2A2;
+            left: 0;
+        }
+
+        .rfm .vertical-text-right {
+            transform: rotate(270deg);
+            position: absolute;
+            /*top: 456px;*/
+            top: 250px;
+            color: #A2A2A2;
+            right: -42px;
+        }
+
+        .rfm .vertical-text-bottom {
+            position: absolute;
+            /*top: 456px;*/
+            /*top: 250px;*/
+            color: #A2A2A2;
+            /*bottom: 0;*/
+        }
+
+        .rfm .popover {
+            text-align: center !important;
+        }
+
+        .rfm .border-bottom {
+            border-bottom: 1px solid #00000038 !important;
+        }
+
+        .rfm .border-left {
+            border-left: 1px solid #00000038 !important;
+        }
+
+        .rfm .border-right {
+            border-right: 1px solid #00000038 !important;
+        }
+
+        .rfm .border-top {
+            border-top: 1px solid #00000038 !important;
+        }
+
+        .rfm .multiselect[data-toggle=dropdown] {
+            border-radius: 20px;
+            height: 60px;
+            padding-bottom: 50px;
+            padding-top: 25px;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
+            background-color: white;
+        }
+
+        /*.rfm ::-webkit-input-placeholder {
+            text-align: center;
+        }
+
+        .rfm :-moz-placeholder {
+         
+            text-align: center;
+        }
+
+        .rfm ::-moz-placeholder {
+         
+            text-align: center;
+        }
+
+        .rfm :-ms-input-placeholder {
+            text-align: center;
+        }*/
+
+        .rfm .dropdown-menu.show {
+            /*transform: none !important;*/
+            /*overflow-y: auto !important;
+        overflow-x: hidden !important;*/
+            width: 100% !important;
+            height: auto;
+            max-height: 300px;
+            overflow-x: hidden !important;
+        }
+
+            .rfm .dropdown-menu.show label {
+                width: 100% !important;
+            }
+
+        .rfm .dataTables_filter {
+            display: none;
+        }
+
+        .rfm .card-body {
+            padding: 0 1.25rem 1.25rem 1.25rem;
+        }
+
+        .rfm .dataTables_wrapper {
+            padding-top: 0px;
+        }
+
+        .rfm #my-segments tbody tr:hover {
+            /*background-color: #20aee3;*/
+            color: #20aee3;
+        }
+
+        .rfm .fa-eye {
+            color: #ababab;
+        }
+
+        .rfm .odd:hover .fa-eye {
+            color: #20aee3;
+        }
+
+        .rfm .even:hover .fa-eye {
+            color: #20aee3;
+        }
+
+        .rfm .fa-times {
+            color: #ababab !important;
+        }
+
+        .rfm .odd:hover .fa-times {
+            color: red !important;
+        }
+
+        .rfm .even:hover .fa-times {
+            color: red !important;
+        }
+
+        .rfm .input-group-text {
+            border: 1px solid #dee2e6 !important;
+            border-left: none !important;
+        }
+
+        .multipleselect + .btn-group ul {
+            width: 100%;
+        }
+
+
+
+        #new_segment_name::placeholder {
+            opacity: 0.7;
+            text-align:center;
+        }
+
+        #new_segment_name:-ms-input-placeholder {
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        #new_segment_name::-ms-input-placeholder {
+            opacity: 0.7;
+            text-align: center;
+        }
+    </style>
+}
+<div class="container rfm">
+    <div class="row">
+        <div class="col-12">
+            <p class="font-bold vertical-text-left">ვიზიტები</p>
+            <p class="vertical-text-right">მომხმარებლები</p>
+
+            <div class="row" style="text-align:center; background-color:white; border-radius:30px; box-shadow: 0px 0px 1px 0px;">
+                <div class="col-12" style="padding: 0 50px;">
+                    <div class="row">
+                        <span style="padding-top:15px; color:#a2a2a2; font-size: 16px; font-weight:700; text-align:center; margin: 0 auto; padding-bottom: 5px;">დღეები ბოლო ვიზიტის შემდეგ</span>
+                    </div>
+
+                    <div class="row table-heading-top" style="padding-top: 25px; font-size: 13px;">
+
+                        <div class="col-1 border-right">
+                            @*just a filler :-)*@
+                        </div>
+                        <div class="font-bold col-2 border-right">
+                            <p>@Model.Stat.R[0].Description<br />დღე</p>
+                        </div>
+                        <div class="font-bold col-2 border-right">
+                            <p>@Model.Stat.R[1].Description<br />დღე</p>
+                        </div>
+                        <div class="font-bold col-2 border-right">
+                            <p>@Model.Stat.R[2].Description<br />დღე</p>
+                        </div>
+                        <div class="font-bold col-2 border-right">
+                            <p>@Model.Stat.R[3].Description<br />დღე</p>
+                        </div>
+                        <div class="font-bold col-2 border-right">
+                            <p>@Model.Stat.R[4].Description<br />დღე</p>
+                        </div>
+                        <div class="col-1">
+                            @*just a filler :-)*@
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row" id="rfm-row">
+                                <div style="padding:0;padding-top:26px !important;font-size: 13px; font-weight: 700; color: grey;" class="col-1 pt-3 d-flex justify-content-center border-top">
+                                    @Model.Stat.F[4].Description
+                                </div>
+                                <button id="rfm-button-1" style="opacity: 0.7; top:40%;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-2"><span>@Html.Raw(Model.Stat.S_ID_List[5].Description)</span></button>
+                                <button id="rfm-button-2" style="opacity: 0.7; top:40%;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-1"><span>@Html.Raw(Model.Stat.S_ID_List[4].Description)</span></button>
+                                <button id="rfm-button-3" style="opacity: 0.7; top:40%;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-1"><span>@Html.Raw(Model.Stat.S_ID_List[0].Description)</span></button>
+                                <button id="rfm-button-4" style="opacity: 0.7; top: 168px;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-1"><span>@Html.Raw(Model.Stat.S_ID_List[1].Description) </span></button>
+                                <button id="rfm-button-5" style="opacity: 0.7; top: 205px;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom"><span> @Html.Raw(Model.Stat.S_ID_List[6].Description)</span></button>
+                                <button id="rfm-button-6" style="opacity: 0.7; top: 279px;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-4"><span>@Html.Raw(Model.Stat.S_ID_List[3].Description)</span></button>
+                                <button id="rfm-button-7" style="opacity: 0.7; top: 279px;margin-left: 0;" type="button" class="btn btn-md btn-dark btn-smartcrm-custom-4"><span>@Html.Raw(Model.Stat.S_ID_List[2].Description)</span></button>
+
+                                <div class="col-red col-2 row-2 col-2-first cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[4].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[4].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[4].R + Model.Stat.Cells[4].F)" />
+                                    @*<p class="cell-value"></p>*@
+
+                                </div>
+
+                                <div class="col-orange col-2 row-2 col-2-second cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[9].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[9].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[9].R + Model.Stat.Cells[9].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[14].Description)</p>*@
+                                </div>
+                                <div class="col-orange col-2 row-2 col-2-third cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[14].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[14].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[14].R + Model.Stat.Cells[14].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[14].Description)</p>*@
+                                </div>
+                                <div class="col-green col-2 row-2 col-2-fourth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[19].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[19].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[19].R + Model.Stat.Cells[19].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[19].Description)</p>*@
+                                </div>
+                                <div class="col-green col-2 row-2 col-2-fifth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[24].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[24].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[24].R + Model.Stat.Cells[24].F)" />
+                                    @*<p class="cell-value" style="position:absolute;right: 40%;">@Html.Raw(Model.Stat.Cells[24].Description)</p>*@
+                                </div>
+                                <div style="padding-right: 0px;font-size: 13px; font-weight: 0; color: grey; padding-left: 0 !important;"
+                                     class="col-1 pt-3 d-flex justify-content-center  border-top">
+                                    <p style="margin-top:11px;">@((Model.Stat.Cells[4].CARD_CNT + Model.Stat.Cells[9].CARD_CNT + Model.Stat.Cells[14].CARD_CNT + Model.Stat.Cells[19].CARD_CNT + Model.Stat.Cells[24].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="padding:0;padding-top:26px !important;font-size: 13px; font-weight: 700; color: grey;"
+                             class="col-1 pt-3 d-flex justify-content-center border-top">
+                            @Model.Stat.F[3].Description
+                        </div>
+
+                        <div class="col-red col-2 row-3 col-3-first cell" data-toggle="popover" data-placement="bottom"
+                             data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[3].Description)">
+                            <input type="hidden" name="cell_value" value="@Model.Stat.Cells[3].CARD_CNT" />
+                            <input type="hidden" name="s_id" value="@(Model.Stat.Cells[3].R + Model.Stat.Cells[3].F)" />
+                            @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[3].Description) </p>*@
+                        </div>
+                        <div class="col-orange col-2 row-3 col-3-second cell" data-toggle="popover" data-placement="top"
+                             data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[8].Description)">
+                            <input type="hidden" name="cell_value" value="@Model.Stat.Cells[8].CARD_CNT" />
+                            <input type="hidden" name="s_id" value="@(Model.Stat.Cells[8].R + Model.Stat.Cells[8].F)" />
+                            @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[8].Description) </p>*@
+                        </div>
+                        <div class="col-orange col-2 row-3 col-3-third cell" data-toggle="popover" data-placement="top"
+                             data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[13].Description)">
+                            <input type="hidden" name="cell_value" value="@Model.Stat.Cells[13].CARD_CNT" />
+                            <input type="hidden" name="s_id" value="@(Model.Stat.Cells[13].R + Model.Stat.Cells[13].F)" />
+                            @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[13].Description) </p>*@
+                        </div>
+                        <div class="col-green col-2 row-3 col-3-fourth cell" data-toggle="popover" data-placement="top"
+                             data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[18].Description)">
+                            <input type="hidden" name="cell_value" value="@Model.Stat.Cells[18].CARD_CNT" />
+                            <input type="hidden" name="s_id" value="@(Model.Stat.Cells[18].R + Model.Stat.Cells[18].F)" />
+                            @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[18].Description)</p>*@
+
+                        </div>
+                        <div class="col-green col-2 row-3 col-3-fifth cell" data-toggle="popover" data-placement="top"
+                             data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[23].Description)">
+                            <input type="hidden" name="cell_value" value="@Model.Stat.Cells[23].CARD_CNT" />
+                            <input type="hidden" name="s_id" value="@(Model.Stat.Cells[23].R + Model.Stat.Cells[23].F)" />
+                            @*<p class="cell-value"> </p>*@
+                        </div>
+                        <div style="padding-right: 0px;font-size: 13px; font-weight: 0; color: grey;padding-left: 0 !important;"
+                             class="col-1 pt-3 d-flex justify-content-center border-top">
+                            <p style="margin-top:11px;"> @((Model.Stat.Cells[3].CARD_CNT + Model.Stat.Cells[8].CARD_CNT + Model.Stat.Cells[13].CARD_CNT + Model.Stat.Cells[18].CARD_CNT + Model.Stat.Cells[23].CARD_CNT).ToString("#,###"))</p>
+                        </div>
+                    </div>
+                    <!-- lastelement -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+
+                                <div style="padding:0;padding-top:26px !important;font-size: 13px; font-weight: 700; color: grey;" class="col-1 pt-3 d-flex justify-content-center  border-top">
+                                    @Model.Stat.F[2].Description
+                                </div>
+                                <div class="col-brown col-2 row-4 col-4-first cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[2].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[2].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[2].R + Model.Stat.Cells[2].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[2].Description)</p>*@
+                                </div>
+                                <div class="col-brown col-2 row-4 col-4-second cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[7].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[7].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[7].R + Model.Stat.Cells[7].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[7].Description)</p>*@
+                                </div>
+                                <div class="col-yellow col-2 row-4 col-4-fourth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[12].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[12].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[12].R + Model.Stat.Cells[12].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[12].Description)</p>*@
+                                </div>
+                                <div class="col-blue col-2 row-4 col-4-fifth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[17].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[17].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[17].R + Model.Stat.Cells[17].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[17].Description)</p>*@
+                                </div>
+                                <div class="col-blue col-2 row-4 col-4-sixth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[22].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[22].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[22].R + Model.Stat.Cells[22].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[22].Description)</p>*@
+                                </div>
+                                <div style="padding-right: 0px;font-size: 13px; font-weight: 0; color: grey;padding-left: 0 !important;"
+                                     class="col-1 pt-3 d-flex justify-content-center border-top">
+                                    <p style="margin-top:11px;">@((Model.Stat.Cells[2].CARD_CNT + Model.Stat.Cells[7].CARD_CNT + Model.Stat.Cells[12].CARD_CNT + Model.Stat.Cells[17].CARD_CNT + Model.Stat.Cells[22].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div style="padding:0;padding-top:26px !important;font-size: 13px; font-weight: 700; color: grey;" class="col-1 pt-3 d-flex justify-content-center border-top">
+                                    @Model.Stat.F[1].Description
+                                </div>
+                                <div class="col-brown col-2 row-5 col-5-first cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[1].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[1].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[1].R + Model.Stat.Cells[1].F)" />
+                                    @*<p class="cell-value" style="position:absolute;right: 40%;">@Html.Raw(Model.Stat.Cells[1].Description)</p>*@
+                                </div>
+                                <div class="col-brown col-2 row-5 col-5-second cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[6].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[6].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[6].R + Model.Stat.Cells[6].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[6].Description) </p>*@
+                                </div>
+                                <div class="col-yellow col-2 row-5 col-5-fourth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[11].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[11].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[11].R + Model.Stat.Cells[11].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[11].Description)</p>*@
+                                </div>
+                                <div class="col-blue col-2 row-5 col-5-fifth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[16].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[16].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[16].R + Model.Stat.Cells[16].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[16].Description)</p>*@
+                                </div>
+                                <div class="col-blue col-2 row-5 col-5-sixth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[21].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[21].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[21].R + Model.Stat.Cells[21].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[21].Description)</p>*@
+                                </div>
+                                <div style="padding-right: 0px;font-size: 13px; font-weight: 0; color: grey;padding-left: 0 !important;" class=" border-top col-1 pt-3 d-flex justify-content-center">
+                                    <p style="margin-top:11px;">@((Model.Stat.Cells[1].CARD_CNT + Model.Stat.Cells[6].CARD_CNT + Model.Stat.Cells[11].CARD_CNT + Model.Stat.Cells[16].CARD_CNT + Model.Stat.Cells[21].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div style="padding:0;padding-top:26px !important;font-size: 13px; font-weight: 700; color: grey;" class="col-1 pt-3 d-flex justify-content-center border-top">
+                                    @Model.Stat.F[0].Description
+                                </div>
+                                <div class="col-brown col-2 row-6 col-6-first cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[0].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[0].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[0].R + Model.Stat.Cells[0].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[0].Description)</p>*@
+                                </div>
+                                <div class="col-brown col-2 row-6 col-6-second cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[5].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[5].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[5].R + Model.Stat.Cells[5].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[5].Description)</p>*@
+                                </div>
+                                <div class="col-yellow col-2 row-6 col-6-fourth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[10].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[10].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[10].R + Model.Stat.Cells[10].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[10].Description)</p>*@
+                                </div>
+                                <div class="col-yellow col-2 row-6 col-6-fifth cell" data-toggle="popover" data-placement="top"
+                                     data-html="true" data-trigger="hover" data-content="@Html.Raw(Model.Stat.Cells[15].Description)">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[15].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[15].R + Model.Stat.Cells[15].F)" />
+                                    @*<p class="cell-value">@Html.Raw(Model.Stat.Cells[15].Description)</p>*@
+                                </div>
+                                <div class="col-purple col-2 row-6 col-6-sixth cell">
+                                    <input type="hidden" name="cell_value" value="@Model.Stat.Cells[20].CARD_CNT" />
+                                    <input type="hidden" name="s_id" value="@(Model.Stat.Cells[20].R + Model.Stat.Cells[20].F)" />
+                                    @*  <p class="cell-value">@Html.Raw(Model.Stat.Cells[20].Description)</p>*@
+                                </div>
+                                <div style="padding-right: 0px;font-size: 13px; font-weight: 0; color: grey;padding-left: 0 !important;"
+                                     class="col-1 pt-3 d-flex justify-content-center border-top">
+                                    <p style="margin-top:11px;">@((Model.Stat.Cells[0].CARD_CNT + Model.Stat.Cells[5].CARD_CNT + Model.Stat.Cells[10].CARD_CNT + Model.Stat.Cells[15].CARD_CNT + Model.Stat.Cells[20].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="font-size: 13px;" class="row table-heading-bot">
+                                <div class="col-1 border-top  border-right">
+                                    @*just a filler :-)*@
+                                </div>
+                                <div class="col-2 border-right">
+                                    <p style="padding-top: 15px;">@((Model.Stat.Cells[4].CARD_CNT + Model.Stat.Cells[3].CARD_CNT + Model.Stat.Cells[2].CARD_CNT + Model.Stat.Cells[1].CARD_CNT + Model.Stat.Cells[0].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                                <div class="col-2 border-right">
+                                    <p style="padding-top: 15px;">@((Model.Stat.Cells[9].CARD_CNT + Model.Stat.Cells[8].CARD_CNT + Model.Stat.Cells[7].CARD_CNT + Model.Stat.Cells[6].CARD_CNT + Model.Stat.Cells[5].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                                <div class="col-2 border-right">
+                                    <p style="padding-top: 15px;">@((Model.Stat.Cells[14].CARD_CNT + Model.Stat.Cells[13].CARD_CNT + Model.Stat.Cells[12].CARD_CNT + Model.Stat.Cells[11].CARD_CNT + Model.Stat.Cells[10].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                                <div class="col-2 border-right">
+                                    <p style="padding-top: 15px;">@((Model.Stat.Cells[19].CARD_CNT + Model.Stat.Cells[18].CARD_CNT + Model.Stat.Cells[17].CARD_CNT + Model.Stat.Cells[16].CARD_CNT + Model.Stat.Cells[15].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                                <div class="col-2 border-right">
+                                    <p style="padding-top: 15px;">@((Model.Stat.Cells[24].CARD_CNT + Model.Stat.Cells[23].CARD_CNT + Model.Stat.Cells[22].CARD_CNT + Model.Stat.Cells[21].CARD_CNT + Model.Stat.Cells[20].CARD_CNT).ToString("#,###"))</p>
+                                </div>
+                                <div class="col-1  border-top">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <p style="text-align:center; color:#a2a2a2;">მომხმარებლები</p>
+                        </div>
+                        <div class="col-1" style="margin-top: -45px;">
+                            <div class="rfm-total" style="box-shadow: 0px 0px 2px 0px;width:70px; font-weight:bold;background-color:#E3F7FF; color:#27BAF1;margin: 12px 0px; border-radius:10px;
+                                                                                   font-size:14px;">
+                                <div style="padding:5px 5px;">
+                                    ჯამი:
+                                    <div class="calcBadge"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" class="row newSeg" style="margin-top: 30px;">
+                <div class="row">
+                    <div class="col-6 age-btn">
+                        @*<p>სქესი</p>*@
+                        <select asp-for="NewSegment.gender" class="post-select-data-4 dropdown-gender" multiple>
+                            <option value="1">მდედრობითი</option>
+                            <option value="2">მამრობითი</option>
+                            <option value="0">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-6 age-btn" style="max-width: 100% !important;">
+                        @*  <p style="width: auto; text-align: none;" class="chart-headline-text">ასაკი</p>*@
+                        <select asp-for="NewSegment.ages" id="test_form" style="width: 100% !important;border-radius: 30px;" class="post-select-data-3 dropdown-ages" multiple>
+                            <option value="1">18<</option>
+                            <option value="2">18-25</option>
+                            <option value="3">25-30</option>
+                            <option value="4">30-35</option>
+                            <option value="5">35-45</option>
+                            <option value="6">45-65</option>
+                            <option value="7">65></option>
+                            <option value="8">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:30px;">
+                    <div class="col-6 age-btn">
+                        @* <p style="width: auto; text-align: none;" class="chart-headline-text">ფილიალი</p>*@
+                        <input type="button"
+                               style="margin-top: 0;width: 97.7%;margin-left: 8px;border-radius: 20px;background: #fff;
+box-shadow: 0 2px 5px 0 rgba(0,0,0,.18) !important; border:none;font-size: 18px; color: #515151;
+    font-weight: bold; height:75px; box-shadow:0 0 2px 0"
+                               class="btn btn-default filial-choosed-val" value="ფილიალები" id="o-filials-1" onclick="OpenFilialsModal(this,'#filial-modal-1 #filials-modal');" />
+                        <input type="hidden" class="post-select-data-1" asp-for="NewSegment.merchants" id="merchants-1" />
+                        @*<select asp-for="NewSegment.merchants" id="test_form" style="width: 100% !important;"
+                                    class="post-select-data-5 dropdown-merchant form-control" multiple>
+                                @foreach (var f in Model.Filials)
+                                {
+                                    <option value="@(f.ObjectID)">@(f.Address)</option>
+                                }
+                            </select>*@
+                    </div>
+                    <div class="col-6">
+                        <input type="text" style="width: 97.7%;margin-left: 8px;border-radius: 20px; box-shadow: 0 2px 5px 0 rgba(0,0,0,.18) !important;
+                                 border:none;font-size: 18px;  height:75px; box-shadow:0 0 2px 0"
+                               asp-for="NewSegment.name" placeholder="დაასათაურე"
+                               id="new_segment_name" class="form-control" aria-label="დაასათაურე"
+                               aria-describedby="inputGroup-sizing-sm" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 17px;">
+                    <div class="col-2">
+                        @*<a class="btn btn-sm active" id="newSegmentCancel" style="color: white; background-color:#D8716A; padding:.84rem 1.14rem;
+                            border-radius: 25px; height: 49px;padding-top: 9px;font-weight: bold; box-shadow:none;font-size:18px;
+                            ">გაუქმება</a>*@
+                    </div>
+                    <div class="col-2 offset-8">
+                        <a id="submit-segment" onclick="SubmitSegment(event)" class="btn btn-sm active" role="button" style="background:#E3F7FF; padding:.84rem 1.14rem;
+                            color: #27BAF1;height: 49px;padding-top: 9px;width: 100%; font-weight: bold;
+                            border-color: #69CEF5; border: 1px solid; font-size: 15px;
+                            border-radius: 25px;box-shadow:none;font-size:18px;">შენახვა</a>
+                    </div>
+                    @*<div class="col-3">
+                        <a id="submit-segment_camps" onclick="SubmitSegment(event, true)" class="btn btn-warning btn-sm active" role="button" style="background: #27BAF1; padding:.84rem 1.14rem;
+                        color:white;height: 49px;padding-top: 9px;width: 96.7%; font-weight: bold; box-shadow:none;font-size:18px;
+                         border-radius: 25px;">აქციის დაგეგმვა</a>
+                    </div>*@
+                </div>
+            </form>
+
+            <div class="card" style="width: 103%;margin-left: -13px;border-radius: 20px;margin-top:60px; background-color:white;box-shadow: 0px 0px 1px 0px;">
+                <div class="card-header" style="font-weight:bold;border-top-right-radius: 20px;border-top-left-radius: 20px;">
+                    <div class="row">
+                        @*<div class="col-3" style="font-size:18px; margin-top: 8px;">
+                           
+                        </div>*@
+                        <div class="col-5" style="font-size:18px;">
+                            <div class="input-group">
+                                <span style="margin-right: 20px !important;  margin: auto 0;">ჩემი სეგმენტები</span>
+                              
+                                    <input class="form-control py-2 border-right-0 border" placeholder="ძებნა" 
+                                           style="font-size: 14px;color: #ababab7a !important; text-align:left !important; border-radius: 30px 0px 0px 30px;"
+                                           type="search" id="searchbox">
+                                    <span class="input-group-append" style="color: #ababab7a !important; text-align:left !important; background-color:#ffffff; border-radius: 0 30px 30px 0;">
+                                        <div class="input-group-text bg-transparent" style="color:#ababab7a; border-radius: 0 30px 30px 0;"><i class="fa fa-search"></i></div>
+                                    </span>
+                              
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div style="height: 280px;overflow: auto;" class="card-body">
+                    <table class="table table-hover" id="my-segments">
+                        <thead>
+                            <tr>
+                                <th style="color:#27BAF1;">
+                                    <a href="javascript:void(0)" id="newSegment">
+                                        <i class="fas fa-plus"></i> დამატება
+                                    </a>
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Stat.Segments)
+                            {
+                                <tr>
+                                    <td>@item.Name </td>
+                                    <td style="width:5%;">@item.CustomerCount</td>
+                                    <td style="width:1%;">
+                                        <a href="#" data-toggle="tooltip" data-original-title="ნახვა"> <i class="fa fa-eye"></i></a>
+                                    </td>
+                                    <td style="width:5%;">
+                                        <a asp-page-handler="SegmentDelete" onclick="return confirm('დარწმუნებული ხართ რომ გსურთ სეგმენტის წაშლა?')" asp-route-id="@item.ID" data-toggle="tooltip" data-original-title="წაშლა"> <i class="fas fa-times text-danger"></i> </a>
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <input id="sIdFirst" type="hidden" name="sIdFirst" value="" />
+
+
+    </div>
+</div>
+
+
+<div id="filial-modal-1">
+
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/datatables/datatables.min.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/_filials.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+
+    <script type="text/javascript">
+
+        function ConfirmFilial(filials, elem) {
+            $('#merchants-1').val(filials);
+            GetRFMScore();
+        }
+
+
+        function OpenFilialsModal(elem, modal_id) {
+            debugger
+            $('.filial-choosed-val').removeClass('clicked');
+            $(elem).addClass('clicked');
+
+            $(modal_id).modal('show');
+        }
+
+
+
+
+        $(document).ready(function () {
+
+            $('#filial-modal-1').load('/AjaxPartialModel?handler=Filials', function (res) {
+
+                var el = $('.vue-identifier').parent();
+
+                for (var i = 0; i < el.length; i++) {
+                    InitializeVueFilials($(el[i]), @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Filials))), null, ConfirmFilial);
+                }
+
+
+            });
+
+            $('#rfm-button-1').css({
+                'left': ($('.col-red').position().left + ($('.col-red').outerWidth()) / 2) - ($('#rfm-button-1').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-2').css({
+                'left': $('.col-orange').position().left + $('.col-orange').outerWidth() - ($('#rfm-button-2').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-3').css({
+                'left': $('.col-green').position().left + $('.col-green').outerWidth() - ($('#rfm-button-3').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-4').css({
+                'left': $('.col-blue').position().left + $('.col-blue').outerWidth() - ($('#rfm-button-4').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-5').css({
+                'left': $('.col-brown').position().left + $('.col-brown').outerWidth() - ($('#rfm-button-5').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-6').css({
+                'left': ($('.col-yellow').position().left + ($('.col-yellow').outerWidth()) / 2) - ($('#rfm-button-6').outerWidth() / 2) + "px"
+            });
+
+            $('#rfm-button-7').css({
+                'left': ($('.col-purple').position().left + ($('.col-purple').outerWidth()) / 2) - ($('#rfm-button-7').outerWidth() / 2) + "px"
+            });
+
+            $(window).bind('resize', function (e) {
+                window.resizeEvt;
+                $(window).resize(function () {
+                    clearTimeout(window.resizeEvt);
+                    window.resizeEvt = setTimeout(function () {
+                        $('#rfm-button-1').css({
+                            'left': ($('.col-red').position().left + ($('.col-red').outerWidth()) / 2) - ($('#rfm-button-1').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-2').css({
+                            'left': $('.col-orange').position().left + $('.col-orange').outerWidth() - ($('#rfm-button-2').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-3').css({
+                            'left': $('.col-green').position().left + $('.col-green').outerWidth() - ($('#rfm-button-3').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-4').css({
+                            'left': $('.col-blue').position().left + $('.col-blue').outerWidth() - ($('#rfm-button-4').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-5').css({
+                            'left': $('.col-brown').position().left + $('.col-brown').outerWidth() - ($('#rfm-button-5').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-6').css({
+                            'left': ($('.col-yellow').position().left + ($('.col-yellow').outerWidth()) / 2) - ($('#rfm-button-6').outerWidth() / 2) + "px"
+                        });
+
+                        $('#rfm-button-7').css({
+                            'left': ($('.col-purple').position().left + ($('.col-purple').outerWidth()) / 2) - ($('#rfm-button-7').outerWidth() / 2) + "px"
+                        });
+                    }, 10);
+                });
+            });
+
+
+            $(window).on('resize', function () {
+
+            });
+
+            var _dataTable = $('#my-segments').DataTable({
+                "language": {
+                    "search": "ძებნა",
+                    "processing": "მონაცემები იტვირთება",
+                    "zeroRecords": "ჩანაწერი ვერ მოიძებნა",
+                    "emptyTable": "ჩანაწერები ვერ მოიძებნა",
+                    "infoEmpty": "ჩანაწერები ვერ მოიძებნა",
+                    "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+                },
+                "paging": false,
+                "ordering": false,
+                "info": false
+            });
+
+
+            $("#searchbox").keyup(function () {
+                debugger
+                _dataTable.search(this.value).draw();
+            });
+
+            $("[data-toggle=popover]").popover();
+            //$(".cell").on('mousemove', function (e) {
+            //    //debugger
+            //    //$('.popover').css({ top: e.clientY + 2, left: e.clientX + 2, transform: 'none' });
+            //    //$(this).popover('show');
+            //});
+
+
+            //$(".cell").on('mouseleave', function (e) {
+            //    //$(this).popover('hide')
+            //})
+
+            $('.dropdown-ages').multiselect({
+                nonSelectedText: 'ასაკი',
+                enableCaseInsensitiveFiltering: false,
+            });
+            $('.dropdown-gender').multiselect({
+                nonSelectedText: 'სქესი',
+                enableCaseInsensitiveFiltering: false,
+            });
+            $('.dropdown-merchant').multiselect({
+                nonSelectedText: 'ფილიალი',
+                enableCaseInsensitiveFiltering: false,
+            });
+            $(".newSeg").css('display', 'none');
+        });
+        $(function () {
+
+            GetRFMScore();
+
+            $("#newSegment").addClass('clickedValue');
+
+
+            $("#newSegmentCancel").css('display', 'inline-block');
+
+            $("#newSegment").css('display', 'none');
+
+            $(".newSeg").css('display', 'block');
+
+
+            $("#check-1").change(function () {
+                $(".age-check").prop('checked', false).parent().removeClass('active');
+            });
+
+            $(".age-check").change(function () {
+                $("#check-1").prop('checked', false).parent().removeClass('active');
+            });
+
+
+            $("#gender-check-1").change(function () {
+                $(".gender-check").prop('checked', false).parent().removeClass('active');
+            });
+
+            $(".gender-check").change(function () {
+                $("#gender-check-1").prop('checked', false).parent().removeClass('active');
+            });
+
+            $("#rfm-button-1").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-red');
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-2").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-orange');
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-3").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-green');
+
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-4").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-blue');
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-5").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-brown');
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-6").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    SegmentStyling('col-yellow');
+                    GetRFMScore();
+                }
+            });
+
+            $("#rfm-button-7").click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+
+                    SegmentStyling('col-purple');
+                    GetRFMScore();
+                }
+            });
+
+            $('.cell').click(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    CellClickStyle(this);
+                    GetRFMScore();
+                }
+
+            });
+
+            $('select').change(function () {
+                if ($("#newSegment").hasClass('clickedValue')) {
+                    GetRFMScore();
+                }
+            });
+
+
+            $("#newSegment").click(function () {
+            
+            });
+
+            $('#newSegmentCancel').click(function () {
+                //$(this).text("ახალი სეგმენტი");
+                $(".cell").removeAttr("style");
+                $(".cell").removeClass("clickedValue");
+
+                $('#newSegment').removeClass("clickedValue");
+
+                $(this).css('display', 'none');
+                $(".newSeg").css('display', 'none');
+                $("#newSegment").css('display', 'block');
+
+            });
+
+            //$('#submit-segment').click(function (evt) {
+
+            //});
+        });
+
+        function SubmitSegment(evt, go_to_campaigns) {
+            debugger
+            evt.preventDefault();
+
+            if ($('#new_segment_name').val().length==0) {
+                swal("", 'გთხოვთ, მიუთითოთ სეგმენტის სახელი', "warning");
+                return;
+            }
+
+            var sId = [];
+            $(".clickedValue").find('input[name="s_id"]').each(function () {
+                sId.push($(this).val());
+            });
+
+            var _sid = '';
+            sId.forEach(function (item) {
+                _sid += '&NewSegment.sid=' + item;
+            });
+
+            var data = $('form').serialize() + _sid;
+            blockUI();
+            $.post('', data, function (result) {
+                $.unblockUI();
+
+                if (result && result.result == 200) {
+                    if (go_to_campaigns) {
+                        location.replace('/Campaigns?s_id=' + result.id);
+                    }
+                    else {
+                        location.reload();
+                    }
+                }
+                else {
+                    debugger;
+                    swal("დაფიქსირდა შეცდომა", result.resultMsg, "error")
+                }
+
+            });
+        }
+
+        function CellClickStyle(elem) {
+
+            if ($("#newSegment").hasClass('clickedValue')) {
+                if ($(elem).hasClass("clickedValue")) {
+                    //event.stopPropagation();
+                    //event.preventDefault();
+                    $(elem).removeAttr("style");
+                    $(elem).removeClass("clickedValue");
+                }
+                else {
+                    $(elem).addClass('clickedValue');
+                    $(elem).css('transition', '0.5s');
+                    //$(elem).css('z-index', '999');
+                    $(elem).css('border', '1px solid white');
+                    $(elem).css('box-shadow', 'rgb(246, 249, 250) -1px 1px 14px');
+                    //test
+
+                }
+            }
+        }
+
+        function GetRFMScore() {
+            var sId = [];
+            $(".clickedValue").find('input[name="s_id"]').each(function () {
+                sId.push($(this).val());
+            });
+
+            var _sid = '';
+            sId.forEach(function (item) {
+                _sid += '&NewSegment.sid=' + item;
+            });
+
+
+            var data = $('form').serialize() + _sid;
+            blockUI();
+            $.get('?handler=NewSegmentScore', data, function (result) {
+                $.unblockUI();
+
+                if (result && result.count) { $(".calcBadge").text(result.count.toLocaleString()); }
+            });
+        }
+
+        function SegmentStyling(class_name) {
+            if ($('.' + class_name + '.clickedValue').length == $('.' + class_name).length) {
+                $('.' + class_name).each(function (ind, elem) {
+                    CellClickStyle(elem);
+                });
+            }
+            else {
+                $('.' + class_name).each(function (ind, elem) {
+                    $(elem).removeAttr("style");
+                    $(elem).removeClass("clickedValue");
+                });
+                $('.' + class_name).each(function (ind, elem) {
+                    CellClickStyle(elem);
+                });
+            }
+        }
+
+    </script>
+}
+

@@ -1,0 +1,1427 @@
+﻿@page
+@model SmartCRM.Pages.ReportModel
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .c3 text {
+            fill-opacity: 1;
+        }
+    </style>
+
+    <link href="~/lib/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+
+    <style>
+        .dropdown-menu > li > a:hover, .dropdown-menu > li > a > label:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+            text-decoration: none;
+            color: #ffffff !important;
+            background-color: #0081c2;
+            background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+            background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+            background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+        }
+
+        .dropdown-menu > li.active > a, .dropdown-menu > li.active > a > label, .dropdown-menu > li.active > a {
+            text-decoration: none;
+            color: #ffffff !important;
+            background-color: #0081c2;
+            background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+            background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+            background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+        }
+
+        .dropdown-menu > li > a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 20px;
+            color: #333333;
+            white-space: nowrap;
+        }
+    </style>
+
+    <style>
+        /*.modal-body {
+            display: inline-flex;
+            text-align: center;
+            margin: 0 auto;
+        }*/
+
+        .btn-group label {
+            color: #000 !important;
+        }
+
+        .datepicker {
+            z-index: 1151 !important;
+        }
+
+        .multiselect-container > li > a > label {
+            width: 200px;
+            padding: 3px 10px 3px 10px;
+            font-family: "BPG Arial", sans-serif;
+        }
+
+        .btn-group {
+            width: 100%;
+        }
+
+        .multiselect {
+            background: #f8f9fa05;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .dropdown-toggle::after {
+            color: #C3C8D1 !important;
+        }
+
+        .chart-headline-text {
+            margin-left: 2px;
+            font-size: 15px;
+        }
+
+        @@media (max-width: 1320px) {
+            .chart-headline-text {
+                width: auto;
+                text-align: initial;
+            }
+            #submit-first {
+                width: 61px;
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+
+        .loader-1 {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            position: relative !important;
+            left: 45%;
+        }
+
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hide-loader {
+            display: none;
+        }
+
+        .multiselect-container > li > a > label {
+            min-width: 500px;
+        }
+
+        .filials .dropdown-menu.show {
+            transform: none !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+        }
+    </style>
+
+}
+
+@*<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 style="font-family: 'BPG Mrgvlovani Caps', sans-serif !important;" class="text-themecolor">სამართავი პანელი</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">მთავარი</a></li>
+            <li class="breadcrumb-item active">სამართავი პანელი</li>
+        </ol>
+    </div>
+
+</div>*@
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="m-b-3">რეპორტები</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div id="modal-1" class="col-3 reports-1-datefilter">
+                        <p class="chart-headline-text">თარიღი</p>
+                        <div class="dropdown">
+                            <a aria-expanded="false" aria-haspopup="true" role="button"
+                               data-toggle="dropdown" class="dropdown-toggle form-control" href="#">
+                                <span id="filter-date-selected" class="filter-date-selected">ბოლო 7 დღის</span><span class="caret"></span>
+                            </a>
+                            <ul class="reports dropdown-menu">
+                                <li><a href="javascript:void(0);" type_id="1">გუშინდელი</a></li>
+                                <li class="active"><a href="javascript:void(0);" type_id="2">ბოლო 7 დღის</a></li>
+                                <li><a href="javascript:void(0);" type_id="3">ბოლო 30 დღის</a></li>
+                                <li><a href="javascript:void(0);" type_id="4">ბოლო 90 დღის</a></li>
+                                <li><a href="javascript:void(0);" type_id="5">ბოლო ერთი წლის</a></li>
+                                @*  <li class="dropdown-divider"></li>*@
+                                <li class="choose-date">
+                                    <a href="javascript:void(0);" name="datefilter" type_id="6">აირჩიეთ თარიღი</a>
+                                </li>
+                                @*<li>
+                                    <a href="javascript:void(0);" onclick="OpenDateRangePicker()">აირჩიეთ თარიღი</a>
+                                    </li>*@
+
+                            </ul>
+                            <input id="final-start" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                            <input id="final-end" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                        </div>
+
+                    </div>
+
+                    <div class="col-2 filials">
+                        <p class="chart-headline-text">ფილიალი</p>
+                        <input type="button" class="btn filial-choosed-val" value="აირჩიეთ" id="o-filials-1" onclick="OpenFilialsModal(this,'#filial-modal-1 #filials-modal');" />
+                        <input type="hidden" class="post-select-data-1" name="merchants" id="merchants-1" />
+                        @*<select name="merchants" id="test_form" style="width: 100% !important;" class="post-select-data-1 example-enableCaseInsensitiveFiltering" multiple>
+                                @foreach (var f in Model.Filials)
+                                {
+                                    <option value="@(f.ObjectID)">@(f.Address)</option>
+                                }
+                            </select>*@
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">სქესი</p>
+                        <select name="gender" class="form-control post-select-data-1">
+                            <option value="" selected="selected">ყველა</option>
+                            <option value="1">მდედრობითი</option>
+                            <option value="2">მამრობითი</option>
+                            <option value="0">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">ასაკი</p>
+                        <select name="age" id="age-post-control-1" class="post-select-data-1 example-enableCaseInsensitiveFiltering" multiple>
+                            <option value="1">18<</option>
+                            <option value="2">18-25</option>
+                            <option value="3">25-30</option>
+                            <option value="4">30-35</option>
+                            <option value="5">35-45</option>
+                            <option value="6">45-65</option>
+                            <option value="7">65></option>
+                            <option value="8">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">დაჯგუფება</p>
+                        <select class="form-control post-select-data-1" name="group_by_date">
+                            <option value="1" selected="selected">დღით</option>
+                            <option value="2">კვირით</option>
+                            <option value="3">თვით</option>
+                            <option value="4">კვარტლით</option>
+                            <option value="5">წლით</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-1">
+                        <p class="chart-headline-text">&nbsp;</p>
+                        <button id="submit-first" type="submit" class="btn btn-primary">ძებნა</button>
+                    </div>
+
+                </div>
+                <h4 class="pt-3 card-title">ბრუნვის რეპორტი</h4>
+                <div class="loader-1" id="loader_1"></div>
+                <div id="bonus_report" style="width:100%; height:400px;"></div>
+                <div id="bonus_report_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+                <ul class="list-inline m-t-30 text-center font-12">
+                    <li><i class="fa fa-circle" style="color:#24d2b5"></i> ვიზიტები: <span id="bonus_report_total"></span></li>
+                    <li><i class="fa fa-circle" style="color:#5B9BD5"></i> გაყიდვები: <span id="bonus_trans_total"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div id="modal-4" class="col-2">
+                        <p class="chart-headline-text">თარიღი</p>
+                        <input id="struct_date" class="datepicker datepicker-start post-select-data-4" data-format="dd/MM/yyyy" type="text" value="@DateTime.Now.ToString("dd/MM/yyyy")" />
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">ფილიალი</p>
+                        <input type="button" class="btn filial-choosed-val" value="აირჩიეთ" id="o-filials-1" onclick="OpenFilialsModal(this,'#filial-modal-2 #filials-modal');" />
+                        <input type="hidden" class="post-select-data-4" name="merchants" id="merchants-2" />
+                       
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">სქესი</p>
+                        <select name="gender" class="form-control post-select-data-4">
+                            <option value="" selected="selected">ყველა</option>
+                            <option value="1">მდედრობითი</option>
+                            <option value="2">მამრობითი</option>
+                            <option value="0">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">ასაკი</p>
+                        <select name="age" id="age-post-control-4" class="post-select-data-4 example-enableCaseInsensitiveFiltering" multiple>
+                            <option value="1">18<</option>
+                            <option value="2">18-25</option>
+                            <option value="3">25-30</option>
+                            <option value="4">30-35</option>
+                            <option value="5">35-45</option>
+                            <option value="6">45-65</option>
+                            <option value="7">65></option>
+                            <option value="8">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <p class="chart-headline-text">დაჯგუფება</p>
+                        <select class="form-control post-select-data-4" name="group_by" id="group_by">
+                            <option value="" selected="selected">დაჯგუფების გარეშე</option>
+                            <option value="1">სქესით</option>
+                            <option value="2">ასაკით</option>
+                            <option value="3">ფილიალით</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-2">
+                        <p class="chart-headline-text">&nbsp;</p>
+                        <button id="submit-fourth" type="submit" class="btn btn-primary">ძებნა</button>
+                    </div>
+                </div>
+                <h4 class="pt-3 card-title">კლასიფიკაცია ჯგუფების მიხედვით</h4>
+                <div class="loader-1" id="loader_4"></div>
+                <div id="classification_groups" style="width:100%; height:400px;"></div>
+                <div id="classification_groups_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+
+            </div>
+        </div>
+    </div>
+
+</div>*@
+<div class="row">
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="m-b-30 no-block">
+                    <div class="row">
+                        <div id="modal-5" class="col-3 reports-5-datefilter">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">თარიღი</p>
+                            <div class="dropdown">
+                                <a aria-expanded="false" aria-haspopup="true" role="button"
+                                   data-toggle="dropdown" class="dropdown-toggle form-control" href="#">
+                                    <span id="filter-date-selected" class="filter-date-selected">ბოლო 7 დღის</span><span class="caret"></span>
+                                </a>
+                                <ul class="reports dropdown-menu">
+                                    <li><a href="javascript:void(0);" type_id="1">გუშინდელი</a></li>
+                                    <li class="active"><a href="javascript:void(0);" type_id="2">ბოლო 7 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="3">ბოლო 30 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="4">ბოლო 90 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="5">ბოლო ერთი წლის</a></li>
+                                    @*  <li class="dropdown-divider"></li>*@
+                                    <li class="choose-date">
+                                        <a href="javascript:void(0);" name="datefilter" type_id="6">აირჩიეთ თარიღი</a>
+                                    </li>
+                                    @*<li>
+                                        <a href="javascript:void(0);" onclick="OpenDateRangePicker()">აირჩიეთ თარიღი</a>
+                                        </li>*@
+
+                                </ul>
+                                <input id="final-start-2" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                                <input id="final-end-2" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                            </div>
+                            @*<select name="date" class="custom-select form-control post-select-data-5">
+                                    <option value="1">გუშინდელი</option>
+                                    <option value="2" selected="selected">ბოლო 7 დღის</option>
+                                    <option value="3">ბოლო 30 დღის</option>
+                                    <option value="4">ბოლო 90 დღის</option>
+                                    <option value="5">ბოლო ერთი წლის</option>
+                                    <option value="6" choose_date="1">აირჩიეთ თარიღი</option>
+                                </select>*@
+                        </div>
+                        <div class="col-6">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">ფილიალი</p>
+                            <input type="button" class="btn filial-choosed-val" value="აირჩიეთ" id="o-filials-1" onclick="OpenFilialsModal(this,'#filial-modal-3 #filials-modal');" />
+                            <input type="hidden" class="post-select-data-5" name="merchants" id="merchants-3" />
+                            @*<select name="merchants" id="test_form" style="width: 100% !important;" class="post-select-data-5 example-enableCaseInsensitiveFiltering" multiple>
+            @foreach (var f in Model.Filials)
+            {
+                <option value="@(f.ObjectID)">@(f.Address)</option>
+            }
+        </select>*@
+                        </div>
+                        <div class="col-2">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">სქესი</p>
+                            <select name="gender" class="form-control post-select-data-5">
+                                <option value="" selected="selected">ყველა</option>
+                                <option value="1">მდედრობითი</option>
+                                <option value="2">მამრობითი</option>
+                                <option value="0">არ არის მითითებული</option>
+                            </select>
+                        </div>
+
+                        <div class="col-1">
+                            <p class="chart-headline-text">&nbsp;</p>
+                            <button id="submit-fifth" type="submit" class="btn btn-primary">ძებნა</button>
+                        </div>
+
+                    </div>
+                    <h4 class="pt-3 card-title m-b-0 align-self-center">ასაკის მიხედვით გადანაწილება</h4>
+                </div>
+                <div class="loader-1" id="loader_5"></div>
+                <div id="ages" style="height:300px; width:100%;"></div>
+                <div id="ages_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="m-b-30 no-block">
+                    <div class="row">
+                        <div id="modal-6" class="col-3 reports-6-datefilter">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">თარიღი</p>
+                            <div class="dropdown">
+                                <a aria-expanded="false" aria-haspopup="true" role="button"
+                                   data-toggle="dropdown" class="dropdown-toggle form-control" href="#">
+                                    <span id="filter-date-selected" class="filter-date-selected">ბოლო 7 დღის</span><span class="caret"></span>
+                                </a>
+                                <ul class="reports dropdown-menu">
+                                    <li><a href="javascript:void(0);" type_id="1">გუშინდელი</a></li>
+                                    <li class="active"><a href="javascript:void(0);" type_id="2">ბოლო 7 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="3">ბოლო 30 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="4">ბოლო 90 დღის</a></li>
+                                    <li><a href="javascript:void(0);" type_id="5">ბოლო ერთი წლის</a></li>
+                                    @*  <li class="dropdown-divider"></li>*@
+                                    <li class="choose-date">
+                                        <a href="javascript:void(0);" name="datefilter" type_id="6">აირჩიეთ თარიღი</a>
+                                    </li>
+                                    @*<li>
+                                        <a href="javascript:void(0);" onclick="OpenDateRangePicker()">აირჩიეთ თარიღი</a>
+                                        </li>*@
+
+                                </ul>
+                                <input id="final-start-3" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                                <input id="final-end-3" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                            </div>
+                            @*<select name="date" class="custom-select form-control post-select-data-6">
+                                    <option value="1">გუშინდელი</option>
+                                    <option value="2" selected="selected">ბოლო 7 დღის</option>
+                                    <option value="3">ბოლო 30 დღის</option>
+                                    <option value="4">ბოლო 90 დღის</option>
+                                    <option value="5">ბოლო ერთი წლის</option>
+                                    <option value="6" choose_date="1">აირჩიეთ თარიღი</option>
+                                </select>*@
+                        </div>
+                        <div class="col-6">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">ფილიალი</p>
+                            <input type="button" class="btn filial-choosed-val" value="აირჩიეთ" id="o-filials-1" onclick="OpenFilialsModal(this,'#filial-modal-4 #filials-modal');" />
+                            <input type="hidden" name="merchants" id="merchants-4" />
+                            @*<select name="merchants" id="test_form" style="width: 100% !important;" class="post-select-data-6 example-enableCaseInsensitiveFiltering" multiple>
+            @foreach (var f in Model.Filials)
+            {
+                <option value="@(f.ObjectID)">@(f.Address)</option>
+            }
+        </select>*@
+                        </div>
+
+                        <div class="col-2">
+                            <p style="width: auto; text-align: none;" class="chart-headline-text">ასაკი</p>
+                            <select name="age" id="age-post-control-3" class="post-select-data-6 example-enableCaseInsensitiveFiltering" multiple>
+                                <option value="1">18<</option>
+                                <option value="2">18-25</option>
+                                <option value="3">25-30</option>
+                                <option value="4">30-35</option>
+                                <option value="5">35-45</option>
+                                <option value="6">45-65</option>
+                                <option value="7">65></option>
+                                <option value="8">არ არის მითითებული</option>
+                            </select>
+                        </div>
+                        <div class="col-1">
+                            <p class="chart-headline-text">&nbsp;</p>
+                            <button id="submit-sixth" type="submit" class="btn btn-primary">ძებნა</button>
+                        </div>
+
+                    </div>
+                    <h4 class="pt-3 card-title m-b-0 align-self-center">სქესის მიხედვით გადანაწილება</h4>
+                </div>
+                <div class="loader-1" id="loader_6"></div>
+                <div id="gender_board" style="height:300px; width:100%;"></div>
+                <div id="gender_board_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="filial-modal-1">
+
+    </div>
+
+    <div id="filial-modal-2">
+
+    </div>
+
+    <div id="filial-modal-3">
+
+    </div>
+
+    <div id="filial-modal-4">
+
+    </div>
+</div>
+
+
+
+<input type="hidden" id="saved_filials" />
+
+@section Scripts{
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/lib/datatables/datatables.min.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/_filials.js"></script>
+
+    <script type="text/javascript">
+
+        function OpenFilialsModal(elem, modal_id) {
+            debugger
+            $('.filial-choosed-val').removeClass('clicked');
+            $(elem).addClass('clicked');
+
+            $(modal_id).modal('show');
+        }
+
+
+
+        function hideReport(elem) {
+            $('#' + elem).css("display", "none");
+        }
+        function hideLoader(elem) {
+            $('#' + elem).addClass("hide-loader");
+        }
+        function showLoader(elem) {
+            $('#' + elem).removeClass("hide-loader");
+        }
+        function showReport(elem) {
+            $('#' + elem).css("display", "block");
+        }
+
+        function ConfirmFilial(filials, elem) {
+            debugger
+            switch (elem) {
+                case 'filial-modal-1-vue':
+                    $('#merchants-1').val(filials);
+                    break;
+                case 'filial-modal-2-vue':
+                    $('#merchants-2').val(filials);
+                    break;
+                case 'filial-modal-3-vue':
+                    $('#merchants-3').val(filials);
+                    break;
+                case 'filial-modal-4-vue':
+                    $('#merchants-4').val(filials);
+                    break;
+                default:
+            }
+
+            
+
+        }
+
+        $(document).ready(function () {
+            $('a[name="datefilter"]').on('click', function (e) {
+                e.stopPropagation();
+            });
+
+
+            var filials_html = $('<div/>');
+            filials_html.load('/AjaxPartialModel?handler=Filials', function (res) {
+
+                $('#filial-modal-1').html(res);
+                $('#filial-modal-2').html(res);
+                $('#filial-modal-3').html(res);
+                $('#filial-modal-4').html(res);
+
+
+                var el = $('.vue-identifier').parent();
+
+                for (var i = 0; i < el.length; i++) {
+                    InitializeVueFilials($(el[i]), @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Filials))), null, ConfirmFilial);
+                }
+
+
+            });
+
+
+            $('a[name="datefilter"]').daterangepicker({
+                showDropdowns: true,
+                "linkedCalendars": false,
+                locale: {
+                    cancelLabel: 'გაუქმება',
+                    applyLabel: 'არჩევა'
+                }
+            });
+
+            $('a[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+
+                $(this).parents('.dropdown').find('.filter-date-selected').text(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+                $(this).parents('.dropdown').find('.dropdown-toggle').dropdown('toggle');
+
+                $(this).parents('.dropdown').find('.datepicker-final-start').val(picker.startDate.format('DD/MM/YYYY'));
+                $(this).parents('.dropdown').find('.datepicker-final-end').val(picker.endDate.format('DD/MM/YYYY'));
+            });
+
+            $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+
+            $('.daterangepicker').on('click', function (e) {
+
+                e.stopPropagation();
+            });
+
+
+            $(".reports.dropdown-menu li a").click(function () {
+                var selText = $(this).text();
+
+                $(this).parents('.reports.dropdown-menu').find('li').removeClass('active');
+                $(this).parents('li').addClass('active');
+                //$(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+
+                $(this).parents('.dropdown').find('.filter-date-selected').text($(this).text());
+            });
+            //$('.reports.dropdown-menu a').click(function () {
+            //    $('#selected').text($(this).text());
+            //});
+
+            //$('.datefilter').on('apply.daterangepicker', function (ev, picker) {
+            //    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            //});
+
+            $('.datefilter').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+
+
+            $('.post-select-data-1').on('change', function () {
+
+                if ($(this).val() == 6) {
+
+
+                    //$('#exampleModal').modal({
+                    //    show: true
+                    //});
+                }
+            });
+
+            $('.post-select-data-2').on('change', function () {
+                if ($(this).val() == 6) {
+                    $('#exampleModal-2').modal({
+                        show: true
+                    });
+                }
+            });
+
+            $('.post-select-data-3').on('change', function () {
+                if ($(this).val() == 6) {
+                    $('#exampleModal-3').modal({
+                        show: true
+                    });
+                }
+            });
+
+            $('.post-select-data-5').on('change', function () {
+                if ($(this).val() == 6) {
+                    $('#exampleModal-5').modal({
+                        show: true
+                    });
+                }
+            });
+
+            $('.post-select-data-6').on('change', function () {
+                if ($(this).val() == 6) {
+                    $('#exampleModal-6').modal({
+                        show: true
+                    });
+                }
+            });
+
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy'
+            }
+            );
+
+            function checkAndAddOption(selectElement) {
+                if (selectElement.value === "") {
+                    var opt = document.createElement('option');
+                    opt.value = 'newVal';
+                    opt.innerHTML = 'textToDisplay';
+                    selectElement.appendChild(opt);
+                }
+            }
+
+
+            var send_data_3 = "/Report/?handler=Report&chart_type=3";
+            var send_data_4 = "/Report/?handler=Report&chart_type=4";
+
+
+            $('#trans_report').css("display", "none");
+            $('#average_check').css("display", "none");
+            $('#classification_groups').css("display", "none");
+
+            GenerateBonusReport();
+            //GenerateTransactionReport();
+            //GenerateAverageChart();
+
+            var struct_date = "&struct_date=" + $('#struct_date').val();
+            GenerateStructureChart(struct_date);
+
+            GenerateGenderChart();
+            GenerateAgesChart();
+
+            $('.example-enableCaseInsensitiveFiltering').multiselect({
+                enableCaseInsensitiveFiltering: true,
+            });
+
+        });
+
+
+
+
+        function GenerateLineChart(result, elem, series_data, days_empty_string) {
+            var date_columns = result.map(function (item) {
+                return item.datePeriod;
+            });
+
+            var dom = document.getElementById(elem);
+            var bonus_report = echarts.init(dom);
+
+
+
+            option = null;
+            option = {
+                legend: {
+                    data: ['ვიზიტები', 'გაყიდვები']
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisLine: { show: false },
+                        position: 'bottom',
+                        boundaryGap: true,
+                        axisLabel: {
+                            show: true,
+                            interval: 'auto',
+                            margin: 8,
+                            formatter: '{value}',
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#483d8b',
+                                type: 'dotted',
+                                width: 1
+                            }
+                        },
+
+                        data: date_columns
+                    },
+                    {
+                        axisLine: { show: false },
+                        type: 'category',
+                        data: days_empty_string
+                    },
+                    {
+                        axisLine: { show: false },
+                        type: 'category',
+                        data: days_empty_string
+                    }],
+                yAxis: [
+                    {
+                        axisLine: { show: true },
+                        name: 'ვიზიტები',
+                        type: 'value',
+                        show: true,
+                        position: 'left',
+                        splitNumber: 10,
+                        axisLabel: {
+                            show: true,
+                            interval: 'auto',
+                            rotate: 0,
+                            margin: 18,
+
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dotted',
+                                width: 1
+                            }
+                        }
+                    },
+                    {
+                        axisLine: { show: true },
+                        name: 'გაყიდვები',
+                        type: 'value',
+                        splitNumber: 10,
+                        axisLabel: {
+
+                        },
+                        splitLine: {
+                            show: false
+                        }
+
+                    }
+                ],
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        var _data = '';
+                        var _data_header = '';
+                        for (var i = 0; i < params.length; i++) {
+                            _data_header = params[0].name + '<br/>';
+                            _data += params[i].seriesName + ': ' + params[i].value.toLocaleString() + '<br/>';
+                        }
+                        return _data_header + _data;
+                        //return params[0].name + '<br/>'
+                        //    + params[0].seriesName + ': ' + params[0].value.toLocaleString() + '<br/>'
+                        //    + params[1].seriesName + ': ' + params[1].value.toLocaleString() + '<br/>'
+                        //    + params[2].seriesName + ': ' + params[2].value.toLocaleString() + '<br/>';
+                    }
+                },
+                series: series_data
+            };
+
+            if (option && typeof option === "object") {
+                bonus_report.setOption(option, true), $(function () {
+                    function resize() {
+                        setTimeout(function () {
+                            bonus_report.resize()
+                        }, 100)
+                    }
+                    $(window).on("resize", resize), $(".sidebartoggler").on("click", resize)
+                });
+            }
+
+        }
+
+        function GenerateBarChart(result, elem, legend_data, category_data, series) {
+            var dom = document.getElementById(elem);
+            var classification_groups = echarts.init(dom);
+
+            option = null;
+            option = {
+                title: {
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+
+                        var _data = '';
+                        var _data_header = '';
+                        for (var i = 0; i < params.length; i++) {
+                            _data_header = params[0].name + '<br/>';
+                            _data += params[i].seriesName + ': ' + params[i].value.toLocaleString() + '<br/>';
+                        }
+
+                        if (_data_header == '<br/>') _data_header = '';
+
+                        return _data_header + _data;
+                        //return params[0].name + '<br/>'
+                        //    + params[0].seriesName + ': ' + params[0].value.toLocaleString() + '<br/>'
+                        //    + params[1].seriesName + ': ' + params[1].value.toLocaleString() + '<br/>'
+                        //    + params[2].seriesName + ': ' + params[2].value.toLocaleString() + '<br/>';
+                    }
+                },
+                legend: {
+                    data: legend_data
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: category_data
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: series
+            };
+
+            if (option && typeof option === "object") {
+                classification_groups.setOption(option, true), $(function () {
+                    function resize() {
+                        setTimeout(function () {
+                            classification_groups.resize()
+                        }, 100)
+                    }
+                    $(window).on("resize", resize), $(".sidebartoggler").on("click", resize)
+                });
+            }
+        }
+
+        function GenerateBonusReport(params) {
+            if (!params) {
+                params = '';
+            }
+            else {
+                params = '&' + params;
+            }
+            showLoader('loader_1');
+            hideReport('bonus_report');
+            $.ajax({
+                url: '/Report/?handler=Report&chart_type=1' + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    hideLoader('loader_1');
+                },
+                success: function (result) {
+                    showReport('bonus_report');
+                    hideLoader('loader_1');
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("bonus_report").style.display = "none";
+                        document.getElementById("bonus_report_empty").style.display = "block";
+                    } else {
+
+                        var am_c = {
+                            name: 'ვიზიტები',
+                            data: result.map(function (item) {
+                                return item.tranCount;
+                            }),
+                            smooth: true,
+                            type: 'line',
+                            itemStyle: {
+                                normal: {
+                                    color: '#24d2b5'
+                                }
+                            },
+                        }
+
+                        var trn_columns = {
+                            name: 'გაყიდვები',
+                            data: result.map(function (item) {
+                                return item.amount;
+                            }),
+                            smooth: true,
+                            type: 'line',
+                            yAxisIndex: 1,
+                            itemStyle: {
+                                normal: {
+                                    color: '#5B9BD5'
+                                }
+                            },
+                        };
+
+                        var avg_columns = {
+                            name: 'საშუალო ჩეკი',
+                            data: result.map(function (item) {
+                                return item.avgAmount;
+                            }),
+                            type: 'scatter',
+                            //itemStyle: {
+                            //    normal: {
+                            //        color: '#yellow'
+                            //    }
+                            //},
+                        };
+
+                        var series_arr = [am_c, trn_columns, avg_columns];
+
+                        var days_empty_string = Array(result.length).fill().map((x, i) => '');
+
+                        GenerateLineChart(result, 'bonus_report', series_arr, days_empty_string);
+
+                        ////
+
+                        var bon_sum = 0;
+                        result.forEach(function (item) {
+                            bon_sum += parseFloat(item.amount);
+                        });
+
+                        var trans_sum = 0;
+                        result.forEach(function (item) {
+                            trans_sum += parseFloat(item.tranCount);
+                        });
+
+                        document.getElementById("bonus_report_total").innerHTML = Math.round(trans_sum).toLocaleString();
+                        document.getElementById("bonus_trans_total").innerHTML = Math.round(bon_sum).toLocaleString();
+
+                    }
+                }
+            });
+        }
+
+        //function GenerateTransactionReport(params) {
+        //    if (!params) {
+        //        params = '';
+        //    }
+        //    else {
+        //        params = '&' + params;
+        //    }
+        //    showLoader('loader_2');
+        //    hideReport('trans_report');
+        //    $.ajax({
+        //        url: '/Report/?handler=Report&chart_type=2' + params,
+        //        type: 'GET',
+        //        cache: false,
+        //        timeout: 30000,
+        //        error: function () {
+        //            hideLoader('loader_2');
+        //        },
+        //        success: function (result) {
+        //            showReport('trans_report');
+        //            hideLoader('loader_2');
+
+        //            if (!result || result.length == 0) {
+        //                document.getElementById("trans_report").style.display = "none";
+        //                document.getElementById("trans_report_empty").style.display = "block";
+        //            } else {
+        //                var trn_columns = result.map(function (item) {
+        //                    return item.tranCount;
+        //                });
+
+        //                GenerateLineChart(result, 'trans_report', trn_columns);
+        //            }
+        //        }
+        //    });
+
+        //}
+
+        //function GenerateAverageChart(params) {
+        //    if (!params) {
+        //        params = '';
+        //    }
+        //    else {
+        //        params = '&' + params;
+        //    }
+        //    showLoader('loader_3');
+        //    hideReport('average_check');
+        //    $.ajax({
+        //        url: '/Report/?handler=Report&chart_type=3' + params,
+        //        type: 'GET',
+        //        cache: false,
+        //        timeout: 30000,
+        //        error: function () {
+        //            hideLoader('loader_3');
+        //        },
+        //        success: function (result) {
+        //            showReport('average_check');
+        //            hideLoader('loader_3');
+
+        //            debugger;
+        //            if (!result || result.length == 0) {
+        //                document.getElementById("average_check").style.display = "none";
+        //                document.getElementById("average_check_empty").style.display = "block";
+        //            } else {
+        //                var avg_columns = result.map(function (item) {
+        //                    return item.avgAmount;
+        //                });
+
+        //                GenerateLineChart(result, 'average_check', avg_columns);
+        //            }
+
+        //        }
+        //    });
+        //}
+
+        function GenerateStructureChart(params) {
+            return;
+            if (!params) {
+                params = '';
+            }
+            else {
+                params = '&' + params;
+            }
+            showLoader('loader_4');
+            hideReport('classification_groups');
+            $.ajax({
+                url: '/Report/?handler=Report&chart_type=4' + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    hideLoader('loader_4');
+                },
+                success: function (result) {
+                    showReport('classification_groups');
+                    hideLoader('loader_4');
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("classification_groups").style.display = "none";
+                        document.getElementById("classification_groups_empty").style.display = "block";
+
+                    } else {
+                        var legend_data = ['ახალი', 'აქტიური', 'პასიური'];
+
+                        var series = [];
+                        var _active = [];
+                        var _passive = [];
+                        var _new = [];
+
+                        result.forEach(function (item) {
+                            _new.push(item.newCustomerCount);
+                            _active.push(item.activeCustomerCount);
+                            _passive.push(item.passiveCustomerCount);
+                        });
+
+                        series.push({
+                            name: 'ახალი',
+                            type: 'bar',
+                            data: _new,
+                            itemStyle: { normal: { color: '#24D2B5' } },
+                        });
+                        series.push({
+                            name: 'აქტიური',
+                            type: 'bar',
+                            data: _active,
+                            itemStyle: { normal: { color: '#20AEE3' } },
+                        });
+                        series.push({
+                            name: 'პასიური',
+                            type: 'bar',
+                            data: _passive,
+                            itemStyle: { normal: { color: '#E5CF0D' } },
+                        });
+
+
+                        var _group_by = $('#group_by').val();
+                        if (!_group_by) { _group_by = 0; }
+
+                        var category_data = result.map(function (item) {
+                            switch (_group_by) {
+                                case "1": return item.gender;
+                                case "2": return item.ageRange;
+                                case "3": return item.address
+                                default: return "";
+                            }
+
+                        });
+
+
+                        GenerateBarChart(result, 'classification_groups', legend_data, category_data, series);
+                    }
+
+                }
+            });
+        }
+
+        function GenerateGenderChart(params) {
+            if (!params) {
+                params = '';
+            }
+            else {
+                params = '&' + params;
+            }
+            showLoader('loader_6');
+            hideReport('gender_board');
+            $.ajax({
+                url: '/Report/?handler=Report&chart_type=6' + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    hideLoader('loader_6');
+                },
+                success: function (result) {
+                    showReport('gender_board');
+                    hideLoader('loader_6');
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("gender_board").style.display = "none";
+                        document.getElementById("gender_board_empty").style.display = "block";
+                        return;
+                    } else {
+
+                        var gender_data = result.map(function (item) {
+                            return [item.description, item.count]
+                        });
+
+                        var chart = c3.generate({
+                            tooltip: {
+                                format: {
+                                    value: function (value, ratio, id, index) { return value; }
+                                }
+                            },
+                            bindto: '#gender_board',
+                            data: {
+                                columns: gender_data,
+                                type: 'donut'
+                            },
+                            legend: {
+                                show: true,
+                                position: 'right'
+                            },
+                            donut: {
+                                label: {
+                                    threshold: 0
+                                },
+                                title: "სქესი"
+                            },
+                            color: {
+                                pattern: ['#6772e5', '#20aee3', '#c4c4c4']
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        function GenerateAgesChart(params) {
+
+            if (!params) {
+                params = '';
+            }
+            else {
+                params = '&' + params;
+            }
+            showLoader('loader_5');
+            hideReport('ages');
+            $.ajax({
+                url: '/Report/?handler=Report&chart_type=5' + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    hideLoader('loader_5');
+                },
+                success: function (result) {
+                    showReport('ages');
+                    hideLoader('loader_5');
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("ages").style.display = "none";
+                        document.getElementById("ages_empty").style.display = "block";
+                    } else {
+
+
+                        var ages_data = result.map(function (item) {
+                            return [item.description, item.count]
+                        });
+                        var chart = c3.generate({
+                            tooltip: {
+                                format: {
+                                    value: function (value, ratio, id, index) { return value; }
+                                }
+                            },
+                            bindto: '#ages',
+                            data: {
+                                columns: ages_data,
+                                type: 'donut'
+                            },
+                            legend: {
+                                show: true,
+                                position: 'right'
+                            },
+                            donut: {
+                                label: {
+
+                                    threshold: 0
+                                },
+                                title: "ასაკი",
+                            },
+                            color: {
+                                pattern: ['#ffb74d', '#cbd036', '#5eeaea', '#24d2b5', '#6772e5', '#20aee3', '#E5CF0D', '#c4c4c4']
+                            }
+                        });
+                    }
+                }
+            });
+
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#submit-first').click(function () {
+                var final_start_1 = '';
+                var final_end_1 = '';
+                var _date_type_id = '';
+                if ($('.reports-1-datefilter ul.reports li.active').text().trim() == 'აირჩიეთ თარიღი') {
+                    final_start_1 = "&start_date=" + $('#final-start').val();
+                    final_end_1 = "&end_date=" + $('#final-end').val();
+                } else {
+                    _date_type_id = "&date=" + $('.reports-1-datefilter ul.reports li.active>a').attr('type_id');
+                }
+
+
+                GenerateBonusReport($(".post-select-data-1").serialize() + final_start_1 + final_end_1 + _date_type_id);
+            });
+
+            //$('#submit-second').click(function () {
+            //    var final_start_1 = "&start_date=" + $('#final-start-2').val();
+            //    var final_end_1 = "&end_date=" + $('#final-end-2').val();
+            //    //   $('.multiselect-selected-text').html("testing <b>1 2 3</b>");
+            //    GenerateTransactionReport($(".post-select-data-2").serialize() + final_start_1 + final_end_1);
+            //});
+
+
+            //$('#submit-third').click(function () {
+            //    var final_start_1 = "&start_date=" + $('#final-start-3').val();
+            //    var final_end_1 = "&end_date=" + $('#final-end-3').val();
+            //    //   $('.multiselect-selected-text').html("testing <b>1 2 3</b>");
+            //    GenerateAverageChart($(".post-select-data-3").serialize() + final_start_1 + final_end_1);
+            //});
+
+
+            $('#submit-fourth').click(function () {
+                var struct_date = "&struct_date=" + $('#struct_date').val();
+                GenerateStructureChart($(".post-select-data-4").serialize() + struct_date);
+            });
+
+            $('#submit-fifth').click(function () {
+                var final_start_1 = '';
+                var final_end_1 = '';
+                var _date_type_id = '';
+                if ($('.reports-5-datefilter ul.reports li.active').text().trim() == 'აირჩიეთ თარიღი') {
+                    final_start_1 = "&start_date=" + $('#final-start-2').val();
+                    final_end_1 = "&end_date=" + $('#final-end-2').val();
+                } else {
+                    _date_type_id = "&date=" + $('.reports-5-datefilter ul.reports li.active>a').attr('type_id');
+                }
+
+
+                GenerateAgesChart($(".post-select-data-5").serialize() + final_start_1 + final_end_1 + _date_type_id);
+            });
+
+            $('#submit-sixth').click(function () {
+                var final_start_1 = '';
+                var final_end_1 = '';
+                var _date_type_id = '';
+                if ($('.reports-6-datefilter ul.reports li.active').text().trim() == 'აირჩიეთ თარიღი') {
+                    final_start_1 = "&start_date=" + $('#final-start-3').val();
+                    final_end_1 = "&end_date=" + $('#final-end-3').val();
+                } else {
+                    _date_type_id = "&date=" + $('.reports-6-datefilter ul.reports li.active>a').attr('type_id');
+                }
+                GenerateGenderChart($(".post-select-data-6").serialize() + final_start_1 + final_end_1 + _date_type_id);
+            });
+
+
+            $('#date-submit').click(function () {
+                var final_start_1 = $('#final-start').val();
+                var final_end_1 = $('#final-end').val();
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+                //$("#test2 select option:selected").prop('selected', false);
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-1 option[choose_date=1]").val(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-1 option[choose_date=1]").text(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-1 option[choose_date=1]").prop('selected', true);
+
+                if ($(".post-select-data-1 option[inserted=1]").length == 0) {
+                    $(".post-select-data-1").append('<option value="6" inserted="1">აირჩიეთ თარიღი</option>');
+                }
+
+            });
+
+            $('#date-submit-2').click(function () {
+                var final_start_1 = $('#final-start-2').val();
+                var final_end_1 = $('#final-end-2').val();
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+                //$("#test2 select option:selected").prop('selected', false);
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-2 option[choose_date=1]").val(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-2 option[choose_date=1]").text(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-2 option[choose_date=1]").prop('selected', true);
+
+                if ($(".post-select-data-2 option[inserted=1]").length == 0) {
+                    $(".post-select-data-2").append('<option value="6" inserted="1">აირჩიეთ თარიღი</option>');
+                }
+
+            });
+
+            $('#date-submit-3').click(function () {
+                var final_start_1 = $('#final-start-3').val();
+                var final_end_1 = $('#final-end-3').val();
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+                //$("#test2 select option:selected").prop('selected', false);
+                //$('#test2 select option:selected').html(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-3 option[choose_date=1]").val(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-3 option[choose_date=1]").text(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-3 option[choose_date=1]").prop('selected', true);
+
+                if ($(".post-select-data-3 option[inserted=1]").length == 0) {
+                    $(".post-select-data-3").append('<option value="6" inserted="1">აირჩიეთ თარიღი</option>');
+                }
+
+            });
+
+            $('#date-submit-5').click(function () {
+                var final_start_1 = $('#final-start-5').val();
+                var final_end_1 = $('#final-end-5').val();
+
+                $(".post-select-data-5 option[choose_date=1]").val(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-5 option[choose_date=1]").text(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-5 option[choose_date=1]").prop('selected', true);
+
+                if ($(".post-select-data-5 option[inserted=1]").length == 0) {
+                    $(".post-select-data-5").append('<option value="6" inserted="1">აირჩიეთ თარიღი</option>');
+                }
+
+            });
+
+            $('#date-submit-6').click(function () {
+                var final_start_1 = $('#final-start-6').val();
+                var final_end_1 = $('#final-end-6').val();
+
+                $(".post-select-data-6 option[choose_date=1]").val(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-6 option[choose_date=1]").text(final_start_1 + "-" + final_end_1);
+
+                $(".post-select-data-6 option[choose_date=1]").prop('selected', true);
+
+                if ($(".post-select-data-6 option[inserted=1]").length == 0) {
+                    $(".post-select-data-6").append('<option value="6" inserted="1">აირჩიეთ თარიღი</option>');
+                }
+
+            });
+
+        });
+
+    </script>
+}

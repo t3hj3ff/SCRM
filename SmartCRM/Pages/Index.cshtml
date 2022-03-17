@@ -1,0 +1,891 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@section Styles{
+    <link href="~/lib/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+    <style>
+
+        .gender {
+            border-radius:0.2rem;
+            font-size:14px;
+        }
+
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            position: relative !important;
+            left: 45%;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .multipleselect + .btn-group {
+            width: 100%;
+        }
+
+            .multipleselect + .btn-group > button {
+                border: 1px solid #ced4da;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                position: relative;
+                border-radius: 0.2rem !important;
+                border-top-left-radius: 0.2rem !important;
+                border-top-right-radius: 0.2rem !important;
+                border-bottom-right-radius: 0.2rem !important;
+                border-bottom-left-radius: 0.2rems !important;
+                font-size: 14px !important;
+                height: auto !important;
+                text-align-last: left;
+                color: #67757c;
+                width: 100%;
+                min-height: 38px;
+            }
+
+        .multiselect-selected-text {
+            font-size: 14px;
+        }
+
+        .multipleselect + .btn-group ul {
+            width: auto;
+        }
+
+            .multipleselect + .btn-group ul.multiselect-container > li > a > label {
+                padding: 3px 0px 3px 0px;
+                font-size: 14px;
+            }
+
+
+
+        .multipleselect + .btn-group .dropdown-toggle::after {
+            float: right;
+        }
+        /*.btn-group label {
+            color: #000;
+        }*/
+
+        .dropdown-menu > li > a {
+            padding: 3px 0px 3px 3px !important;
+        }
+
+            .dropdown-menu > li > a:hover, .dropdown-menu > li > a > label:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+                width: 100%;
+            }
+
+        .c3 text {
+            fill-opacity: 1;
+        }
+
+        .smart-card {
+            background: none;
+            border: none;
+        }
+
+            .smart-card .text-muted {
+                color: #455a64 !important;
+            }
+
+
+        .dropdown-menu > li > a:hover, .dropdown-menu > li > a > label:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+            text-decoration: none;
+            color: #ffffff !important;
+            background-color: #0081c2;
+            background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+            background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+            background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+        }
+
+        .dropdown-menu > li.active > a, .dropdown-menu > li.active > a > label, .dropdown-menu > li.active > a {
+            text-decoration: none;
+            color: #ffffff !important;
+            background-color: #0081c2;
+            background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+            background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+            background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+            background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+        }
+
+        .dropdown-menu > li > a {
+            display: block;
+            padding: 3px 20px;
+            clear: both;
+            font-weight: normal;
+            line-height: 20px;
+            color: #333333;
+            white-space: nowrap;
+        }
+
+        .reports.dropdown-menu li a {
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #ced4da;
+        }
+
+
+        .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: .255em;
+            text-align: right;
+            position: absolute;
+            top: 16px;
+            text-align: right;
+            vertical-align: middle;
+            right: 10px;
+            content: "";
+            border-top: .3em solid;
+            border-right: .3em solid transparent;
+            border-bottom: 0;
+            border-left: .3em solid transparent;
+        }
+
+        .select-groupby::after {
+            right: 25px;
+        }
+
+        .daterangepicker {
+            font-family: 'BPG Arial 2010';
+        }
+         
+    </style>
+}
+
+@*<div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 style="font-family: 'BPG Mrgvlovani Caps', sans-serif !important;" class="text-themecolor">სამართავი პანელი</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">მთავარი</a></li>
+                <li class="breadcrumb-item active">სამართავი პანელი</li>
+            </ol>
+        </div>
+        <div class="col-md-7 align-self-center text-right d-none d-md-block">
+                <button type="button" class="btn btn-info"><i class="fa fa-plus-circle"></i> Create New</button>
+            </div>
+            <div class="">
+                <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+            </div>
+    </div>*@
+
+@*<div class="row">
+        <div class="col-12">
+            <h3 style="font-size:16px;" class="m-b-3">მომხმარებლები</h3>
+        </div>
+    </div>*@
+<div class="row">
+    <!-- Column -->
+
+    <div style="" class="col-lg-2 col-md-2">
+
+        <div data-toggle="tooltip" data-placement="top" class="card smart-card">
+            <div class="card-body" st>
+                <div class="d-flex flex-row">
+                    <div style="min-width: 50px;" class="round align-self-center round-success"><i class=""><img src="images/nav/icons-02.png" height="45" /></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_new"></h3>
+                        <h5 class="text-muted m-b-0">ახალი </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-2 col-md-2">
+        <div data-toggle="tooltip" data-placement="top" class="card smart-card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div style="min-width: 50px;" class="round align-self-center round-info"<i class=""><img src="images/nav/icons-04.png" height="45"/></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_active"></h3>
+                        <h5 class="text-muted m-b-0">აქტიური </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-2 col-md-2">
+        <div data-toggle="tooltip" data-placement="top" class="card smart-card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-danger" style="min-width: 50px; background:#E5CF0D !important"><i class=""><img src="images/nav/icons-03.png" height="45" /></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_passive"></h3>
+                        <h5 class="text-muted m-b-0">პასიური </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-3">
+        <div data-toggle="tooltip" data-placement="top" class="card smart-card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-primary"><i class=""><img src="images/nav/icons-01.png" height="45" /></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_total"></h3>
+                        <h5 class="text-muted m-b-0">სულ </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="card smart-card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-primary" style="background:#55CE63;"><i class=""><img src="images/nav/icons-05.png" height="45" /></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_average"></h3>
+                        <h5 class="text-muted m-b-0">საშუალო ჩეკი</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex m-b-30">
+                    <h5 class="card-title m-b-0 align-self-center">ბოლო 30 დღის გაყიდვები მომხმარებელთა აქტიურობის მიხედვით</h5>
+                    @*<div class="ml-auto align-self-center">
+                <ul class="list-inline font-12">
+                    <li><i class="fa fa-circle text-success"></i> ბრუნვა</li>
+                    <li><i class="fa fa-circle text-info"></i> ვიზიტები</li>
+                </ul>
+            </div>*@
+                </div>
+                <div id="main" style="width:100%; height:400px;"></div>
+                <div id="main_empty" style="display: none; width:100%; height:400px">მონაცემები არ არის</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3" style="height:490px;">
+        <div class="row">
+            <!-- Column -->
+            <div class="col-md-12">
+                <div class="card bg-primary band">
+                    <div style="padding: 1.97rem 1.25rem;" class="card-body">
+                        <h4 style="top: -10px;" class="card-title text-white">დარჩენილი სმს</h4>
+                        @*<h6 class="card-subtitle text-white op-5">March 2018</h6>*@
+                        <div class="d-flex no-block">
+                            <div class="align-self-end no-shrink smart-smsleft">
+                                <h2 style="margin-bottom: -10px;" class="m-b-0 text-white" id="c_sms_left"></h2>
+                            </div>
+                            <div class="ml-auto smart-ml-auto">
+                                <div id="rem_sms" style="width:150px; height:130px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Column -->
+            <div class="col-md-12">
+                <div class="card bg-info band">
+                    <div style="padding: 1.97rem 1.25rem;" class="card-body">
+                        <h4 style="top: -10px;" class="card-title text-white">დარჩენილი ქულა</h4>
+                        @*<h6 class="card-subtitle text-white op-5">March 2018</h6>*@
+                        <div class="d-flex no-block">
+                            <div class="align-self-end no-shrink smart-pointsleft">
+                                <h2 style="margin-bottom: -10px;" class="m-b-0 text-white" id="c_point_left"></h2>
+                            </div>
+                            <div class="ml-auto smart-ml-auto">
+                                <div id="left_point" class="spark-count" style="width:150px; height:130px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class=" row">
+                    <div class="col-4">
+                        <h4 class="card-title">
+                            გაყიდვები და ვიზიტები
+                        </h4>
+                    </div>
+                    <div class="col-1 offset-7" style="text-align:right;">
+                        <i class="fas fa-cog" onclick="$('#section-1-filter').toggle('slow');" style="font-size: 25px; cursor:pointer; color: #20AEE3;"></i>
+                    </div>
+                </div>
+                <div class="loader" id="loader_1"></div>
+                <div class="row" style="margin-top:10px; margin-bottom:20px; display:none;" id="section-1-filter">
+                    <div class="col-3">
+                        <div class="dropdown">
+                            <input type="text" id="date-filter-1" class="form-control date-filter" style="font-size:14px; border-radius:0.2rem;">
+
+                            <input id="date-filter-1-start" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                            <input id="date-filter-1-end" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                        </div>
+                    </div>
+                    <div class="col-2">
+
+                        <div class="input-group  dropdown-toggle">
+                            @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
+
+                            <input type="button" style="    cursor: pointer;   text-align:left; border-right: 0; border-top-left-radius:0.2rem; border-bottom-left-radius:0.2rem;
+                                                    font-size: 14px;"
+                                   class="form-control" value="ფილიალი" id="o-filials-1"
+                                   onclick="OpenFilialsModal(this,'#filial-modal-1 #filials-modal');" />
+                            <b class="caret filials-filter-caret"></b>
+                            <input type="hidden" class="post-select-data-1" name="merchants" id="merchants-1" />
+
+                            <div class="input-group-append" style=" cursor: pointer;" onclick="OpenFilialsModal(this,'#filial-modal-1 #filials-modal');">
+                                <span class="input-group-text" style="  border-top-right-radius:0.2rem; border-bottom-right-radius:0.2rem;
+                                    background: white;
+                                font-size: 14px;
+                                border-left: 0;" id="basic-addon2"><i class="filials-filter hide fas fa-filter"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <select name="age" id="age-1" class="post-select-data-1 age-filter multipleselect" multiple>
+                            <option value="1">18<</option>
+                            <option value="2">18-25</option>
+                            <option value="3">25-30</option>
+                            <option value="4">30-35</option>
+                            <option value="5">35-45</option>
+                            <option value="6">45-65</option>
+                            <option value="7">65></option>
+                            <option value="8">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <select name="gender" id="gender_1" class="gender post-select-data-1 form-control">
+                            <option value="" hidden>სქესი</option>
+                            <option value="">ყველა</option>
+                            <option value="1">მდედრობითი</option>
+                            <option value="2">მამრობითი</option>
+                            <option value="0">არ არის მითითებული</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <div class="dropdown-toggle select-groupby">
+                            <select class="form-control post-select-data-1" id="select-filter-1" name="group_by_date" style="border-radius:0.2rem; font-size:14px;
+                           -moz-appearance:none;
+                            -webkit-appearance:none;
+                            appearance:none;">
+                                <option value="" hidden>დაჯგუფება</option>
+                                <option value="1">დაჯგუფება დღით</option>
+                                <option value="2">დაჯგუფება კვირით</option>
+                                <option value="3">დაჯგუფება თვით</option>
+                                <option value="4">დაჯგუფება კვარტლით</option>
+                                <option value="5">დაჯგუფება წლით</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="visit_turnovers" style="width:100%; height:400px;"></div>
+                <div id="visit_turnovers_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+                <ul class="list-inline m-t-30 text-center font-12">
+                    <li><i class="fa fa-circle" style="color:#24d2b5"></i> ვიზიტები:<span id="visits_total"></span></li>
+                    <li><i class="fa fa-circle" style="color:#5B9BD5"></i> გაყიდვები: <span id="sales_total"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="">
+                    <div class=" row">
+                        @*<h5 class="card-title m-b-0 align-self-center">მომხმარებლის ასაკი</h5>*@
+
+                        <div class="col-1 offset-11" style="text-align:right;">
+                            <i class="fas fa-cog" onclick="$('#section-2-filter').toggle('slow');" style="font-size: 25px; cursor:pointer; color: #20AEE3;"></i>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px; margin-bottom:20px; display:none;" id="section-2-filter">
+                        <div class="col-4">
+                            <div class="dropdown">
+                                <input type="text" id="date-filter-2" class="form-control date-filter" style="font-size:14px; border-radius:0.2rem;">
+
+                                <input id="date-filter-2-start" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                                <input id="date-filter-2-end" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group dropdown-toggle">
+                                <input type="button" style="cursor: pointer;   text-align:left; border-right: 0; border-top-left-radius:0.2rem; border-bottom-left-radius:0.2rem;
+                                                    font-size: 14px;"
+                                       class="form-control" value="ფილიალი" id="o-filials-1"
+                                       onclick="OpenFilialsModal(this,'#filial-modal-2 #filials-modal');" />
+                                <b class="caret filials-filter-ages-caret"></b>
+                                <input type="hidden" class="post-select-data-2" name="merchants" id="merchants-2" />
+
+                                <div class="input-group-append" style=" cursor: pointer;" onclick="OpenFilialsModal(this,'#filial-modal-2 #filials-modal');">
+                                    <span class="input-group-text" style="  border-top-right-radius:0.2rem; border-bottom-right-radius:0.2rem;
+                                    background: white;
+                                font-size: 14px;
+                                border-left: 0;" id="basic-addon2"><i class="filials-filter-ages hide fas fa-filter"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <select name="gender" id="gender_2" class="gender post-select-data-2 form-control">
+                                <option value="" hidden>სქესი</option>
+                                <option value="">ყველა</option>
+                                <option value="1">მდედრობითი</option>
+                                <option value="2">მამრობითი</option>
+                                <option value="0">არ არის მითითებული</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="ages" style="height:300px; width:100%;"></div>
+                <div class="loader" id="loader_2"></div>
+               
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="">
+                    <div class=" row">
+                        @*<h5 class="card-title m-b-0 align-self-center">მომხმარებლის ასაკი</h5>*@
+
+                        <div class="col-1 offset-11" style="text-align:right;">
+                            <i class="fas fa-cog" onclick="$('#section-3-filter').toggle('slow');" style="font-size: 25px; cursor:pointer; color: #20AEE3;"></i>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px; margin-bottom:20px; display:none;" id="section-3-filter">
+                        <div class="col-4">
+                            <div class="dropdown">
+                                <input type="text" id="date-filter-3" class="form-control date-filter" style="font-size:14px; border-radius:0.2rem;">
+
+                                <input id="date-filter-3-start" class="datepicker datepicker-start datepicker-final-start" data-format="dd/MM/yyyy" type="hidden" />
+                                <input id="date-filter-3-end" class="datepicker datepicker-start datepicker-final-end" data-format="dd/MM/yyyy" type="hidden" />
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="input-group  dropdown-toggle">
+                                <input type="button" style="cursor: pointer;   text-align:left; border-right: 0; border-top-left-radius:0.2rem; border-bottom-left-radius:0.2rem;
+                                                    font-size: 14px;"
+                                       class="form-control" value="ფილიალი" id="o-filials-1"
+                                       onclick="OpenFilialsModal(this,'#filial-modal-3 #filials-modal');" />
+                                <b class="caret filials-filter-gender-caret"></b>
+                                <input type="hidden" class="post-select-data-3" name="merchants" id="merchants-3" />
+
+                                <div class="input-group-append" style=" cursor: pointer;" onclick="OpenFilialsModal(this,'#filial-modal-3 #filials-modal');">
+                                    <span class="input-group-text" style="  border-top-right-radius:0.2rem; border-bottom-right-radius:0.2rem;
+                                    background: white;
+                                font-size: 14px;
+                                border-left: 0;" id="basic-addon2"><i class="filials-filter-gender hide fas fa-filter"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <select name="age" id="age-3" class="post-select-data-3 age-filter multipleselect" multiple>
+                                <option value="1">18<</option>
+                                <option value="2">18-25</option>
+                                <option value="3">25-30</option>
+                                <option value="4">30-35</option>
+                                <option value="5">35-45</option>
+                                <option value="6">45-65</option>
+                                <option value="7">65></option>
+                                <option value="8">არ არის მითითებული</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="gender_board" style="height:300px; width:100%;"></div>
+                <div id="gender_board_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+                <div class="loader" id="loader_3"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="filial-modal-1">
+
+</div>
+
+<div id="filial-modal-2">
+
+</div>
+
+
+<div id="filial-modal-3">
+
+</div>
+
+@section Scripts {
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.min.js"></script>
+
+    <script src="~/js/dashboard.js"></script>
+
+    <script type="text/javascript">
+
+        function hideReport(elem) {
+            $('#' + elem).css("display", "none");
+        }
+
+        function showReport(elem) {
+            $('#' + elem).css("display", "block");
+        }
+
+
+        function OpenFilialsModal(elem, modal_id) {
+            
+            $('.filial-choosed-val').removeClass('clicked');
+            $(elem).addClass('clicked');
+
+            $(modal_id).modal('show');
+        }
+
+        $(function () {
+            $('.loader').hide();
+
+            $('#select-filter-1').on('change', function() {
+                FilterData1();
+            });
+
+            $('#gender_1').on('change', function () {
+                FilterData1();
+            });
+
+            $('#gender_2').on('change', function () {
+                FilterData2();
+            });
+
+
+            $(".date-filter").on("keypress", function (event) {
+                event.preventDefault();
+                return false;
+            });
+
+            $('.age-filter').multiselect({
+                nonSelectedText: 'ასაკი',
+                enableCaseInsensitiveFiltering: false,
+                onDropdownHide: function (event) {
+                    switch (this.$select[0].id) {
+                        case 'age-1': FilterData1(); break;
+                        case 'age-2': FilterData2(); break;
+                        case 'age-3': FilterData3(); break;
+                        default:
+                    }
+                }
+            });
+
+            //$('.gender-filter').multiselect({
+            //    nonSelectedText: 'სქესი',
+            //    enableCaseInsensitiveFiltering: false,
+            //    onDropdownHide: function (event) {
+            //        switch (this.$select[0].id) {
+            //            case 'gender_1': FilterData1(); break;
+            //            case 'gender_2': FilterData2(); break;
+            //            default:
+            //        }
+            //    }
+            //});
+
+            $('.date-filter').daterangepicker({
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment(),
+                ranges: {
+                    'გუშინდელი': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'ბოლო 7 დღე': [moment().subtract(6, 'days'), moment()],
+                    'ბოლო 30 დღე': [moment().subtract(29, 'days'), moment()],
+                    'ბოლო 90 დღე': [moment().subtract(89, 'days'), moment()],
+                    'ბოლო ერთი წელი': [moment().subtract(1, 'days').subtract(1, 'year'), moment().subtract(1, 'days') ]
+                },
+                showDropdowns: true,
+                "linkedCalendars": false,
+                locale: {
+                    cancelLabel: 'გაუქმება',
+                    applyLabel: 'არჩევა',
+                    "customRangeLabel": "აირჩიეთ თარიღი",
+                    "format": 'DD/MM/YY',
+                    "fromLabel": "დან",
+                    "toLabel": "მდე",
+                    "weekLabel": "კვ",
+                    "daysOfWeek": [
+                        "კვ",
+                        "ორშ",
+                        "სამ",
+                        "ოთხ",
+                        "ხუთ",
+                        "პარ",
+                        "შაბ"
+                    ],
+                    "monthNames": [
+                        "იანვარი",
+                        "თებერვალი",
+                        "მარტი",
+                        "აპრილი",
+                        "მაისი",
+                        "ივნისი",
+                        "ივლისი",
+                        "აგვისტო",
+                        "სექტემბერი",
+                        "ოქტომბერი",
+                        "ნოემბერი",
+                        "დეკემბერი"
+                    ],
+                    "firstDay": 1
+                }
+            });
+
+             $('a[name="datefilter"]').on('click', function (e) {
+                e.stopPropagation();
+            });
+
+            var filials_html = $('<div/>');
+            filials_html.load('/AjaxPartialModel?handler=Filials', function (res) {
+
+                $('#filial-modal-1').html(res);
+                $('#filial-modal-2').html(res);
+                $('#filial-modal-3').html(res);
+                //$('#filial-modal-4').html(res);
+
+
+                var el = $('.vue-identifier').parent();
+
+                for (var i = 0; i < el.length; i++) {
+                    InitializeVueFilials($(el[i]), @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Filials))), null, ConfirmFilial);
+                }
+
+
+            });
+
+
+
+            $('.date-filter').on('apply.daterangepicker', function (ev, picker) {
+
+                $(this).parents('.dropdown').find('.filter-date-selected').text(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+                $(this).parents('.dropdown').find('.dropdown-toggle').dropdown('toggle');
+
+                $(this).parents('.dropdown').find('.datepicker-final-start').val(picker.startDate.format('DD/MM/YYYY'));
+                $(this).parents('.dropdown').find('.datepicker-final-end').val(picker.endDate.format('DD/MM/YYYY'));
+
+                switch (this.id) {
+                    case 'date-filter-1': FilterData1(); break;
+                    case 'date-filter-2': FilterData2(); break;
+                    case 'date-filter-3': FilterData3(); break;
+                    default:
+                }
+            });
+        });
+
+        function ConfirmFilial(filials, elem) {
+
+            switch (elem) {
+                case 'filial-modal-1-vue':
+                    if (filials.length > 0) {
+                        $('.filials-filter').show();
+                        $('.filials-filter-caret').parent().removeClass('dropdown-toggle');
+                    }
+                    else {
+                        $('.filials-filter').hide();
+                        $('.filials-filter-caret').parent().addClass('dropdown-toggle');
+                    }
+                    $('#merchants-1').val(filials);
+                    FilterData1();
+                    break;
+                case 'filial-modal-2-vue':
+                    if (filials.length > 0) {
+                        $('.filials-filter-ages').show();
+                        $('.filials-filter-ages-caret').parent().removeClass('dropdown-toggle');
+                    }
+                    else {
+                        $('.filials-filter-ages').hide();
+                        $('.filials-filter-ages-caret').parent().addClass('dropdown-toggle');
+                    }
+                    $('#merchants-2').val(filials);
+
+                    FilterData2();
+                    break;
+                case 'filial-modal-3-vue':
+                    if (filials.length > 0) {
+                        $('.filials-filter-gender').show();
+                        $('.filials-filter-gender-caret').parent().removeClass('dropdown-toggle');
+                    }
+                    else {
+                        $('.filials-filter-gender').hide();
+                        $('.filials-filter-gender-caret').parent().addClass('dropdown-toggle');
+                    }
+
+                    $('#merchants-3').val(filials);
+
+                    FilterData3();
+                    break;
+                case 'filial-modal-4-vue':
+                    //$('#merchants-4').val(filials);
+                    break;
+                default:
+            }
+        }
+
+        function FilterData1() {
+            document.getElementById("visits_total").innerHTML = '';
+            document.getElementById("sales_total").innerHTML = '';
+
+            var params = '&'+$(".post-select-data-1").serialize();
+            
+            var date_filter_1_start = '';
+            var date_filter_1_end = '';
+
+            date_filter_1_start = "&start_date=" + $('#date-filter-1-start').val();
+            date_filter_1_end = "&end_date=" + $('#date-filter-1-end').val();
+
+            $('#loader_1').show();
+            hideReport('visit_turnovers');
+            $.ajax({
+                url: '/?handler=Report&chart_type=1' + date_filter_1_start + date_filter_1_end + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    $('#loader_1').hide();
+                },
+                success: function (result) {
+                    showReport('visit_turnovers');
+                    $('#loader_1').hide();
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("visit_turnovers").style.display = "none";
+                        document.getElementById("visit_turnovers_empty").style.display = "block";
+                    } else {
+
+                        InitialzieVisitTurnovers(result);
+
+                    }
+                }
+            });
+
+        }
+        function FilterData2() {
+
+            var params = '&' + $(".post-select-data-2").serialize();
+            
+            var date_filter_2_start = '';
+            var date_filter_2_end = '';
+
+            date_filter_2_start = "&start_date=" + $('#date-filter-2-start').val();
+            date_filter_2_end = "&end_date=" + $('#date-filter-2-end').val();
+
+            $('#loader_2').show();
+            hideReport('ages');
+            $.ajax({
+                url: '/?handler=Report&chart_type=5' + date_filter_2_start + date_filter_2_end + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    $('#loader_2').hide();
+                },
+                success: function (result) {
+                    showReport('ages');
+                    $('#loader_2').hide();
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("ages").style.display = "none";
+                        document.getElementById("ages_empty").style.display = "block";
+                    } else {
+
+                        InitialzieAges(result);
+
+                    }
+                }
+            });
+
+        }
+
+        function FilterData3() {
+
+            var params = '&' + $(".post-select-data-3").serialize();
+            
+            var date_filter_3_start = '';
+            var date_filter_3_end = '';
+
+            date_filter_3_start = "&start_date=" + $('#date-filter-3-start').val();
+            date_filter_3_end = "&end_date=" + $('#date-filter-3-end').val();
+
+            $('#loader_3').show();
+            hideReport('gender_board');
+            $.ajax({
+                url: '/?handler=Report&chart_type=6' + date_filter_3_start + date_filter_3_end + params,
+                type: 'GET',
+                cache: false,
+                timeout: 30000,
+                error: function () {
+                    $('#loader_3').hide();
+                },
+                success: function (result) {
+                    showReport('gender_board');
+                    $('#loader_3').hide();
+
+                    if (!result || jQuery.isEmptyObject(result) || result.length == 0) {
+                        document.getElementById("gender_board").style.display = "none";
+                        document.getElementById("gender_board_empty").style.display = "block";
+                    } else {
+
+                        InitializeGender(result);
+
+                    }
+                }
+            });
+
+        }
+
+        $.ajax({
+            url: '/?handler=Dashboard'
+        }).done(function (result) {
+            InitialzieDashboard(result);
+            });
+
+
+
+    </script>
+
+}

@@ -1,0 +1,8 @@
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.dll.config
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.dll
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.pdb
+C:\Repos\SmartCRM\SmartCRMService\bin\Oracle.ManagedDataAccess.dll
+C:\Repos\SmartCRM\SmartCRMService\obj\Release\SmartCRMService.csproj.CoreCompileInputs.cache
+C:\Repos\SmartCRM\SmartCRMService\obj\Release\SmartCRMService.csproj.CopyComplete
+C:\Repos\SmartCRM\SmartCRMService\obj\Release\SmartCRMService.dll
+C:\Repos\SmartCRM\SmartCRMService\obj\Release\SmartCRMService.pdb

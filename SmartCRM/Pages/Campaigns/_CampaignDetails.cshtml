@@ -1,0 +1,875 @@
+﻿@model SmartCRM.Pages.Campaigns._CampaignDetailsModel
+@using System.Globalization
+
+<input type="hidden" id="camp_id" value="@Model.CampID" />
+<form method="post" class="new-seg-form camp-params hide">
+    <div class="col-12 campaigns">
+        <div class="row">
+            <div class="wrapper center-block">
+                <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a style="text-align:left;" id="btnOne" class="btn" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img style="margin-top:5px;" id="whomtoImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" />
+                                            <p style="margin-top:11px;display:inline-flex;">ვის ვაჩუქო</p>
+                                        </div>
+                                        <div style="margin-top: 7px;" class="col-7">
+                                            <p id="whomtoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                                            <p id="whomtoContent" style="margin-bottom: 0;font-weight:100"></p>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse section1-collapse" role="tabpanel" data-parent="#accordion" aria-labelledby="headingOne">
+                            <div class="mt-3">
+                                <div class="col-12">
+                                    <div id="section-1-error" style="color:red; ">
+                                        გთხოვთ, აირჩიოთ სეგმენტი
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="text-align: right !important;" class="panel-body mb-5">
+                                <div class="mt-3 mb-5 col-12">
+                                    <div style="padding-top: 18px;padding-bottom: 2px;border-radius: 15px; border:1px solid #00000026; margin: 0 auto; width:100%;" class="card-body">
+                                        <div style="padding:0;" class="card-body">
+                                            <div style="text-align:left;padding:0;" class="card-body">
+
+                                                <div style="text-align:center;" class="selectdiv">
+                                                    <label>
+                                                        <i class="fas">
+                                                            <select style="font-family: 'BPG Arial';width: 311px;" asp-for="NewCampaign.SegmentID"
+                                                                    asp-items="@(new SelectList(Model.Segments, "ID", "Name"))"
+                                                                    class="post-select-data-4 form-control">
+                                                                <option value="0">აირჩიეთ სეგმენტი</option>
+                                                            </select>
+                                                        </i>
+                                                    </label>
+                                                </div>
+                                                <div class="">
+                                                    <span style="margin-left: 50px;">
+                                                        <p style="color:#ababab; display: inline-flex;margin-left: 23.5%;">მიუთითეთ რაოდენობა</p>
+                                                        <input asp-for="NewCampaign.SegmentCount" min="1" id="whomtoQuant" style="width:130px;margin-left: 15px;" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                                                        <p style="color: red; text-align:center;" id="quantError"></p>
+                                                    </span>
+                                                </div>
+
+                                                <div class="">
+                                                    <span style="margin-left: 50px;">
+                                                        <p style="color:#ababab; display: inline-flex;margin-left: 23.5%;">შესადარებელი ჯგუფი</p>
+                                                        <input asp-for="NewCampaign.SegmentCompareCount" min="1" style="width:130px;margin-left: 24px;" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                                                        <p style="color: red; text-align:center;" id="quantError"></p>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                @*<button id="whomtoConfirm" type="button" style="margin-top: -13px;height: 40px;width:15%;margin-right: 15px;" class="camp-start btn btn-primary">დადასტურება</button>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a style="text-align:left;" name="collapse" id="btnThree" class="btn" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img id="whatcaseImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> რა შემთხვევაში ვაჩუქო
+                                        </div>
+                                        <div style="margin-top: 7px;" class="col-7">
+                                            <p id="whatcasetoHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                                            <p id="whatcasetoContent" style="margin-bottom: 0;font-weight:100"></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse section1-collapse" role="tabpanel" data-parent="#accordion" aria-labelledby="headingThree">
+                            <div class="mt-3">
+                                <div class="col-12">
+                                    <div id="section-2-error" style="color:red; ">
+                                        გთხოვთ, აირჩიოთ
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="text-align:right; border-radius: 15px 15px 0 0;" class="panel-body">
+                                <div style="padding:4px;  border-radius: 15px;" class="mt-3 mb-5 col-12 text-center">
+                                    <div class="accordion2" id="accordion2">
+                                        <div style="" class="whatcase-card card">
+                                            <div class="card-header inner-collapse inner-collapse-whatcase @(Model.CampaignsVM.selectradio1 == "visitcount" ? "active" : "")" id="whatcasehedOne"
+                                                 choosen-radio="@Model.CampaignsVM.selectradio1">
+                                                <h5 class="mb-0">
+                                                    <label class="collapse-head">
+                                                        <input asp-for="CampaignsVM.selectradio1" value="visitcount"
+                                                               class="btn btn-link" type="radio" data-toggle="collapse" data-target="#whatcasecolOne"
+                                                               aria-expanded="false" aria-controls="whatcasecolOne">
+                                                        ვიზიტების რაოდენობის მიხედვით
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+
+                                            <div id="whatcasecolOne" class="inner-collapse-1 collapse @(Model.CampaignsVM.selectradio1 == "visitcount" ? "show" : "")" aria-labelledby="whatcasehedOne"
+                                                 choosen-radio="@Model.CampaignsVM.selectradio"
+                                                 data-parent="#accordion2">
+                                                <div style="text-align:left;" class="card-body">
+                                                    <div class="form-group row">
+                                                        <label style="flex: 0 0 25.9%; max-width: 100%;" for="example-number-input" class="col-3 col-form-label">რამდენ ვიზიტზე? </label>
+                                                        <div class="col-3">
+                                                            <div style="text-align:center;margin-bottom: 5px;" class="form-group">
+                                                                <select style="text-align:center;text-align-last: center;" asp-for="NewCampaign.PersentCaseVisitCount"
+                                                                        asp-items="@(new SelectList(new List<SelectListItem> {
+                                                                        new SelectListItem ("2","2"),
+                                                                        new SelectListItem ("3","3"),
+                                                                        new SelectListItem ("4","4"),
+                                                                        new SelectListItem ("5","5"),
+                                                                        new SelectListItem ("6","6"),
+                                                                        new SelectListItem ("7","7"),
+                                                                        new SelectListItem ("8","8"),
+                                                                        new SelectListItem ("9","9"),
+                                                                        new SelectListItem ("10","10")}, "Value" , "Text"))"
+                                                                        id="howmuchVisits" class="form-control">
+                                                                    <option value=" 0"></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label style="flex: 0 0 25.9%; max-width: 100%;" for="example-number-input" class="col-3 col-form-label">რა თანხაზე?</label>
+                                                        <div class="col-3">
+                                                            <input asp-for="NewCampaign.PersentCaseVisitAmount" min="0" id="howmuchCash"
+                                                                   class="form-control" type="number" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whatcase-card card">
+                                            <div class="card-header inner-collapse inner-collapse-whatcase @(Model.CampaignsVM.selectradio1 == "moneyspent"?"active" : "")" id="whatcasehedTwo">
+                                                <h5 class="mb-0">
+                                                    <label class="collapse-head">
+                                                        <input asp-for="CampaignsVM.selectradio1" value="moneyspent" class="btn btn-link collapsed" type="radio" data-toggle="collapse" data-target="#whatcasecolTwo" aria-expanded="false" aria-controls="whatcasecolTwo">
+                                                        დახარჯული თანხის მიხედვით
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="whatcasecolTwo" class="inner-collapse-1 collapse @(Model.CampaignsVM.selectradio1 == "moneyspent"?"show" : "")" aria-labelledby="whatcasehedTwo" data-parent="#accordion2">
+                                                <div style="text-align:left;" class="card-body">
+                                                    <div class="form-group row">
+                                                        <div class="col-10">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label for="example-number-input">რამდენი დახარჯოს?</label>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <input asp-for="NewCampaign.PersentCaseSpentAmount" min="0" id="howmuchshouldSpend" style="width: 154px;" class="form-control" ttype="number" placeholder="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-10">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <label class="form-check-label">
+                                                                        როგორ დახარჯოს?
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-8">
+                                                                    <label style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;" class="form-check-label">
+                                                                        <input asp-for="NewCampaign.PersentCaseSpentCount" value="1" id="howmuchOnce" style="margin-right: 17px;" type="radio" class="radio-percent-once btn btn-link">
+                                                                        ერთჯერადად
+                                                                    </label>
+                                                                    <label style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;" class="form-check-label">
+                                                                        <input asp-for="NewCampaign.PersentCaseSpentCount" value="999" id="howmuchUnlim" style="margin-right: 17px;" type="radio" class="radio-percent-unlim btn btn-link">
+                                                                        ჯამურად
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whatcase-card card">
+                                            <div class="card-header inner-collapse inner-collapse-whatcase @(Model.CampaignsVM.selectradio1 == "timeinterval"?"active" : "")" id="whatcasehedThree">
+                                                <h5 class="mb-0">
+                                                    <label class="collapse-head">
+                                                        <input asp-for="CampaignsVM.selectradio1" value="timeinterval" class="btn btn-link collapsed" type="radio" data-toggle="collapse" data-target="#whatcasecolThree" aria-expanded="false" aria-controls="whatcasecolThree">
+                                                        დროის ინტერვალის მიხედვით
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="whatcasecolThree" class="inner-collapse-1 collapse @(Model.CampaignsVM.selectradio1 == "timeinterval"?"show" : "")" aria-labelledby="whatcasecolThree" data-parent="#accordion2">
+                                                <div style="padding: 0;" class="card-body">
+                                                    <div style="text-align:left;" class="card-body">
+                                                        <div class="container" style="width: 70%;padding: 15px 0;float: left;">
+                                                            <div style="text-align:center; color:#ababab;border:1px solid #80808063; border-radius: 15px; padding: 3px; display:block;" class="btn-group col-xs-12" data-toggle="buttons">
+                                                                <label style="font-size: 14px;margin-right: 9px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week1?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week1" style="display:none;" type="checkbox">ორშ
+                                                                </label>
+                                                                <label style="font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week2?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week2" style="display:none;" type="checkbox">სამშ
+                                                                </label>
+                                                                <label style="font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week3?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week3" style="display:none;" type="checkbox">ოთხშ
+                                                                </label>
+                                                                <label style="font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week4?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week4" style="display:none;" type="checkbox">ხუთშ
+                                                                </label>
+
+                                                                <label style="z-index:999;font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week5?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week5" style="display:none;" type="checkbox">პარ
+                                                                </label>
+                                                                <label style="z-index:999;font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week6?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week6" style="display:none;" type="checkbox">შაბ
+                                                                </label>
+                                                                <label style="z-index:999;font-size: 14px;margin-right: 17px;color:grey;border-radius:15px;" class="btn btn-default @(Model.CampaignsVM.Week7?"active": "")">
+                                                                    <input asp-for="CampaignsVM.Week7" style="display:none;" type="checkbox">კვირა
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+
+                                                        <div style="margin-top: 4rem!important; display:block;width:50%;" class="mt-3 input-group mb-2">
+                                                            <p style="font-weight:bold; font-size: 14px; font-weight:100;">მიუთითეთ საათის ინტერვალი</p>
+                                                            <div id="" class="input-group">
+
+                                                                <label style="margin-right: 20px;">დაწყება:</label>
+                                                                <input data-inputmask-alias="datetime" data-inputmask-inputformat="HH:MM" placeholder="--:--" style="margin-top: -5px; border: 1px solid #ababab8f;border-radius: 15px;width: 19%;font-size: 17px;color: #ababab;background: url(images/clock.png) no-repeat scroll 52px 4px;background-size: 20px;padding-left: 10px;" asp-for="NewCampaign.PersentCaseSpentWDayStartTime" id="voucherStartDate" />
+                                                                <label style="margin: 0 20px;">დასრულება:</label>
+                                                                <input data-inputmask-alias="datetime" data-inputmask-inputformat="HH:MM" placeholder="--:--" style="margin-top: -5px; border: 1px solid #ababab8f;border-radius: 15px;width: 19%;font-size: 17px;color: #ababab;background: url(images/clock.png) no-repeat scroll 52px 4px;background-size: 20px;padding-left: 10px;" asp-for="NewCampaign.PersentCaseSpentWDayEndTime" id="voucherEndDate" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whatcase-card card">
+                                            <div class="card-header inner-collapse inner-collapse-whatcase @(Model.CampaignsVM.selectradio1 == "upirobod"?"active" : "")" id="whatcasehedFour">
+                                                <h5 class="mb-0">
+                                                    <label class="collapse-head withoutany">
+                                                        <input asp-for="CampaignsVM.selectradio1" value="upirobod"
+                                                               class="btn btn-link collapsed withoutany" type="radio" data-toggle="collapse" data-target="#whatcasecolFour" aria-expanded="false" aria-controls="whatcasecolFour">
+                                                        უპირობოდ
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div style="margin: 0 auto;text-align: left;margin-top: -30px;margin-bottom: 30px;" class="form-check">
+                                    <label style="margin-right:15px;  font-weight:bold;" class="form-check-label">
+                                        რამდენჯერ მიიღოს საჩუქარი?
+                                    </label>
+                                    <label style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;" class="form-check-label">
+                                        <input asp-for="NewCampaign.PersentCaseReceiveCount" value="1" id="visitOnce" style="margin-right: 17px;" type="radio" class="radio-percent-once btn btn-link">
+                                        ერთჯერადად
+                                    </label>
+                                    <label style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;" class="form-check-label">
+                                        <input asp-for="NewCampaign.PersentCaseReceiveCount" value="2" id="visitUnlim" style="margin-right: 17px;" type="radio" class="radio-percent-unlim btn btn-link">
+                                        შეუზღუდავად
+                                    </label>
+                                </div>
+                                @*  <button id="whatcaseConfirm" type="button" style="margin-top: -13px;height: 40px;margin-bottom: 13px; width:15%;" class="camp-start btn btn-primary">დადასტურება</button>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a style="text-align:left;" id="btnTwo" class="btn" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img id="whattogiftImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> რა ვაჩუქო
+                                        </div>
+                                        <div style="margin-top: 7px;" class="col-7">
+                                            <p id="whattogiftHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                                            <p id="whattogiftContent" style="margin-bottom: 0;font-weight:100"></p>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse section1-collapse" role="tabpanel" data-parent="#accordion" aria-labelledby="headingTwo">
+                            <div class="mt-3">
+                                <div class="col-12">
+                                    <div id="section-3-error" style="color:red; ">
+                                        გთხოვთ, აირჩიოთ
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 mb-5 panel-body">
+                                <div style="padding: 4px; border-radius: 15px;" class="col-12 text-center">
+                                    <div class="accordion" id="accordion3">
+                                        <div style="" class="whattogift-card card">
+                                            <div style="border-radius: 15px 15px 0 0;"
+                                                 class="card-header inner-collapse-2 inner-collapse-whattogift @(Model.NewCampaign.ActionPercent.HasValue ? "active" : "")" id="hedOne">
+                                                <h5 class="mb-0">
+                                                    <label id="sale-head" class="collapse-head">
+                                                        <input value="sale" asp-for="CampaignsVM.selectradio" class="btn btn-link" type="radio" data-toggle="collapse" data-target="#colOne" aria-expanded="false" aria-controls="colOne">
+                                                        <i style="font-style:none;">ფასდაკლება</i>
+                                                    </label>
+                                                </h5>
+                                            </div>
+
+                                            <div id="colOne" class="inner-collapse-1 collapse @(Model.NewCampaign.ActionPercent.HasValue ? "show" : "")" aria-labelledby="hedOne" data-parent="#accordion3">
+                                                <div style="border-radius: 15px 15px 0 0; padding-right: 50px; text-align:left;margin-top:-14px;" class="card-body">
+                                                    <div style="float:right;">
+                                                        <div class="input-group mb-2">
+                                                            <input asp-for="NewCampaign.ActionPercent" min="1" id="saleInput"
+                                                                   style="width: 145px; margin-top: 13px;" type="number" class="form-control" placeholder="მიუთითეთ %" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>
+                                                    </div>
+
+                                                    <br />
+                                                    <div style="margin-left: 85px;color:#ababab" class="">
+                                                        <input asp-for="CampaignsVM.moneych" value="პროცენტული" id="radioPercent" style="left:55px;" class="radio-percent btn btn-link" type="radio">
+                                                        პროცენტული
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whattogift-card card">
+                                            <div class="card-header inner-collapse-2 inner-collapse-whattogift @(Model.CampaignsVM.selectradio == "voucher" ? "active" : "")" id="hedTwo">
+                                                <h5 class="mb-0">
+                                                    <label id="voucher" class="collapse-head">
+                                                        <input value="voucher" asp-for="CampaignsVM.selectradio" class="btn btn-link collapsed" type="radio" data-toggle="collapse" data-target="#colFive" aria-expanded="false" aria-controls="colFive">
+                                                        <i>ფულადი ვაუჩერი</i>
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="colFive" class="inner-collapse-1 collapse  @(Model.CampaignsVM.selectradio == "voucher" ? "show" : "")" aria-labelledby="hedFive" data-parent="#accordion3">
+                                                <div style="padding-right: 50px; text-align:left;" class="card-body">
+                                                    <div style="float:right;display:inline-flex; margin-top: -5px;">
+                                                        <div class="input-group mb-2">
+                                                            <input min="0" id="voucherInput"
+                                                                   name="@(Model.NewCampaign.ActionCashVaucherPercent.HasValue ? "NewCampaign.ActionCashVaucherPercent" : Model.NewCampaign.ActionCashVaucher.HasValue ? "NewCampaign.ActionCashVaucher" : "")"
+                                                                   value="@(Model.NewCampaign.ActionCashVaucherPercent.HasValue ? Model.NewCampaign.ActionCashVaucherPercent.Value.ToString() : Model.NewCampaign.ActionCashVaucher.HasValue ? Model.NewCampaign.ActionCashVaucher.Value.ToString() : "")"
+                                                                   style="width: 135px;margin-top: 20px;" type="number" class="form-control" placeholder="მიუთითეთ" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>
+                                                        <div style="display:inline-flex;" id="start-date" class="input-append date">
+                                                            <input id="voucherdateInput" placeholder="განაღდების პერიოდი" value="@(Model.CampaignsVM.ActionCashVaucherStart + "-" + Model.CampaignsVM.ActionCashVaucherEnd)"
+                                                                   style="color: #67757c;background: url(images/calendar.png) no-repeat scroll 10px 4px;background-size: 27px;padding-left: 29px;border-radius: 25px;margin-left: 10px;width: 210px;text-align: center;height: 39px;margin-top: 19px;border: 1px solid #ced4da;" type="datetime" />
+                                                            <input asp-for="CampaignsVM.ActionCashVaucherStart" data-format="MM/dd/yyyy" type="hidden" id="voucherDateStart" />
+                                                            <input asp-for="CampaignsVM.ActionCashVaucherEnd" data-format="dd/MM/yyyy" type="hidden" id="voucherDateEnd" />
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-left: 85px;color:#ababab" class="">
+                                                        <input asp-for="CampaignsVM.voucherch" value="ფულადი" id="voucherradioCash" style="left:55px; color:grey;" class="radio-cash btn btn-link" type="radio">
+                                                        ფულადი
+                                                        </input>
+                                                    </div>
+                                                    <br />
+                                                    <div style="margin-left: 85px;color:#ababab" class="">
+                                                        <input asp-for="CampaignsVM.voucherch" value="პროცენტული" id="voucherradioPercent" style="left:55px;" class="radio-percent btn btn-link" type="radio">
+                                                        პროცენტული
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whattogift-card card">
+                                            <div class="card-header inner-collapse-2 inner-collapse-whattogift @(Model.CampaignsVM.selectradio == "points" ? "active" : "")" id="hedThree">
+                                                <h5 class="mb-0">
+                                                    <label id="points" class="collapse-head">
+                                                        <input asp-for="CampaignsVM.selectradio" value="points" class="btn btn-link collapsed" type="radio" data-toggle="collapse" data-target="#colThree" aria-expanded="false" aria-controls="colThree">
+                                                        ქულები
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="colThree" class="collapse @(Model.CampaignsVM.selectradio == "points" ? "show" : "")" aria-labelledby="colThree" data-parent="#accordion3">
+                                                <div class="card-body">
+                                                    <div style="text-align:left;" class="card-body">
+                                                        <div style="padding-right: 40px; float:right;margin-top: -5px;">
+                                                            <div class="input-group mb-2">
+                                                                <input min="0" id="pointInput"
+                                                                       name="@(Model.NewCampaign.ActionBonusFix.HasValue ? "NewCampaign.ActionBonusFix" : Model.NewCampaign.ActionBonusPercent.HasValue ? "NewCampaign.ActionBonusPercent" : "")"
+                                                                       value="@(Model.NewCampaign.ActionBonusFix.HasValue ? Model.NewCampaign.ActionBonusFix.Value.ToString() : Model.NewCampaign.ActionBonusPercent.HasValue ? Model.NewCampaign.ActionBonusPercent.Value.ToString() : "")"
+                                                                       style="width: 135px; margin-top: 20px;" name="selectedradio" type="number" class="form-control" placeholder="მიუთითეთ" aria-label="Username" aria-describedby="basic-addon1">
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-left: 75px;color:#ababab;" class="pointradioN">
+                                                            <input asp-for="CampaignsVM.pointsch" value="ქულა" id="pointradioNum" style="left:55px;" class="radio-cash btn btn-link" type="radio">
+                                                            X ქულა
+                                                            </input>
+                                                        </div>
+                                                        <br />
+                                                        <div style="margin-left: 75px;color:#ababab;" class="pointradioX">
+                                                            <input asp-for="CampaignsVM.pointsch" value="-მაგი ქულა" id="pointradioNumX" style="left:55px;" class="radio-percent btn btn-link" type="radio">
+                                                            X-მაგი ქულა
+                                                            </input>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="whattogift-card card">
+                                            <div class="card-header inner-collapse-2 inner-collapse-whattogift @(Model.CampaignsVM.selectradio == "product" ? "active" : "")" id="hedFour">
+                                                <h5 class="mb-0">
+                                                    <label id="products" class="collapse-head">
+                                                        <input asp-for="CampaignsVM.selectradio" value="product" class="btn btn-link collapsed" type="radio" data-toggle="collapse" data-target="#colFour" aria-expanded="false" aria-controls="colFour">
+                                                        პროდუქტი/მომსახურება
+                                                        </input>
+                                                    </label>
+                                                </h5>
+                                            </div>
+                                            <div id="colFour" class="collapse @(Model.CampaignsVM.selectradio == "product" ? "show" : "")" aria-labelledby="hedFour" data-parent="#accordion3">
+                                                <div class="card-body">
+                                                    <div class="card-body">
+                                                        <div style="margin-left: 16px;text-align:left;" class="card-body">
+
+                                                            <div class="">
+                                                                <span style="color:#ababab;" class="">
+                                                                    პროდუქტის დასახელება <input asp-for="NewCampaign.ActionProductName" id="productName" style="margin-left: 40px; width:250px;" type="text" class="form-control" placeholder="მიუთითეთ" aria-label="Username" aria-describedby="basic-addon1">
+                                                                </span>
+                                                            </div>
+                                                            <br />
+                                                            <div class="">
+                                                                <span style="color:#ababab;" class="">
+                                                                    პროდუქტის რაოდენობა <input asp-for="NewCampaign.ActionProductCount" id="productQuantity" style="margin-left: 44px; width:250px;" type="number" class="form-control" placeholder="მიუთითეთ" aria-label="Username" aria-describedby="basic-addon1">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*<button id="whattogiftConfirm" type="button" style="margin-top: -13px;height: 40px;margin-bottom: 13px; width:15%; margin-top: 10px;" class="camp-start btn btn-primary">დადასტურება</button>*@
+                        </div>
+                    </div>
+                    @*<div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="headingFour">
+                                <h4 class="panel-title">
+                                    <a style="text-align:left;" id="btnFour" class="btn collapsed" role="button">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <img id="whentoImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> აქციის პერიოდი
+                                            </div>
+                                            <div style="margin-top: 7px;" class="col-7">
+                                                <p id="whentogiftHead" style="text-transform:none; margin-top: 7px;margin: 0; font-weight:700"></p>
+                                                <p id="whentogiftContent" style="margin-bottom: 0;font-weight:100"></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse hide section1-collapse" role="tabpanel" aria-labelledby="headingFour">
+                                <div style="text-align:right;" class="panel-body">
+                                    <div style="" class="mt-5 mb-5 col-12">
+                                        <div style="display:none;border-radius:15px; border:1px solid #00000026; margin: 0 auto; width:100%;" class="card-body">
+                                            <div class="card-body">
+                                                <div style="text-align:center;" class="card-body">
+
+                                                    <div class="">
+                                                        <span class="">
+                                                            <div style="display:inline-flex;margin-left: 20px;width:35%;" id="start-date" class="input-append date">
+                                                                <input value=""
+                                                                       style="text-align:center;" id="whento-start"
+                                                                       type="hidden" name="datefilter" class="form-control" placeholder="შეიყვანეთ დრო" aria-label="Username" aria-describedby="basic-addon1">
+
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="whentoConfirm" type="button" style="display:none;margin-bottom: 20px;height: 40px; width:15%;margin-right: 15px;" class="camp-start btn btn-primary">დადასტურება</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFive">
+                            <h4 class="panel-title">
+                                <a style="text-align:left;" id="btnFive" class="btn collapsed" role="button" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img id="wheretoImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> აქციაში მონაწილე ფილიალები
+                                        </div>
+                                        <div style="margin-top: 7px;" class="col-7">
+                                            <p id="wheretoHead" style="margin-top: 7px;margin: 0; font-weight:700">
+                                                @(!String.IsNullOrEmpty(Model.NewCampaign.PresentLocation) ? Model.NewCampaign.PresentLocation.Split(',').Count().ToString() + " ფილიალი" : "")
+                                            </p>
+                                            <p id="wheretoContent" style="margin-bottom: 0;font-weight:100">
+
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse section1-collapse" role="tabpanel" data-parent="#accordion" aria-labelledby="headingFive">
+                            @*<div style="text-align:right;" class="panel-body">
+                                    <div class="mt-5 mb-5 col-12">
+                                        <div style="border:1px solid #00000026; margin: 0 auto; width:100%; border-radius:15px;" class="card-body">
+                                            <div class="card-body">
+                                                <div style="text-align:center;" class="card-body">
+                                                    <div class="">
+                                                        <span style="padding-bottom: 13px;margin: 0 auto;text-align: center;width: 42%;padding: 8px 0;border-radius: 15px;border: 1px solid #80808061;" class="text-center">
+
+                                                            <select id="merchant_list" style="color:#000; width: 70% !important;" class="post-select-data-4 example-enableCaseInsensitiveFiltering dropdown-merchant" multiple>
+                                                                <option value="0">ყველა</option>
+                                                                @foreach (var item in Model.Filials)
+                                                                {
+                                                                    <!option value="@(item.ObjectID)"
+                                                                             @(Model.NewCampaign.PresentLocation.Split(',').ToList().Contains(item.ObjectID.ToString()) ? "selected=selected" : "")>
+                                                                        @(item.Address)
+                                                                    </!option>
+                                                                }
+
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                    <button id="wheretoConfirm" type="button" style="margin-bottom: 20px; margin-top: -13px; height: 40px; width:15%;margin-right: 15px;" class="camp-start btn btn-primary">დადასტურება</button>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingSix">
+                            <h4 class="panel-title">
+                                <a style="text-align:left;" id="btnSix" class="btn" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <img id="offertextImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> შეთავაზების ტექსტი
+                                        </div>
+                                        <div style="margin-top: 7px;" class="col-7">
+                                            <p id="offertextHead" style="text-transform: initial;margin-top: 7px;margin: 0; font-weight:700"></p>
+                                            <p id="offertextContent" style="text-transform: initial;margin-bottom: 0;font-weight:100"></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseSix" class="mt-3 mb-5 panel-collapse collapse section1-collapse" role="tabpanel" data-parent="#accordion" aria-labelledby="headingSix">
+
+                            <div style="text-align:right;" class="panel-body">
+                                <div style="text-align: left;border-radius: 15px; margin: 0 auto; width:90%;" class="card-body">
+
+                                    <div class="col-12">
+                                        <div id="section-6-error" style="color:red; ">
+                                            გთხოვთ, აირჩიოთ
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p style="font-weight:bold;">გააგებინე აქციის შესახებ</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="input-group" style="float:right;    width: auto; ">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" style="background: none;
+                                                                border-top-left-radius: 15px;
+                                                                border-bottom-left-radius: 15px;
+                                                                border: 1px solid #80808059 !important;
+                                                                padding: 6px 10px;
+                                                                border-right: none !important;">
+                                                            <i style="color: #24D2B5;" class="far fa-calendar-alt"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input id="sms-send-dt" type="text" autocomplete="off"
+                                                           style="float: left;
+                                                                margin: 0px;
+                                                                display: flex;
+                                                                text-align: center;
+                                                                border: 1px solid #80808059;
+                                                                font-size: 14px;
+                                                                color: #ababab;
+                                                                width: 140px;
+                                                                margin-left: -8px;
+                                                                border-top-right-radius: 15px;
+                                                                border-bottom-right-radius: 15px;
+                                                                border-left: none;
+                                                        " value="@(Model.NewCampaign.SendMSGDate.HasValue?Model.NewCampaign.SendMSGDate.Value.ToString("MM.dd.yyyy - HH:mm") : "")" />
+                                                    <input id="sms-send-dt-hf" type="hidden" asp-for="CampaignsVM.SendMSGDate" />
+                                                </div>
+
+                                                @*<div style="float:right; border-radius: 15px;border: 1px solid #80808059;
+                                                    font-size: 14px; color: #24D2B5;">
+
+
+
+                                                    </div>*@
+                                            </div>
+                                        </div>
+
+
+                                        <div style="text-align:left; padding-bottom:0;">
+                                            <textarea style="text-align: left;" class="form-control" id="text" asp-for="NewCampaign.MsgText" rows="5"></textarea>
+                                            <h6 style="text-align: right; color:grey;" class="pull-left" id="count_message"></h6>
+                                        </div>
+
+
+                                        <div id="continueActivity" style="display: none; text-align:left; padding-bottom:0;">
+
+                                            <div class="row" style="    margin-top: 20px;">
+                                                <div class="col-12">
+                                                    <p style="font-weight:bold;margin-bottom: 0.2rem;">შეახსენე განაგრძოს აქტიურობა</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <label>მაგალითად: </label>  <label id="lblRemindMsgText"></label>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-5" style="padding-right: 0;max-width: 43.666667%; flex: 0 0 42.666667%;">
+                                                    <textarea style="border-right:0; border-top-right-radius:0; border-bottom-right-radius:0;
+                                         text-align: left;" class="form-control" id="remind-msg-text" asp-for="CampaignsVM.RemindMsgText1" rows="3">| SMS OFF 95562</textarea>
+
+                                                </div>
+                                                <div class="col-2" style="margin:auto 0; text-align:center; padding-left: 0; padding-right: 0; max-width: 13.666667%;">
+                                                    <label id="lblRemindMsgTextKey"></label>
+                                                    <input type="hidden" asp-for="CampaignsVM.RemindMsgTextKey" />
+                                                </div>
+                                                <div class="col-5" style="padding-left: 0;max-width: 43.666667%; flex: 0 0 43.666667%;">
+                                                    <div style=" text-align:left; padding-bottom:0;">
+                                                        <textarea style="border-left:0; border-top-left-radius:0; border-bottom-left-radius:0; text-align: left;"
+                                                                  class="form-control" id="remind-msg-text2"
+                                                                  asp-for="CampaignsVM.RemindMsgText2" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            @*<div class="row">
+                                                    <div class="col-12">
+                                                        <label>შედეგი: </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="card" style="    border-radius: 25px;">
+                                                            <div class="card-body">
+
+
+                                                                <label id="lblRemindMsgResult" style="height:100px;"> </label>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>*@
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 style="text-align: right; color:grey;" class="pull-left" id="count_message1"></h6>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <div style="text-align:left; padding-bottom:0;margin-top: 20px; ">
+                                            <p style="font-weight:bold;">გააგებინე, რომ შეასრულა პირობა</p>
+                                            <textarea style="text-align: left;" class="form-control" id="text2" asp-for="NewCampaign.PerformMsgText" rows="5">| SMS OFF 95562</textarea>
+                                            <h6 style="text-align: right; color:grey;" class="pull-left" id="count_message2"></h6>
+                                        </div>
+
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-6 bold">
+                                                სატესტო ჯგუფი <img id="whomtoImg" onclick="$('#tester-group-modal').modal('show');"
+                                                                   style="cursor:pointer; max-height:20px;" src="/images/edit2.png" class="light-logo" alt="homepage">
+                                            </div>
+                                            <div class="col-6">
+
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-6">
+                                                <button type="button" id="btn-send-test-msg" class="btn btn-send-msg" asp-page-handler="SendTestMsg">სატესტო სმს-ის გაგზავნა</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="btn" style="border:1px solid #ced4da; border-radius:25px; width: 100%; text-align: left;">
+                                                    <div class="custom-control custom-checkbox" style="min-height: 0;">
+                                                        <input asp-for="CampaignsVM.AddGroupInAction" id="TestGroupAdd" type="checkbox" class="custom-control-input" />
+                                                        <label class="custom-control-label checkbox_lbl bold" for="TestGroupAdd" style="color:#CCCCCC; font-size:14px;">აქციაში დამატება</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div style="text-align:left; padding-bottom:0; margin-top:20px;">
+                                            <p style="font-weight:bold;">
+                                                შავი სია<i class="fas fa-exclamation-triangle" data-toggle="tooltip"
+                                                           data-html="true"
+                                                           title="შავი სია წარმოადგენს იმ მომხმარებელთა ბაზას, რომლებმაც უარი განაცხადეს საკუთარი მონაცემების პირდაპირი მარკეტინგის მიზნით დამუშავებაზე. <br /> ასეთი სიის არსებობის შემთხვევაში, გთხოვთ ატვირთოთ მათი ტელეფონის ნომრები, რომ არ მოხდეს მათთან კომუნიკაცია.<br /> პირდაპირი მარკეტინგის მიზნით მონაცემეთა გამოყენების წესის დარღვევა წარმოადგენს  „პერსონალურ მონაცემთა დაცვის შესახებ“ საქართველოს კანონის მე-8  მუხლის დარღვევას, რაზეც ამავე კანონის 47-ე მუხლით  გათვლაიწინებულია ჯარიმა 3000 ლარი, ხოლო იგივე ქმედება, ჩადენილი იმ პირის მიერ, რომელსაც ერთი წლის განმავლობაში შეეფარდა ადმინისტრაციული სახდელი,  გათვალისწინებულია 10 000 ლარი."
+                                                           data-placement="top" title="დააჭირეთ" style="COLOR: RED; margin-left:5px;"></i>
+                                            </p>
+                                            <div class="row black-list-radios">
+                                                <div class="col-6">
+                                                    <div style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;">
+                                                        <label id="black_list_show_lbl"
+                                                               class="form-check-label">
+                                                            <input value="1" id="updateBlackList" asp-for="CampaignsVM.BlackList"
+                                                                   type="radio" class="radio-percent-once btn btn-link">
+                                                            შავი სიის განახლება
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div style="border: 1px solid #67757c5e; border-radius: 15px; padding: 5px 10px; padding-left: 0; padding-right: 20px;">
+                                                        <label class="form-check-label">
+                                                            <input value="0" asp-for="CampaignsVM.BlackList" id="noneedUpdateBlackList"
+                                                                   type="radio" class="radio-percent-unlim btn btn-link">
+                                                            არ საჭიროებს განახლებას
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*    <button id="offertextConfirm" type="button" style="float:right; margin-top: 15px;height: 40px;" class="camp-start btn btn-primary">დადასტურება</button>*@
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div class="panel panel-default hide">
+                            <div class="panel-heading" role="tab" id="headingSeven">
+                                <h4 class="panel-title">
+                                    <a style="text-align:left;" id="btnSeven" class="btn" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <img id="campaignnameImg" src="~/images/unchecked-icon.png" class="light-logo" alt="homepage" /> შეჯამება
+                                            </div>
+                                            <div style="margin-top: 7px;" class="col-7">
+                                                <p id="campaignnameHead" style="margin-top: 7px;margin: 0; font-weight:700"></p>
+                                                <p id="campaignnameContent" style="margin-bottom: 0;font-weight:100"></p>
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+                                <div style="text-align:right;" class="panel-body mt-5 mb-5">
+                                    <div style="border-radius: 15px; border:1px solid #00000026; margin: 0 auto; width:100%;" class="card-body">
+                                        <div class="card-body">
+                                            <div style="text-align:left;" class="card-body">
+                                                <label>კამპანიის სახელი</label>
+                                                <input asp-for="NewCampaign.ChampName" id="campaignnameTitle" style="text-align:left;width: 100%; margin-bottom: 15px" id="whento-start" class="form-control" type="text" />
+
+                                            </div>
+                                            <div style="text-align:left; padding-bottom:0;" class="card-body">
+                                                <p style="font-weight:bold;">სატესტო ჯგუფი</p>
+                                                <label style="border: 1px solid #67757c5e; border-radius: 15px;float:right; margin-top: -33px;padding-left: 0;" class="form-check-label">
+                                                    <button value="რედაქტირება" id="howmuchOnce"  onclick="$('#tester-group-modal').modal('show');"
+                                                            style="font-size: 14px;font-weight: 400;color: #007bff;position: absolute;left: 10px;padding: 0;margin: 0; height: 24px;width: 175px;text-decoration:none;color:grey !important; background: url(images/clock.png) no-repeat scroll 6px 4px;background-size: 13px;border-radius: 50%;" type="button" class="radio-percent-once btn btn-link">
+                                                        რედაქტირება
+                                                    </button>
+                                                </label>
+
+                                                <button type="button" id="btn-send-test-msg" class="btn btn-info" asp-page-handler="SendTestMsg">სატესტო სმს-ის გაგზავნა</button>
+
+                                                <div class="checkbox">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button id="campaignnameConfirm" type="button" style="margin-top: 15px;height: 40px;width:15%;" class="camp-start btn btn-primary">დადასტურება</button>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-3 col-5" style="padding-left:0;">
+                <input asp-for="NewCampaign.ChampName" placeholder="დაასათაურე" style="text-align:left;width: 100%; margin-bottom: 15px" class="form-control" type="text" />
+            </div>
+            <div class="mt-3 col-3">
+
+                <div class="input-group">
+                    @*<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">*@
+
+                    <input id="whento-start" type="text"
+                           name="datefilter" class="form-control"
+                           placeholder="აქციის პერიოდი" aria-label="Username" aria-describedby="basic-addon1"
+                           autocomplete="off"
+                           style="    cursor: pointer;   text-align:center; border-right: 0; border-top-left-radius:20px; border-bottom-left-radius:20px;
+                                                    font-size: 14px;"
+                           value="@((Model.NewCampaign.ActionStartDate.HasValue ? Model.NewCampaign.ActionStartDate.Value.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture) : "")  + (Model.NewCampaign.ActionEndDate.HasValue ? "-" +  Model.NewCampaign.ActionEndDate.Value.ToString("dd/MM/yyyy",CultureInfo.InvariantCulture) : ""))" />
+
+                    <div class="input-group-append" style=" cursor: pointer;" onclick="OpenFilialsModal(this,'#filial-modal-1 #filials-modal');">
+                        <span class="input-group-text" style="  border-top-right-radius:20px; border-bottom-right-radius:20px;
+                                    background: white;
+                                font-size: 14px;
+                                border-left: 0;" id="basic-addon2"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+
+                    <input asp-for="CampaignsVM.ActionStartDate" type="hidden" id="periodDateStart" />
+                    <input asp-for="CampaignsVM.ActionEndDate" type="hidden" id="periodDateEnd" />
+                </div>
+
+
+
+            </div>
+            @if (Model.NewCampaign.Status != "2")
+            {
+                <div class="mt-3 col-4 text-right">
+                    <button type="button" id="save-newsegment" class="camp-save btn btn-primary">შენახვა</button>
+                    <button type="button" id="submit-newsegment" class="camp-start btn btn-primary">დაწყება</button>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+<input type="hidden" id="saved_filials" value="@Model.NewCampaign.PresentLocation" />
+
+<div id="m-filial">
+
+</div>
+
+<div id="testers-group">
+
+</div>
+

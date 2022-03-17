@@ -1,0 +1,220 @@
+﻿@model List<SmartCRMSvc.ReportFilial>
+<style>
+    #filials-modal .table td {
+        padding: 0 .75rem 0 .75rem;
+        vertical-align: middle;
+    }
+
+    #filials-modal .table tr {
+        vertical-align: middle;
+    }
+
+    #filials-modal ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #bcc3d3;
+        opacity: 1; /* Firefox */
+    }
+
+    #filials-modal :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #bcc3d3;
+    }
+
+    #filials-modal ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #bcc3d3;
+    }
+
+    #filials-modal .modal-header {
+        border-bottom: none;
+        padding-bottom: 0 !important;
+    }
+
+    #filials-modal .modal-footer {
+        border-top: none;
+    }
+
+    #filials-modal .table .head-filter th {
+        padding-top: 0;
+    }
+
+
+
+    #filials-modal td .btn {
+        padding: 4px 7px 4px 12px;
+    }
+
+    #filials-modal .table tbody {
+        display: block; /*seperates the tbody from the header*/
+        height: 200px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        margin-right: -15px;
+    }
+
+    #filials-modal .table thead > tr th {
+        margin: auto 0;
+    }
+
+    #filials-modal .table .row {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    #merch-filials {
+        width: 100% !important;
+    }
+
+    #merch-choosen-filials {
+        width: 100% !important;
+    }
+
+    #merch-filials_filter {
+        display: none;
+    }
+
+    #filials-modal .table tbody > tr:first-child td {
+        border-top: 0;
+    }
+
+    .filials-buttons input[type='button'], .filials-buttons button {
+        font-size: 0.95rem !important;
+        padding: 3px 9px !important;
+        border-radius: 20px;
+        width: 144.36px;
+        text-align: center !important;
+    }
+</style>
+<div class="vue-identifier">
+    <div class="modal fade bs-example-modal-lg" id="filials-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" style="width:80%; max-width:80%; margin: 0 auto;" id="app">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel" style="color:#24D2B5; font-weight:bold;">ფილიალები @Model.Count / <span style="color:#24D2B5;">{{choosen_filials.length}}</span></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            @*<div class="card-header">
+                                    ყველა ფილიალი
+                                </div>*@
+                            <div style="border-radius:20px;border: 1px solid #dee2e6;">
+                                <table class="table" style="height:300px;" id="merch-filials">
+                                    <thead>
+                                        <tr class="row">
+                                            <th style="display:none;"></th>
+                                            <th class="col-2">ბრენდი</th>
+                                            <th class="col-2">ქალაქი</th>
+                                            <th class="col-2">რაიონი</th>
+                                            <th class="col-5">ქუჩა</th>
+                                            <th class="col-1" style="text-align:center;">
+
+                                            </th>
+                                        </tr>
+                                        <tr class="row head-filter">
+                                            <th style="display:none;"></th>
+                                            <th class="col-2">
+                                                <input type="search" class="form-control form-control-sm" placeholder="ბრენდი" aria-controls="merch-filials">
+                                            </th>
+                                            <th class="col-2">   <input type="search" class="form-control form-control-sm" placeholder="ქალაქი" aria-controls="merch-filials"></th>
+                                            <th class="col-2">   <input type="search" class="form-control form-control-sm" placeholder="რაიონი" aria-controls="merch-filials"></th>
+                                            <th class="col-5">   <input type="search" class="form-control form-control-sm" placeholder="ქუჩა" aria-controls="merch-filials"></th>
+                                            <th style="display:none;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @*@foreach (var filial in Model)*@
+                                        <tr class="row" v-for="filial in filials">
+                                            <td style="display:none;">{{filial.ObjectID}}</td>
+                                            <td class="col-2"><span>{{filial.MerchName}}</span></td>
+                                            <td class="col-2">{{filial.CityName}}</td>
+                                            <td class="col-2">{{filial.RaioniName}}</td>
+                                            <td class="col-5">{{filial.StreetName}}</td>
+                                            <td class="col-1" style="text-align:right">
+                                                <a class="btn" style="color:#24D2B5;"
+                                                   v-if="!(choosen_filials.some(function(f){return f.ObjectID == filial.ObjectID }))"
+                                                   v-on:click="addMerchant(filial)"><i class="fas fa-plus"></i></a>
+
+                                                <a class="btn" style="color:red;"
+                                                   v-if="(choosen_filials.some(function(f){return f.ObjectID == filial.ObjectID }))"
+                                                   v-on:click="removeMerchant(filial)"><i class="fas fa-minus"></i></a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            @*<div class="card-header">
+                                    არჩეული ფილიალები
+                                </div>*@
+                            <div class="row" style="margin-top:10px; margin-bottom:10px;">
+                                <div class="col-4">
+                                    <h4 style="margin-left:3px;     color: #24D2B5; margin-bottom:0; margin-top: 5px;
+                    font-weight: bold;">
+                                        არჩეული ფილიალები
+                                    </h4>
+                                </div>
+                                <div class="col-8">
+                                    <div style="float:right;" class="filials-buttons">
+
+                                        <input type="button" v-on:click="chooseAll" class="btn" style="border: 1px #24D2B5 solid; background:white; color:#24D2B5; border-radius: 20px;" value="ყველას შერჩევა" />
+                                        <input type="button" v-on:click="emptyAll" class="btn" style="border: 1px #24D2B5 solid; background:white; color:#24D2B5; border-radius: 20px;" value="გასუფთავება" />
+                                        <button v-on:click="confirmFilials" type="button" class="btn waves-effect text-left" style="background:#24D2B5; color:white;">დადასტურება</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="border-radius:20px;border: 1px solid #24D2B5;">
+                                <table class="table" id="merch-choosen-filials" style="margin-top:.75rem;">
+                                    <thead>
+                                        @*<tr class="row">
+                                                    <th class="col-2">ბრენდი</th>
+                                                    <th class="col-2">ქალაქი</th>
+                                                    <th class="col-2">რაიონი</th>
+                                                    <th class="col-5">ქუჩა</th>
+                                                    <th class="col-1">წაშლა</th>
+                                                </tr>
+                                            </thead>*@
+                                    <tbody>
+                                        @*@foreach (var filial in Model)*@
+                                        <tr class="row" v-for="filial in choosen_filials">
+                                            <td class="col-2">{{filial.MerchName}}</td>
+                                            <td class="col-2">{{filial.CityName}}</td>
+                                            <td class="col-2">{{filial.RaioniName}}</td>
+                                            <td class="col-5">{{filial.StreetName}}</td>
+                                            <td class="col-1" style="text-align:right;">
+                                                <a class="btn" style="color:red;"
+                                                   v-if="(choosen_filials.some(function(f){return f.ObjectID == filial.ObjectID }))"
+                                                   v-on:click="removeMerchant(filial)"><i class="fas fa-minus"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                @*<div class="modal-footer">
+
+                    </div>*@
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="choosen_filials" id="choosen_filials" />
+
+<script src="~/js/moment.min.js"></script>
+<script src="~/lib/datatables/datatables.min.js"></script>
+
+<script src="~/js/vue.js"></script>
+<script src="~/js/_filials.js"></script>

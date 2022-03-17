@@ -1,0 +1,17 @@
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\bin\SmartCRMService.dll.config
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\bin\SmartCRMService.dll
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\bin\SmartCRMService.pdb
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\bin\Oracle.ManagedDataAccess.dll
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\obj\Debug\SmartCRMService.csprojAssemblyReference.cache
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\obj\Debug\SmartCRMService.csproj.CoreCompileInputs.cache
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\obj\Debug\SmartCRMService.csproj.CopyComplete
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\obj\Debug\SmartCRMService.dll
+C:\Users\t3hje\source\repos\smartcrm-repo\smartcrm-repo\SmartCRMService\obj\Debug\SmartCRMService.pdb
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.dll.config
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.dll
+C:\Repos\SmartCRM\SmartCRMService\bin\SmartCRMService.pdb
+C:\Repos\SmartCRM\SmartCRMService\bin\Oracle.ManagedDataAccess.dll
+C:\Repos\SmartCRM\SmartCRMService\obj\Debug\SmartCRMService.csproj.CoreCompileInputs.cache
+C:\Repos\SmartCRM\SmartCRMService\obj\Debug\SmartCRMService.csproj.CopyComplete
+C:\Repos\SmartCRM\SmartCRMService\obj\Debug\SmartCRMService.dll
+C:\Repos\SmartCRM\SmartCRMService\obj\Debug\SmartCRMService.pdb

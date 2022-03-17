@@ -1,0 +1,3287 @@
+﻿@page
+@model SmartCRM.Pages.Campaigns.IndexModel
+@{
+    ViewData["Title"] = "Campaigns";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@*To do:
+    Validators Continue from Time Interval.
+    Can't Submit Until all Are Submitted and Checked.*@
+
+
+
+@section Styles{
+    @*<link href="~/css/bootstrap-glyphicons.css" rel="stylesheet" />">*@
+    <link href="~/lib/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+    <style media="screen">
+
+        h3 {
+            font-family: BPG DejaVu Sans Mt !important;
+        }
+
+        form.new-seg-form .dropdown-toggle::after {
+            float: right;
+            color: #24d2b5;
+            font-size: 22px;
+            margin-top: 5px;
+            margin-right: 2px;
+        }
+
+        form.new-seg-form #whatcasecolOne {
+            margin-left: 34px;
+        }
+
+        form.new-seg-form #whatcasecolTwo {
+            margin-left: 34px;
+        }
+
+        form.new-seg-form #whatcasecolThree {
+            margin-left: 34px;
+        }
+
+        form.new-seg-form i {
+            font-style: normal !important;
+        }
+
+        form.new-seg-form .btn-primary:hover {
+            background: #24d2b5d1;
+            border-color: #24d2b5d1;
+        }
+
+        form.new-seg-form .btn-outline-primary:hover {
+            background: #24d2b5d1;
+            border-color: #24d2b5d1;
+        }
+
+        form.new-seg-form .btn-primary:active {
+            background: #24d2b5d1;
+            border-color: #24d2b5d1;
+        }
+
+        form.new-seg-form .btn-outline-primary:active {
+            background: #24d2b5d1;
+            border-color: #24d2b5d1;
+        }
+
+        /*form.new-seg-form .multiselect-container {
+            width: 300px;
+        }*/
+
+        form.new-seg-form .radio-percent-unlim {
+            position: relative !important;
+        }
+
+        form.new-seg-form .radio-percent-once {
+            position: relative !important;
+        }
+
+        form.new-seg-form .btn-weekpick:hover {
+            background-color: #24d2b5;
+        }
+
+        form.new-seg-form .btn-weekpick::not(:disabled):not(.disabled):active {
+            background-color: #24d2b5;
+        }
+
+        form.new-seg-form .btn-primary:not(:disabled):not(.disabled):active {
+            background-color: #24d2b5;
+        }
+
+        form.new-seg-form .btn-primary:focus {
+            background-color: #24d2b5;
+        }
+
+        form.new-seg-form .btn-group {
+            width: 98%;
+        }
+
+        form.new-seg-form .whattogift-card {
+            margin: 0;
+            /*border-bottom: 1px solid #00000026 !important;*/
+        }
+
+        form.new-seg-form .inner-collapse {
+            padding: 25px;
+        }
+
+        form.new-seg-form .inner-collapse-2 {
+            padding: 25px;
+        }
+
+        form.new-seg-form .timerangepicker-container {
+            display: flex;
+            position: relative;
+        }
+
+        form.new-seg-form .timerangepicker-label {
+            display: block;
+            line-height: 2em;
+            background-color: #c8c8c880;
+            padding-left: 1em;
+            border-bottom: 1px solid grey;
+            margin-bottom: 0.75em;
+        }
+
+        form.new-seg-form .timerangepicker-from,
+        form.new-seg-form .timerangepicker-to {
+            border: 1px solid grey;
+            padding-bottom: 0.75em;
+        }
+
+        form.new-seg-form .timerangepicker-from {
+            border-right: none;
+        }
+
+        form.new-seg-form .timerangepicker-display {
+            box-sizing: border-box;
+            display: inline-block;
+            width: 2.5em;
+            height: 2.5em;
+            border: 1px solid grey;
+            line-height: 2.5em;
+            text-align: center;
+            position: relative;
+            margin: 1em 0.175em;
+        }
+
+            form.new-seg-form .timerangepicker-display .increment,
+            form.new-seg-form .timerangepicker-display .decrement {
+                cursor: pointer;
+                position: absolute;
+                font-size: 1.5em;
+                width: 1.5em;
+                text-align: center;
+                left: 0;
+            }
+
+            form.new-seg-form .timerangepicker-display .increment {
+                margin-top: -0.25em;
+                top: -1em;
+            }
+
+            form.new-seg-form .timerangepicker-display .decrement {
+                margin-bottom: -0.25em;
+                bottom: -1em;
+            }
+
+            form.new-seg-form .timerangepicker-display.hour {
+                margin-left: 1em;
+            }
+
+            form.new-seg-form .timerangepicker-display.period {
+                margin-right: 1em;
+            }
+
+        form.new-seg-form .inner-collapse.active {
+            background: #f5f5f5 !important;
+        }
+
+        form.new-seg-form .inner-collapse-2.active {
+            background: #f5f5f5 !important;
+        }
+
+        form.new-seg-form .whatcase-card {
+            margin: -1px;
+            border-radius: 0;
+            /*border-bottom: 1px solid #00000026 !important;*/
+        }
+
+        form.new-seg-form .card-header {
+            background: none;
+            text-align: left;
+            border: none;
+        }
+
+            form.new-seg-form .card-header.active a {
+                text-decoration: none;
+                color: #000;
+            }
+
+        form.new-seg-form .form-check {
+            padding-left: 0;
+        }
+
+        form.new-seg-form input[type='radio'] {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #84848463;
+            border-radius: 50%;
+            outline: none;
+            box-shadow: 0 0 5px 0px white inset;
+        }
+
+            form.new-seg-form input[type='radio']:hover {
+                box-shadow: 0 0 5px 0px white inset;
+            }
+
+            form.new-seg-form input[type='radio']:before {
+                content: '';
+                display: block;
+                width: 60%;
+                height: 60%;
+                margin: 20% auto;
+                border-radius: 50%;
+            }
+
+            form.new-seg-form input[type='radio']:checked:before {
+                background: #24d2b5;
+            }
+
+        form.new-seg-form .btn-link {
+            font-weight: 400;
+            color: #007bff;
+            position: absolute;
+            left: 15px;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        form.new-seg-form #collapseOne {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseTwo {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseThree {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseFour {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseFive {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseSix {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form #collapseSeven {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        form.new-seg-form .camp-save {
+            color: white;
+            border-color: #24d2b5;
+            border-radius: 25px;
+            font-size: 16px;
+            background: #24d2b5 !important;
+        }
+
+            form.new-seg-form .camp-save:hover {
+                background: #24d2b5 !important;
+            }
+
+            form.new-seg-form .camp-save:active {
+                background: #24d2b5 !important;
+            }
+
+        form.new-seg-form .camp-start {
+            background: #24d2b5;
+            border-color: #24d2b5;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        form.new-seg-form .wrapper {
+            width: 100%;
+        }
+
+        form.new-seg-form .panel-group {
+            box-shadow: -4px -4px 3px -2px #dddddd;
+        }
+
+        @@media(max-width:992px) {
+            form.new-seg-form .wrapper {
+                width: 100%;
+            }
+        }
+
+
+
+        @@media(max-width:1290px) {
+            /*#btnOne {
+                font-size: 12px;
+            }
+
+            #btnTwo {
+                font-size: 12px;
+            }
+
+            #btnThree {
+                font-size: 12px;
+            }
+
+            #btnFour {
+                font-size: 12px;
+            }
+
+            #btnFive {
+                font-size: 12px;
+            }
+
+            #btnSix {
+                font-size: 12px;
+            }
+
+            #btnSeven {
+                font-size: 12px;
+            }*/
+            #campaignnameConfirm {
+                font-size: 13px;
+            }
+
+            #offertextConfirm {
+                font-size: 13px;
+            }
+
+            #wheretoConfirm {
+                font-size: 13px;
+            }
+
+            #whentoConfirm {
+                font-size: 13px;
+            }
+
+            #whatcaseConfirm {
+                font-size: 13px;
+            }
+
+            #whattogiftConfirm {
+                font-size: 13px;
+            }
+
+            #whomtoConfirm {
+                font-size: 13px;
+            }
+            /*#sms-send-dt {
+                margin-left: 59px !important;
+            }*/
+        }
+
+        @@media(max-width:1320px) {
+            .tobeflexed {
+                flex: 0 0 60.666667% !important;
+                max-width: 0 0 60.666667% !important;
+            }
+
+            .container {
+                width: 100% !important;
+            }
+
+            .mt-3.input-group.mb-2 {
+                width: 74% !important;
+            }
+        }
+
+        form.new-seg-form .panel-default {
+            background: #FFF;
+            /*border-bottom: 1px solid #ededed;*/
+        }
+
+        form.new-seg-form .panel-heading {
+            padding: 0;
+            border: 0;
+            font-size: 12px;
+            /*border-bottom: 1px solid #ededed;*/
+        }
+
+        form.new-seg-form .campaigns .active {
+            background: #24d2b5;
+            transition: 0.5s;
+        }
+
+        form.new-seg-form .btn.btn-default.active {
+            background: #24d2b5;
+            transition: 0.5s;
+            height: 26px;
+            color: #FFF !important;
+            padding-top: 0;
+        }
+
+        form.new-seg-form .btn-group label {
+            color: #ABABAB !important;
+        }
+
+        form.new-seg-form .panel-title > a, .panel-title > a:active {
+            display: block;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d2d2d;
+            text-transform: uppercase;
+            word-spacing: 3px;
+            text-decoration: none;
+        }
+
+        form.new-seg-form .panel-title a {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d2d2d;
+            text-decoration: none;
+        }
+
+            form.new-seg-form .panel-title a img {
+                max-width: 40px;
+            }
+
+            form.new-seg-form .panel-title a:hover {
+                text-decoration: none;
+            }
+
+        form.new-seg-form .panel-heading a:before {
+            /*font-family: 'Glyphicons Halflings';
+            content: "\e079";*/
+            font-family: 'Font Awesome 5 Free';
+            content: '\f078';
+            float: right;
+            transition: all 0.5s;
+            margin-top: 16px;
+        }
+
+        form.new-seg-form .panel-heading.active a:before {
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+            transform: rotate(90deg);
+            color: #FFF;
+        }
+
+        form.new-seg-form .panel-heading.active a {
+            text-decoration: none;
+            color: #FFF;
+        }
+
+        form.new-seg-form .collapse-head {
+            margin-left: 25px;
+            margin-bottom: 0;
+            font-weight: 700;
+            color: #626262;
+        }
+
+        form.new-seg-form .form-control {
+            border-radius: 25px;
+            min-height: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        form.new-seg-form label {
+            /*color: #ababab;*/
+            /*font-weight:bold;*/
+        }
+
+        form.new-seg-form hr {
+            margin-bottom: 15px;
+        }
+
+        form.new-seg-form form.new-seg-form .panel-body {
+            text-align: center;
+        }
+
+        form.new-seg-form .panel-heading.active a:before {
+            margin-top: 11px;
+        }
+
+        form.new-seg-form #voucherdateInput:before {
+            content: "asd";
+        }
+
+        form.new-seg-form input[type=number]::-webkit-inner-spin-button,
+        form.new-seg-form input[type=number]::-webkit-outer-spin-button {
+            opacity: 0.4;
+            margin-right: 5px;
+        }
+
+        .swal-button {
+            background-color: #24d2b5;
+        }
+
+            .swal-button:not([disabled]):hover {
+                background-color: #24d2b5;
+            }
+
+            .swal-button:active {
+                background-color: #24d2b5;
+            }
+
+        .multiselect-container.dropdown-menu.show {
+            width: 100%;
+            /*transform: none !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;*/
+            /*height: 250px;*/
+        }
+    </style>
+
+    <style>
+        .tooltip-inner {
+            max-width: 550px;
+            /* If max-width does not work, try using width instead */
+            /*width: 550px;*/
+            text-align: left;
+        }
+
+        .card-header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+            .card-header .top-8 {
+                margin-top: 8px;
+            }
+
+            .card-header .table thead th, .table th {
+                font-weight: bold !important;
+            }
+
+        .input-group-text {
+            border: 1px solid #ced4da !important;
+            border-left: none !important;
+        }
+
+        .form-control:focus {   
+            border-color: #ced4da;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Some browsers will not display the caret when using calc, so we put the fallback first */
+        }
+            /*For IE*/
+            select::-ms-expand {
+                display: none;
+            }
+
+        .selectdiv {
+            position: relative;
+            /*Don't really need this just for demo styling*/
+            float: left;
+            min-width: 200px;
+            margin: 17px 29%;
+        }
+
+            .selectdiv i:after {
+                font-family: 'Font Awesome 5 Free';
+                content: '\f0dd';
+                right: 11px;
+                height: 34px;
+                color: #24d2b5;
+                font-size: 22px;
+                padding: 9px 0px 0px 8px;
+                position: absolute;
+                pointer-events: none;
+            }
+
+        /* IE11 hide native button (thanks Matt!) */
+        select::-ms-expand {
+            display: none;
+        }
+
+        .selectdiv select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Add some styling */
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            /*height: 50px;*/
+            float: right;
+            margin: 5px 0px;
+            padding: 0px 24px;
+            font-size: 16px;
+            line-height: 1.75;
+            color: #333;
+            background-color: #ffffff;
+            background-image: none;
+            -ms-word-break: normal;
+            word-break: normal;
+        }
+
+        .tbodyHov tr:hover {
+            color: #4ad8c0;
+        }
+
+        .fa-play-circle {
+            color: grey !important;
+        }
+
+        .fa-times {
+            color: #ababab !important
+        }
+
+        .tbodyHov tr:hover > td i.fa-play-circle {
+            color: #24D2B5 !important;
+        }
+
+        .tbodyHov tr:hover > td i.fa-eye {
+            color: inherit !important;
+        }
+
+        .tbodyHov tr:hover > td i.fa-times {
+            color: #ff5c6c !important;
+        }
+
+        .fa-eye {
+            color: grey;
+        }
+
+        #my-campaigns_filter {
+            display: none;
+        }
+
+        /*.table#my-campaigns th, .table#my-campaigns td {
+            padding: .75rem 0 .75rem 1.25rem;
+        }*/
+
+        .dataTables_wrapper {
+            padding-top: 0;
+        }
+
+        .table#my-campaigns th, .table#my-campaigns td {
+            padding: .75rem 1.75rem .75rem 1.25rem;
+            /*font-weight: bold;*/
+        }
+
+        .table#my-campaigns tr, .table#my-campaigns tr {
+            color: #7a7a7a;
+        }
+
+        .table#my-campaigns tbody tr:hover, .table#my-campaigns tbody tr:hover {
+            color: #4ad8c0;
+        }
+
+        .table#my-campaigns thead > tr th {
+            margin: auto 0;
+        }
+
+        .table#my-campaigns thead tr {
+        }
+
+        .table#my-campaigns tbody {
+            display: block; /*seperates the tbody from the header*/
+            height: 300px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            margin-right: -15px;
+        }
+
+
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        div#CampDetailsForm h5 {
+            font-size: 14px;
+        }
+
+        .fixedHeader-ul {
+            overflow-x: scroll;
+        }
+
+            .fixedHeader-ul li {
+            }
+
+                .fixedHeader-ul li:first-child {
+                    position: fixed;
+                    background-color: white;
+                    z-index: 10;
+                }
+
+        .table-hover tbody tr:hover {
+            background: none;
+        }
+
+        .black-list-radios input[type='radio'] {
+            left: 10px;
+            margin-right: 10px;
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label.checkbox_lbl::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2324D2B5' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label.checkbox_lbl::before {
+            color: #24D2B5;
+            border-color: #24D2B5;
+            background-color: #ffffff;
+        }
+
+        .custom-control-input:focus ~ .custom-control-label.checkbox_lbl::before {
+            box-shadow: none;
+        }
+
+        .custom-control-input:not(:disabled):active ~ .custom-control-label.checkbox_lbl::before {
+            color: #24D2B5;
+            border-color: #24D2B5;
+            background-color: #ffffff;
+        }
+
+        .custom-control-input:focus:not(:checked) ~ .custom-control-label.checkbox_lbl::before {
+            border-color: #24D2B5;
+        }
+
+        .btn-send-msg {
+            background: #24D2B5;
+            border-radius: 25px;
+            color: white;
+            width: 100%;
+            font-size: 14px;
+        }
+
+
+        #accordion .panel:first-child, #accordion2 .card:first-child, #accordion3 .card:first-child {
+            /*border-top-left-radius: 10px !important;
+            border-top-right-radius: 10px !important;*/
+            border-top: 1px solid #ededed !important;
+        }
+
+            #accordion .panel:first-child .card-header, #accordion2 .card:first-child .card-header, #accordion3 .card:first-child .card-header {
+                border-top-left-radius: 10px !important;
+                border-top-right-radius: 10px !important;
+            }
+
+        #accordion .panel:last-child, #accordion2 .card:last-child, #accordion3 .card:last-child {
+            border-bottom: 1px solid rgba(0,0,0,.125) !important;
+            /*border-bottom-left-radius: 10px !important;
+            border-bottom-right-radius: 10px !important;*/
+        }
+
+            #accordion .panel:last-child .card-header, #accordion2.card:last-child .card-header, #accordion3.card:last-child .card-header {
+                border-bottom: 0 !important;
+            }
+
+                #accordion .panel:last-child .card-header.collapsed, #accordion2 .card:last-child .card-header.collapsed, #accordion3 .card:last-child .card-header.collapsed {
+                    border-bottom-left-radius: 10px !important;
+                    border-bottom-right-radius: 10px !important;
+                }
+
+        #accordion .panel {
+            border: 1px solid #ededed;
+            border-top: 0;
+        }
+
+        #accordion .panel-title {
+            margin: auto 0;
+        }
+
+    </style>
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="m-b-3" style="color:#24D2B5; font-weight:bold;font-size: 21px;margin-left: 20px;">ჩემი აქციები</h3>
+    </div>
+</div>
+
+<div class="">
+    <div class="col-12" style="border-radius: 20px;background-color:white;box-shadow: 0px 0px 1px 0px;">
+
+        <table class="table table-hover table-scrollable" style="height: 281px;" id="my-campaigns">
+            <thead>
+                <tr style="background: #EEEFF2; font-size:16px;
+                        border-top-left-radius: 20px;
+                        border-top-right-radius: 20px;" class="row">
+                    <th class="col-2">
+                        დასახელება
+                    </th>
+                    <th class="col-3">
+                        <div class="input-group">
+                            <input class="form-control py-2 border-right-0 border" placeholder="ძებნა" style="color: #ababab7a !important; text-align:left !important; border-radius: 30px 0px 0px 30px;"
+                                   type="search" id="searchbox">
+                            <span class="input-group-append" style="color: #ababab7a !important; text-align:left !important; background-color:#ffffff; border-radius: 0 30px 30px 0;">
+                                <div class="input-group-text bg-transparent" style="color:#ababab7a; border-radius: 0 30px 30px 0;border-left: none;">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </span>
+                        </div>
+                    </th>
+                    <th class="col-3 offset-1" style="text-align:center;margin-left: 8.333333%;">პერიოდი</th>
+                    <th class="col-2">
+                        სტატუსი
+                        @*<a asp-action="" asp-route-status="5"
+                               style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 5?"color:#24D2B5 !important" : "color:grey !important;")">
+                                <i data-toggle="tooltip" data-original-title="დასრულებული"
+                                   class="far fa-check-circle"></i>
+                            </a>
+                            <a asp-action="" asp-route-status="0" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 0?"color:#24D2B5 !important" : "color:grey !important;")">
+                                <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 0?"color:#24D2B5 !important" : "color:grey !important;")"></i>
+                            </a>
+                            <a asp-action="" asp-route-status="2" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 2?"color:#24D2B5 !important" : "color:grey !important;")">
+                                <i data-toggle="tooltip" data-original-title="მიმდინარე"
+                                   class="far fa-clock"></i>
+                            </a>*@
+                    </th>
+                    @*<th class="col-1" style="text-align: center;">
+                            <img src="~/images/search-icon.png"
+                                 width="18" height="18">
+                        </th>*@
+                    <th class="col-1" style="text-align: center;">
+                        <i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="tbodyHov">
+                <tr style="height: 50px;" class="row">
+                    <td class="col-6">
+                        <a href="javascript:void(0)" id="add-campaign" style="color:#24D2B5;" onclick="OpenCamp(null);">
+                            <i class="fas fa-plus"></i> დამატება
+                        </a>
+                    </td>
+                    <td class="col-3"></td>
+                    <td class="col-2"></td>
+                    @*<td class="col-1"></td>*@
+                    <td class="col-1" style="display:none;"></td>
+                    <td style="display:none;"></td>
+                </tr>
+
+                @foreach (var item in Model.Campaigns)
+                {
+                    <tr class="row" onclick="OpenCamp(@item.ID);" style="cursor:pointer;">
+                        <td class="col-6">@item.Name </td>
+                        <td class="col-3" style="text-align: center;">@item.Period</td>
+                        <td class="col-2">
+                            @item.StatusName
+                            @*@if (item.Status == "0")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="color:#24D2B5;"></i>
+                                }
+                                @if (item.Status == "5")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="დასრულებული" class="far fa-check-circle"></i>
+                                }
+                                @if (item.Status == "2")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="მიმდინარე" class="far fa-clock"></i>
+                                }*@
+                        </td>
+                        @*<td class="col-1" style="text-align: center; ">
+                                <a href="javascript:void(0);">
+                                    <i data-toggle="tooltip" data-original-title="ნახვა"
+                                       class="fa fa-eye"></i>
+                                </a>
+
+                            </td>*@
+                        <td class="col-1 child" style="text-align: center;">
+                            @if (item.Status != "2")
+                            {
+                                <a asp-page-handler="CampaignDelete" onclick="return confirm('დარწმუნებული ხართ რომ გსურთ აქციის წაშლა?')"
+                                   asp-route-id="@item.ID" data-toggle="tooltip" data-original-title="წაშლა">
+                                    <i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i>
+                                </a>
+                            }
+
+                        </td>
+                        <td style="display:none"></td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+
+
+        @*<div class="" style="background-color:white;box-shadow: 0px 0px 1px 0px;border-radius:25px;">
+                <div style="font-family:'BPG Arial';overflow: auto;height: 341px;border-radius: 25px;">
+
+                    <table class="table table-hover" id="my-campaigns">
+                        <thead class="card-header" style="font-weight:bold;">
+                            <tr>
+                                <th style="padding-bottom: 18px;">
+                                    დასახელება
+                                </th>
+                                <th style="float: left;">
+                                    <div class="input-group">
+                                        <input class="form-control py-2 border-right-0 border" placeholder="ძებნა" style="color: #ababab7a !important; text-align:left !important; border-radius: 30px 0px 0px 30px;"
+                                               type="search" id="searchbox">
+                                        <span class="input-group-append" style="color: #ababab7a !important; text-align:left !important; background-color:#ffffff; border-radius: 0 30px 30px 0;">
+                                            <div class="input-group-text bg-transparent" style="color:#ababab7a; border-radius: 0 30px 30px 0;border-left: none;">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th style="padding-bottom: 18px; text-align: center;">პერიოდი</th>
+                                <th style="padding-bottom: 18px; text-align: center;">
+                                    <a asp-action="" asp-route-status="5"
+                                       style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 5?"color:#24D2B5 !important" : "color:grey !important;")">
+                                        <i data-toggle="tooltip" data-original-title="დასრულებული"
+                                           class="far fa-check-circle"></i>
+                                    </a>
+                                    <a asp-action="" asp-route-status="0" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 0?"color:#24D2B5 !important" : "color:grey !important;")">
+                                        <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 0?"color:#24D2B5 !important" : "color:grey !important;")"></i>
+                                    </a>
+                                    <a asp-action="" asp-route-status="2" style="@(Model.FilterStatus.HasValue && Model.FilterStatus.Value == 2?"color:#24D2B5 !important" : "color:grey !important;")">
+                                        <i data-toggle="tooltip" data-original-title="მიმდინარე"
+                                           class="far fa-clock"></i>
+                                    </a>
+                                </th>
+                                <th style="padding-bottom: 18px; text-align: center;">
+                                    <img src="~/images/search-icon.png"
+                                         width="18" height="18">
+                                </th>
+                                <th style="text-align: center;">
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbodyHov">
+                            <tr>
+                                <td colspan="2">
+
+                                    <a href="javascript:void(0)" id="add-campaign" style="color:#24D2B5;" onclick="OpenCamp(null);">
+                                        <i class="fas fa-plus"></i> დამატება
+                                    </a>
+
+                                </td>
+
+                                <td></td>
+
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="display: none;"></td>
+                            </tr>
+                            @foreach (var item in Model.Campaigns)
+                            {
+                                <tr>
+                                    <td colspan="2">@item.Name </td>
+                                    <td style="text-align: center;">@item.Period</td>
+                                    <td style="text-align: center;">
+                                        @if (item.Status == "0")
+                                        {
+                                            <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="color:#24D2B5;"></i>
+                                        }
+                                        @if (item.Status == "5")
+                                        {
+                                            <i data-toggle="tooltip" data-original-title="დასრულებული" class="far fa-check-circle"></i>
+                                        }
+                                        @if (item.Status == "2")
+                                        {
+                                            <i data-toggle="tooltip" data-original-title="მიმდინარე" class="far fa-clock"></i>
+
+                                        }
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="javascript:void(0);" onclick="OpenCamp(@item.ID);"> <i data-toggle="tooltip" data-original-title="ნახვა" class="fa fa-eye"></i></a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a asp-page-handler="CampaignDelete" onclick="return confirm('დარწმუნებული ხართ რომ გსურთ აქციის წაშლა?')"
+                                           asp-route-id="@item.ID" data-toggle="tooltip" data-original-title="წაშლა">
+                                            <i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i>
+                                        </a>
+
+                                    </td>
+                                    <td style="display: none;"></td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+<div class="row camp-params hide" style="margin-top: 60px;">
+    <div class="col-12">
+        <h3 class="m-b-3" style="color:#24D2B5; font-weight:bold; margin-left:20px;">აქციის პარამეტრები</h3>
+    </div>
+</div>
+
+<div id="CampDetailsForm">
+    @*@{ await Html.RenderPartialAsync("_CampaignDetails", new SmartCRM.Pages.Campaigns._CampaignDetailsModel
+        {
+            NewCampaign = Model.NewCampaign,
+            CampaignsVM = Model.CampaignsVM,
+            Segments = Model.Segments
+        }); }*@
+
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="black_list_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">შავი სია</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="BlackListModalBody">
+
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">დახურვა</button>
+            </div>*@
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/lib/datatables/datatables.min.js"></script>
+    <script src="~/js/jquery.inputmask.bundle.js"></script>
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/_filials.js"></script>
+
+    <script type="text/javascript">
+
+        function addDays(date, days, hours) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+
+            if (hours || !isNaN(hours)) result.setHours(hours, 0, 0, 0);
+            return result;
+        }
+
+
+        $(function () {
+
+            $('#CampDetailsForm').load('?handler=FillCampaign&s_id=@(Request.Query["s_id"])', function () {
+                $('.camp-params').show();
+                ReBindJS();
+                Section1Text();
+                Section2Text();
+
+                SendMsgTextLabel();
+
+                Section3Text();
+             //   Section4Text();
+
+                Section5Text();
+                Section6Text();
+
+            });
+
+            var _dataTable = $('#my-campaigns').DataTable({
+                "language": {
+                    "search": "ძებნა",
+                    "processing": "მონაცემები იტვირთება",
+                    "zeroRecords": "ჩანაწერი ვერ მოიძებნა",
+                    "emptyTable": "ჩანაწერები ვერ მოიძებნა",
+                    "infoEmpty": "ჩანაწერები ვერ მოიძებნა",
+                    "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+                },
+                "paging": false,
+                "ordering": false,
+                "info": false,
+
+            });
+
+            $("#searchbox").keyup(function () {
+                _dataTable.search(this.value).draw();
+            });
+
+        });
+        $(document).ready(function () {
+            $("#timeint").inputmask("99-9999999");  //static mask
+
+
+        });
+        var isLoaded = 0;
+        function OpenCamp(id) {
+            $('#CampID').val(id);
+            isLoaded = 1;
+            if (id) {
+                $('#CampDetailsForm').load('?handler=FillCampaign&id=' + id, function () {
+                    $('.camp-params').show();
+                    ReBindJS();
+                    Section1Text();
+                    Section2Text();
+
+                    SendMsgTextLabel();
+
+                    Section3Text();
+                 //   Section4Text();
+                    var choosed_fileals = $('#saved_filials').val();
+
+                    if (choosed_fileals.length > 0) {
+                        choosed_fileals = choosed_fileals.split(',');
+                    }
+
+                    Section5Text(choosed_fileals);
+                    Section6Text();
+
+                    //$("#whattogiftConfirm").click();
+                    ////$("#whatcaseConfirm").click();
+                    //$("#wheretoConfirm").click();
+                    //$("#offertextConfirm").click();
+                    //$("#campaignnameConfirm").click();
+                    //$("#whentoConfirm").click();
+
+                    $('html, body').animate({
+                        scrollTop: $(".camp-params").offset().top - $('header').height()
+                    }, 500);
+                    //var selectradio1 = $('#whatcasehedOne').attr('choosen-radio');
+                    //var selectradio = $('#whatcasecolOne').attr('choosen-radio');
+
+                    //if (selectradio1) {
+                    //    $('input[value=' + selectradio1 + ']').click();
+                    //}
+                    //if (selectradio) {
+
+                    //    $('input[value=' + selectradio + ']').click();
+                    //}
+
+                });
+            } else {
+
+                $('#CampDetailsForm').load('?handler=FillCampaign', function () {
+                    $('.camp-params').show();
+                    ReBindJS();
+
+                    SendMsgTextLabel();
+
+
+                    $('html, body').animate({
+                        scrollTop: $(".camp-params").offset().top - $('header').height()
+                    }, 500);
+                });
+
+            }
+        }
+
+        function ReBindBlackList() {
+            blockUI();
+            $('#BlackListModalBody').load('?handler=BlackList', function (res) {
+                document.getElementById("black-list-btn").onchange = function () {
+                    //document.getElementById("black-list-file").submit();
+                    var _form = document.getElementById("black-list-file");
+                    var data = new FormData(_form);
+                    blockUI();
+                    $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: _form.action,
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        timeout: 6000000,
+                        success: function (data) {
+                            $.unblockUI();
+                            $('#black-list-btn').val('');
+                            if (data && data.result && data.result == 200) {
+                                swal("შავი სიის ატვირთვა დასრულდა წარმატებით", "ახალი დამატებული ნომრები:" + data.newPhoneCount +
+                                    "  არავალიდური ნომრები:" + data.badPhoneCount, "success");
+
+
+
+                            }
+                        },
+                        error: function (e) {
+                            $('#black-list-btn').val('');
+                            $.unblockUI();
+                        }
+                    });
+
+                };
+
+                $('#black_list_modal').modal('show');
+
+                $.unblockUI();
+            });
+        }
+
+        function SendMsgTextLabel() {
+            debugger;
+            if ($('input[value=visitcount]').is(':checked') == true) {
+                $('#continueActivity').css('display', 'block');
+
+                var _cash_cnt = parseInt($('#howmuchCash').val());
+                if (isNaN(_cash_cnt)) { _cash_cnt = 0; }
+
+                if (_cash_cnt > 0) {
+                    $('#lblRemindMsgText').text('daxarje kidev {X-jer Y lari} da miiget...');
+                    $('#lblRemindMsgTextKey').text('{X-jer Y lari}');
+                    $('#CampaignsVM_RemindMsgTextKey').val('{X-jer Y lari}');
+                }
+                else {
+                    $('#lblRemindMsgText').text('gvestumret kidev {X-jer} da miiget...');
+                    $('#lblRemindMsgTextKey').text('{X-jer}');
+                    $('#CampaignsVM_RemindMsgTextKey').val('{X-jer}');
+                }
+            } else if ($('#howmuchUnlim').is(':checked') == true) {
+                $('#lblRemindMsgText').text('daxarje kidev {Y lari} da miiget...');
+                $('#lblRemindMsgTextKey').text('{Y lari}');
+                $('#CampaignsVM_RemindMsgTextKey').val('{Y lari}');
+
+                $('#continueActivity').css('display', 'block');
+            }
+            else {
+                $('#lblRemindMsgText').text('');
+                $('#lblRemindMsgTextKey').text('');
+                $('#CampaignsVM_RemindMsgTextKey').val('');
+
+            }
+
+
+
+        }
+
+        function ReBindJS() {
+
+            //Final Variables//
+            var whatcaseFinalCheck = 0;
+            var whentoFinalCheck = 0;
+            var whattoFinalCheck = 0;
+            var offertextFinalCheck = 0;
+            var wheretoFinalCheck = 0;
+            var campaigntextFinalCheck = 0;
+            var whomtoFinalCheck = 0;
+            //End Final Variables//
+            $('#updateBlackList').on('click', function () {
+                ReBindBlackList();
+
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('#visitOnce').on('click', function () {
+                Section2Text();
+            });
+
+            $('#visitUnlim').on('click', function () {
+                Section2Text();
+            });
+
+            $('#m-filial').load('/AjaxPartialModel?handler=Filials', function () {
+
+                var el = $('.vue-identifier').parent();
+                InitializeVueFilials($(el), @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Filials))),
+                    $('#saved_filials').val(),
+                    @*@(!String.IsNullOrEmpty(Model.NewCampaign.PresentLocation) ?
+                        Newtonsoft.Json.JsonConvert.SerializeObject(Model.NewCampaign.PresentLocation.Split(','))
+                        : "null"),*@
+                    Section5Text);
+
+
+                $('#filials-modal').on('show.bs.modal', function (e) {
+
+                    if ($(this).is(e.target)) {
+                        //$(this).prev().css('border-bottom', '1px solid rgba(0,0,0,.125)');
+
+                        if ($('#headingFive').hasClass('confirmed')) {
+
+                            return;
+                        }
+
+                        $('#headingFive').addClass('active');
+
+
+                        $('#headingFive').find('img').attr('src', '/images/edit.png');
+                    }
+                });
+                $('#filials-modal').on('hide.bs.modal', function (e) {
+
+                    if ($(this).is(e.target)) {
+                        //$('#headingFive').css('border-bottom', '0');
+                        if ($('#headingFive').hasClass('confirmed')) { return; }
+
+                        $('#headingFive').removeClass('active');
+                        $('#headingFive').find('img').attr('src', '/images/unchecked-icon.png');
+
+                    }
+                });
+            });
+
+            $("#sms-send-dt").on("keypress", function (event) {
+                event.preventDefault();
+                return false;
+            });
+
+            $("#voucherdateInput").on("keypress", function (event) {
+                event.preventDefault();
+                return false;
+            });
+
+
+            $('#testers-group').load('/AjaxPartialModel?handler=TesterGroups', function () {
+
+            });
+
+
+
+            $('.panel-collapse').on('shown.bs.collapse', function (e) {
+                var $panel = $(this).closest('.panel');
+
+                $('html,body').animate({
+                    scrollTop: $panel.offset().top - $('header').height()
+                }, 500);
+            });
+
+            $("#voucherStartDate").inputmask({ placeholder: '--:--' });
+            $("#voucherEndDate").inputmask({ placeholder: '--:--' });
+
+            $('#btn-send-test-msg').click(function () {
+
+                var data = {
+                    msg: $("textarea[name='NewCampaign.MsgText']").val(),
+                    p_msg: $("textarea[name='NewCampaign.PerformMsgText']").val(),
+                    r_msg: $("textarea[name='NewCampaign.RemindMsgText']").val(),
+                };
+                var form_data = new FormData();
+                form_data.append('msg', data.msg);
+                form_data.append('p_msg', data.p_msg);
+                form_data.append('r_msg', data.r_msg);
+
+                //$.post('', $('form').serialize(), function () {
+                //    alert('Posted using jQuery');
+                //});
+                blockUI();
+
+                $.ajax({
+                    url: this.formAction,
+                    type: 'POST',
+                    dataType: 'json',
+                    headers: {
+                        RequestVerificationToken:
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    data: data
+                }).done(function (result) {
+
+                    $.unblockUI();
+                    if (result && result.result == 200) {
+                        swal(result.resultMsg, "სატესტო შეტყობინება წარმატებით გაიგზავნა", "success")
+                    }
+                    else {
+                        swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                    }
+
+                });
+
+            });
+
+            $('#whento-start').on('apply.daterangepicker', function (ev, picker) {
+
+                $('#whento-start').val(picker.startDate.format('DD/MM/YYYY') + '-' + picker.endDate.format('DD/MM/YYYY'));
+                $('#periodDateStart').val(picker.startDate.format('DD/MM/YYYY'));
+                $('#periodDateEnd').val(picker.endDate.format('DD/MM/YYYY'));
+
+              //  Section4Text(true);
+
+
+                //var _dt_start = moment(picker.startDate);
+                //var _dt_end = moment(picker.endDate);
+
+                //var text = '';
+
+                //text = moment(_dt_start).format('DD MMM YYYY') + ' - ' + moment(_dt_end).format('DD MMM YYYY');
+                //$('#whento-start').val(text);
+            });
+
+
+            $('#whento-start').on('show.daterangepicker', function (ev, picker) {
+                $('#headingFour').addClass('active');
+
+                if (!$('#headingFour').hasClass('confirmed')) {
+                    $("#whentoImg").attr('src', '/images/edit.png');
+                }
+
+            });
+
+            $('#whento-start').on('hide.daterangepicker', function (ev, picker) {
+                $('#headingFour').removeClass('active');
+
+                if (!$('#headingFour').hasClass('confirmed')) {
+                    $("#whentoImg").attr('src', '/images/unchecked-icon.png');
+                }
+
+            });
+
+
+            $('input#voucherdateInput').on('apply.daterangepicker', function (ev, picker) {
+
+                $(this).parents('#colFive').find('#voucherDateStart').val(picker.startDate.format('DD/MM/YYYY'));
+                $(this).parents('#colFive').find('#voucherDateEnd').val(picker.endDate.format('DD/MM/YYYY'));
+
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + '-' + picker.endDate.format('DD/MM/YYYY'));
+
+                Section3Text();
+            });
+
+            var nowDate = new Date();
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1, 0, 0, 0, 0);
+            var _dt = $('#sms-send-dt').val();
+
+            $('#sms-send-dt').daterangepicker({
+                showDropdowns: true,
+                "linkedCalendars": false,
+                autoUpdateInput: false,
+                "timePicker": true,
+                "timePicker24Hour": true,
+                singleDatePicker: true,
+                minDate: addDays(new Date(), 1, 0),
+                "startDate": (_dt.length > 3 ? _dt : addDays(new Date(), 1, 12)),
+                //endDate: moment().startOf('hour').add(32, 'hour'),
+                "locale": {
+                    "format": 'MM.DD.YYYY - kk:mm',
+                    "applyLabel": "არჩევა",
+                    "cancelLabel": "",
+                    "fromLabel": "დან",
+                    "toLabel": "მდე",
+                    "customRangeLabel": "Custom",
+                    "weekLabel": "კვ",
+                    "daysOfWeek": [
+                        "კვ",
+                        "ორშ",
+                        "სამ",
+                        "ოთხ",
+                        "ხუთ",
+                        "პარ",
+                        "შაბ"
+                    ],
+                    "monthNames": [
+                        "იანვარი",
+                        "თებერვალი",
+                        "მარტი",
+                        "აპრილი",
+                        "მაისი",
+                        "ივნისი",
+                        "ივლისი",
+                        "აგვისტო",
+                        "სექტემბერი",
+                        "ოქტომბერი",
+                        "ნოემბერი",
+                        "დეკემბერი"
+                    ],
+                    "firstDay": 1
+                },
+            });
+
+            $('#headingFive').click(function () {
+                $('#filials-modal').modal('show');
+            });
+
+
+            $('input[name="datetimes"]').daterangepicker({
+                "timePicker": true,
+                "timePicker24Hour": true,
+                singleDatePicker: true,
+                startDate: moment().startOf('hour'),
+                endDate: moment().startOf('hour').add(32, 'hour'),
+                locale: {
+                    format: 'M/DD hh:mm A',
+                    applyLabel: 'არჩევა'
+                }
+            });
+
+            $('#sms-send-dt').on('apply.daterangepicker', function (ev, picker) {
+
+                //var d = new Date();
+                //var pzddate = (
+                //    ("00" + d.getDate()).slice(-2) + "/" +
+                //    ("00" + (d.getMonth() + 1)).slice(-2) + "/" +
+                //    d.getFullYear() + " " +
+                //    ("00" + d.getHours()).slice(-2) + ":" +
+                //    ("00" + d.getMinutes()).slice(-2) + ":" +
+                //    ("00" + d.getSeconds()).slice(-2)
+                //);
+
+                //var sdate = (("00" + (d.getMonth() + 1)).slice(-2) + "." +
+                //    ("00" + d.getDate()).slice(-2) + "." +
+                //    d.getFullYear());
+
+                //var edate = (("00" + d.getHours()).slice(-2) + ":" +
+                //    ("00" + d.getMinutes()).slice(-2));
+
+                //var dateCheckStart = $("#sms-send-dt").val();
+
+
+                //var MyDate = new Date();
+
+                //var _start_arr = dateCheckStart.split(" ");
+                //var arr = _start_arr[0];
+                //var _start_arr_1 = arr.split(".");
+                //var start = new Date(_start_arr_1[2], _start_arr_1[0] - 1, _start_arr_1[1]);
+                //if (start.getTime() < MyDate.getTime()) {
+                //    $(this).val(sdate + ' - ' + edate);
+                //    $('#sms-send-dt-hf').val(pzddate);
+
+                //} else {
+                //    $('#sms-send-dt-hf').val(picker.startDate.format('DD/MM/YYYY kk:mm:ss'));
+                //}
+
+
+                picker.element.val(picker.startDate.format('MM.DD.YYYY - kk:mm'));
+                $('#sms-send-dt-hf').val(picker.startDate.format('DD/MM/YYYY kk:mm:ss'));
+
+                Section6Text();
+            });
+
+
+
+            var nowDate = new Date();
+            var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1, 0, 0, 0, 0);
+
+            //DateRangePicker Main
+            $('#whento-start').daterangepicker({
+                showDropdowns: true,
+                "linkedCalendars": false,
+                autoUpdateInput: false,
+                "minDate":today,
+                opens: 'center',
+                drops:'up',
+                "locale": {
+                    "format": 'DD/MM/YYYY',
+                    "applyLabel": "არჩევა",
+                    "cancelLabel": "",
+                    "fromLabel": "დან",
+                    "toLabel": "მდე",
+                    "customRangeLabel": "Custom",
+                    "weekLabel": "კვ",
+                    "daysOfWeek": [
+                        "კვ",
+                        "ორშ",
+                        "სამ",
+                        "ოთხ",
+                        "ხუთ",
+                        "პარ",
+                        "შაბ"
+                    ],
+                    "monthNames": [
+                        "იანვარი",
+                        "თებერვალი",
+                        "მარტი",
+                        "აპრილი",
+                        "მაისი",
+                        "ივნისი",
+                        "ივლისი",
+                        "აგვისტო",
+                        "სექტემბერი",
+                        "ოქტომბერი",
+                        "ნოემბერი",
+                        "დეკემბერი"
+                    ],
+                    "firstDay": 1
+                },
+            });
+
+            $('#voucherdateInput').daterangepicker({
+                showDropdowns: true,
+                opens: 'left',
+                "linkedCalendars": false,
+                autoUpdateInput: false,
+                "locale": {
+                    "format": 'DD/MM/YYYY',
+                    "applyLabel": "არჩევა",
+                    "cancelLabel": "",
+                    "fromLabel": "დან",
+                    "toLabel": "მდე",
+                    "customRangeLabel": "Custom",
+                    "weekLabel": "კვ",
+                    "daysOfWeek": [
+                        "კვ",
+                        "ორშ",
+                        "სამ",
+                        "ოთხ",
+                        "ხუთ",
+                        "პარ",
+                        "შაბ"
+                    ],
+                    "monthNames": [
+                        "იანვარი",
+                        "თებერვალი",
+                        "მარტი",
+                        "აპრილი",
+                        "მაისი",
+                        "ივნისი",
+                        "ივლისი",
+                        "აგვისტო",
+                        "სექტემბერი",
+                        "ოქტომბერი",
+                        "ნოემბერი",
+                        "დეკემბერი"
+                    ],
+                    "firstDay": 1
+                },
+            });
+
+
+            var text_max = 146;
+
+
+            var count_message_max = $('#text').val().length > 0 ? 146 - $('#text').val().length : 146;
+            var count_message1_max = $('#remind-msg-text').val().length > 0 ? 146 - $('#remind-msg-text').val().length : 146;
+            var count_message2_max = $('#text2').val().length > 0 ? 146 - $('#text2').val().length : 146;
+
+
+            $('#count_message').html(count_message_max + ' / 146');
+            $('#count_message1').html(count_message1_max + ' / 146');
+            $('#count_message2').html(count_message2_max + ' / 146');
+
+
+            $('#text').keyup(function () {
+                var text_length = $('#text').val().length;
+                var text_remaining = text_max - text_length;
+                $('#count_message').html(text_remaining + ' / 146');
+
+                Section6Text();
+            });
+
+            $('#remind-msg-text').keyup(function () {
+                var text_length = $('#remind-msg-text').val().length + $('#remind-msg-text2').val().length;
+                var text_remaining = text_max - text_length;
+                $('#count_message1').html(text_remaining + ' / 146');
+
+                Section6Text();
+            });
+
+            $('#remind-msg-text2').keyup(function () {
+                var text_length = $('#remind-msg-text').val().length + $('#remind-msg-text2').val().length;
+                var text_remaining = text_max - text_length;
+                $('#count_message1').html(text_remaining + ' / 146');
+
+                Section6Text();
+            });
+
+            $('#text2').keyup(function () {
+                var text_length = $('#text2').val().length;
+                var text_remaining = text_max - text_length;
+                $('#count_message2').html(text_remaining + ' / 146');
+
+                Section6Text();
+            });
+
+            $("#text").on("keypress", function (event) {
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+                var key = String.fromCharCode(event.which);
+
+                if (this.value.length >= 146) {
+                    return false;
+                }
+
+                if (event.keyCode == 8 || event.keyCode == 91 || event.keyCode == 93 || event.keyCode == 37 || event.keyCode == 44 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 41 || event.keyCode == 33 || englishAlphabetAndWhiteSpace.test(key)) {
+                    return true;
+                }
+                return false;
+            });
+
+            $('#text').on("paste", function (e, item) {
+
+                if (e.originalEvent.clipboardData.getData('text').length + e.target.value.length > 146) {
+                    e.preventDefault();
+                    return false;
+                }
+                var copied_data = e.originalEvent.clipboardData.getData('text');
+
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+
+                for (var i = 0, length = copied_data.length; i < length; i++) {
+                    var key = copied_data.charAt(i);
+
+                    if (!englishAlphabetAndWhiteSpace.test(key)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+
+            $("#remind-msg-text").on("keypress", function (event) {
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+                var key = String.fromCharCode(event.which);
+
+                if (this.value.length + $("#remind-msg-text2").val().length >= 146) {
+                    return false;
+                }
+
+                if (event.keyCode == 8 || event.keyCode == 91 || event.keyCode == 93 || event.keyCode == 37 || event.keyCode == 44 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 41 || event.keyCode == 33 || englishAlphabetAndWhiteSpace.test(key)) {
+                    return true;
+                }
+                return false;
+            });
+
+            $("#remind-msg-text2").on("keypress", function (event) {
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+                var key = String.fromCharCode(event.which);
+
+                if (this.value.length + $("#remind-msg-text").val().length >= 146) {
+                    return false;
+                }
+
+                if (event.keyCode == 8 || event.keyCode == 91 || event.keyCode == 93 || event.keyCode == 37 || event.keyCode == 44 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 41 || event.keyCode == 33 || englishAlphabetAndWhiteSpace.test(key)) {
+                    return true;
+                }
+                return false;
+            });
+
+
+            $('#remind-msg-text').on("paste", function (e, item) {
+
+                if (e.originalEvent.clipboardData.getData('text').length + e.target.value.length + $('#remind-msg-text2').val().length > 146) {
+                    e.preventDefault();
+                    return false;
+                }
+                var copied_data = e.originalEvent.clipboardData.getData('text');
+
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+
+                for (var i = 0, length = copied_data.length; i < length; i++) {
+                    var key = copied_data.charAt(i);
+
+                    if (!englishAlphabetAndWhiteSpace.test(key)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+
+            $('#remind-msg-text2').on("paste", function (e, item) {
+
+                if (e.originalEvent.clipboardData.getData('text').length + e.target.value.length + $('#remind-msg-text').val().length > 146) {
+                    e.preventDefault();
+                    return false;
+                }
+                var copied_data = e.originalEvent.clipboardData.getData('text');
+
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+
+                for (var i = 0, length = copied_data.length; i < length; i++) {
+                    var key = copied_data.charAt(i);
+
+                    if (!englishAlphabetAndWhiteSpace.test(key)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+
+            $("#text2").on("keypress", function (event) {
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+                var key = String.fromCharCode(event.which);
+
+                if (this.value.length >= 146) {
+                    return false;
+                }
+
+                if (event.keyCode == 8 || event.keyCode == 91 || event.keyCode == 93 || event.keyCode == 37 || event.keyCode == 44 || event.keyCode == 39 || event.keyCode == 40 || event.keyCode == 41 || event.keyCode == 33 || englishAlphabetAndWhiteSpace.test(key)) {
+                    return true;
+                }
+                return false;
+            });
+            $('#text2').on("paste", function (e, item) {
+
+                if (e.originalEvent.clipboardData.getData('text').length + e.target.value.length > 146) {
+                    e.preventDefault();
+                    return false;
+                }
+                var copied_data = e.originalEvent.clipboardData.getData('text');
+
+                var englishAlphabetAndWhiteSpace = /^[-@@./#&+\w\s]*$/;
+
+                for (var i = 0, length = copied_data.length; i < length; i++) {
+                    var key = copied_data.charAt(i);
+
+                    if (!englishAlphabetAndWhiteSpace.test(key)) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }
+            });
+
+            //$('#text').on('keyup', function (event) {
+            //    this.value = this.value.replace(/[^a-z0-9<>.,!# &*()-+"'?;%$]/i, "");
+            //});
+            //$('#remind-msg-text').on('keyup', function (event) {
+            //    this.value = this.value.replace(/[^a-z0-9<>.,!# &*()-+"'?;%$]/i, "");
+            //});
+            //$('#text2').on('keyup', function (event) {
+            //    this.value = this.value.replace(/[^a-z0-9<>.,!# &*()-+"'?;%$]/i, "");
+            //});
+
+            //$('#text').keyup(function () {
+            //    var text_length = $('#text').val().length;
+            //    var text_remaining = text_max - text_length;
+            //    //if (this.value.indexOf('SMS OFF 95552 | ') !== 0) {
+            //    //    this.value = 'SMS OFF 95552 | ';
+            //    //}
+            //    $('#count_message').html(text_remaining + ' / 146');
+            //});
+
+            //$('#remind-msg-text').keyup(function () {
+            //    var text_length = $('#remind-msg-text').val().length;
+            //    var text_remaining = text_max - text_length;
+            //    //if (this.value.indexOf('SMS OFF 95552 | ') !== 0) {
+            //    //    this.value = 'SMS OFF 95552 | ';
+            //    //}
+            //    $('#count_message1').html(text_remaining + ' / 146');
+            //});
+            //$('#text2').keyup(function () {
+            //    var text_length = $('#text2').val().length;
+            //    var text_remaining = text_max - text_length;
+            //    //if (this.value.indexOf('SMS OFF 95552 | ') !== 0) {
+            //    //    this.value = 'SMS OFF 95552 | ';
+            //    //}
+            //    $('#count_message2').html(text_remaining + ' / 146');
+            //});
+
+            //editIcons
+            //$("#btnOne").click(function () {
+            //    debugger
+
+            //    if (whomtoFinalCheck == 0) {
+            //    if ($(this).hasClass('btnOpen')) {
+            //        $("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //        $(this).removeClass('btnOpen');
+            //    } else {
+            //        $("#whomtoImg").attr('src', '/images/edit.png');
+            //        $(this).addClass('btnOpen');
+            //        if (isLoaded == 0) {
+            //            $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //        }
+            //        }
+            //    }
+            //});
+
+            //$("#btnTwo").click(function () {
+            //    if (whattoFinalCheck == 0) {
+            //    if ($(this).hasClass('btnOpen')) {
+            //        $("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //        $(this).removeClass('btnOpen');
+            //    } else {
+            //        $("#whattogiftImg").attr('src', '/images/edit.png');
+            //        $(this).addClass('btnOpen');
+            //        if (isLoaded == 0) {
+            //            $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //            $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //        }
+            //    }
+            //    }
+            //});
+            //$("#btnThree").click(function () {
+            //    if (whatcaseFinalCheck == 0) {
+            //        if ($(this).hasClass('btnOpen')) {
+            //            $("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //            $(this).removeClass('btnOpen');
+            //        } else {
+            //            $("#whatcaseImg").attr('src', '/images/edit.png');
+            //            $(this).addClass('btnOpen');
+            //            if (isLoaded == 0) {
+            //                $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //            }
+            //        }
+            //    }
+            //});
+
+            //$("#btnFour").click(function () {
+            //    debugger
+            //    $('#whento-start').focus();
+            //    if (whentoFinalCheck == 0) {
+            //        if ($(this).hasClass('btnOpen')) {
+            //            $("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //            $(this).removeClass('btnOpen');
+            //        } else {
+            //            $("#whentoImg").attr('src', '/images/edit.png');
+            //            $(this).addClass('btnOpen');
+            //            if (isLoaded == 0) {
+            //                $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //            }
+            //        }
+            //    }
+            //});
+            //$("#btnFive").click(function () {
+            //    if (wheretoFinalCheck == 0) {
+            //        if ($(this).hasClass('btnOpen')) {
+            //            $("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //            $(this).removeClass('btnOpen');
+            //        } else {
+            //            $("#wheretoImg").attr('src', '/images/edit.png');
+            //            $(this).addClass('btnOpen');
+            //            if (isLoaded == 0) {
+            //                $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //            }
+            //        }
+            //    }
+            //});
+            //$("#btnSix").click(function () {
+            //    if (offertextFinalCheck == 0) {
+            //        if ($(this).hasClass('btnOpen')) {
+            //            $("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //            $(this).removeClass('btnOpen');
+            //        } else {
+            //            $("#offertextImg").attr('src', '/images/edit.png');
+            //            $(this).addClass('btnOpen');
+            //            if (isLoaded == 0) {
+            //                $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSeven').find("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //            }
+            //        }
+            //    }
+            //});
+            //$("#btnSeven").click(function () {
+            //    if (campaigntextFinalCheck == 0) {
+            //        if ($(this).hasClass('btnOpen')) {
+            //            $("#campaignnameImg").attr('src', '/images/unchecked-icon.png');
+            //            $(this).removeClass('btnOpen');
+            //        } else {
+            //            $("#campaignnameImg").attr('src', '/images/edit.png');
+            //            $(this).addClass('btnOpen');
+            //            if (isLoaded == 0) {
+            //                $('#btnOne').find("#whomtoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnThree').find("#whatcaseImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFour').find("#whentoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnFive').find("#wheretoImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnSix').find("#offertextImg").attr('src', '/images/unchecked-icon.png');
+            //                $('#btnTwo').find("#whattogiftImg").attr('src', '/images/unchecked-icon.png');
+            //            }
+            //        }
+            //    }
+            //});
+
+            //Collapse
+
+
+            $('.panel-collapse').on('show.bs.collapse', function (e) {
+                if ($(this).is(e.target)) {
+                    $(this).siblings('.panel-heading').addClass('active');
+                }
+
+            });
+
+            $('.panel-collapse').on('hide.bs.collapse', function (e) {
+                if ($(this).is(e.target)) {
+                    $(this).siblings('.panel-heading').removeClass('active');
+                }
+
+            });
+
+
+            //trash
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy'
+            }
+            );
+            $('.example-enableCaseInsensitiveFiltering').multiselect({
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 250
+            });
+
+            $(".inner-collapse").click(function () {
+                if ($(".inner-collapse").hasClass('active')) {
+                    $(".inner-collapse").removeClass('active');
+                    $(this).addClass('active');
+                    $("#headingThree").addClass('active');
+
+                } else {
+                    $(this).addClass('active');
+                    $("#headingThree").addClass('active');
+
+                }
+            });
+
+            $(".inner-collapse-2").click(function () {
+                if ($(".inner-collapse-2").hasClass('active')) {
+                    $(".inner-collapse-2").removeClass('active');
+                    $(this).addClass('active');
+                    $("#headingTwo").addClass('active');
+
+                } else {
+                    $(this).addClass('active');
+                    $("#headingTwo").addClass('active');
+
+                }
+            });
+
+            //WhattogiftAppendText
+            $(".inner-collapse-whattogift").click(function () {
+                //Sandro logika ver gavige
+
+                //var whattogiftText = $(this).find('.collapse-head').text();
+                //$("#whattogiftHead").text("");
+                //$("#whattogiftContent").text("");
+
+            });
+            //WhatCaseAppendText
+            $(".inner-collapse-whatcase").click(function () {
+                Section2Text();
+                SendMsgTextLabel();
+            });
+
+
+
+            //whattogift>voucher
+            $("#voucherradioCash").click(function () {
+                Section3Text();
+                //$(this).addClass("radiosel");
+                //$("#voucherradioPercent").removeClass("radiosel");
+                //var voucherCash = $(this).val();
+                //$("#whattogiftContent").text("");
+                $('#voucherInput').attr("placeholder", "მიუთითეთ ₾");
+                $('#voucherInput').attr("name", "NewCampaign.ActionCashVaucher");
+
+            });
+            $("#voucherradioPercent").click(function () {
+                Section3Text();
+                //$(this).addClass("radiosel");
+                //$("#voucherradioCash").removeClass("radiosel");
+                //var voucherPercent = $(this).val();
+                //$("#whattogiftContent").text("");
+                $('#voucherInput').attr("placeholder", "მიუთითეთ %");
+                $('#voucherInput').attr("name", "NewCampaign.ActionCashVaucherPercent");
+            });
+
+            $('#voucherInput').keyup(function () {
+                Section3Text();
+            });
+
+            $('#voucherdateInput').on('change', function () {
+                Section3Text();
+            });
+
+            $("input[name='CampaignsVM.voucherch']").change(function () {
+                Section3Text();
+            });
+            $("input[name='NewCampaign.ActionCashVaucher']").keyup(function () {
+                Section3Text();
+            });
+
+
+            //whattogift>sale
+            $("#radioCash").click(function () {
+                $(this).addClass("radiosel");
+                $("#radioPercent").removeClass("radiosel");
+                //var radioCash = $(this).val();
+                //$("#whattogiftContent").text(radioCash);
+
+            });
+            $("#radioPercent").click(function () {
+                $(this).addClass("radiosel");
+                $("#radioCash").removeClass("radiosel");
+                //var radioPercent = $(this).val();
+                //$("#whattogiftContent").text(radioPercent);
+            });
+
+
+
+            $('#saleInput').keyup(function () {
+                Section3Text();
+            });
+
+            //whattogift>points
+            $("#pointradioNum").click(function () {
+                Section3Text();
+                //$(this).addClass("radiosel");
+                //$("#pointradioNumX").removeClass("radiosel");
+                //var pointNum = $(this).val();
+                //$("#whattogiftContent").text("");
+                $('#pointInput').attr("name", "NewCampaign.ActionBonusFix");
+
+            });
+            $("#pointradioNumX").click(function () {
+                Section3Text();
+                //$(this).addClass("radiosel");
+                //$("#pointradioNum").removeClass("radiosel");
+                //var pointnumX = $(this).val();
+                //$("#whattogiftContent").text("");
+                $('#pointInput').attr("name", "NewCampaign.ActionBonusPercent");
+            });
+
+            $('#pointInput').keyup(function () {
+                Section3Text();
+            });
+
+            $('#CampaignsVM_selectradio').on('click', function () {
+                $("#radioPercent").attr("checked", "checked");
+            });
+            //whattogift>product
+            $('#productName').on('keyup', function () {
+                Section3Text();
+            });
+            $('#productQuantity').keyup(function () {
+                Section3Text();
+            });
+            //whattogift Confirm Button
+            //$("#whattogiftConfirm").click(function () {
+
+            //});
+
+            $('#howmuchCash').keyup(function () {
+                Section2Text();
+                SendMsgTextLabel();
+            });
+
+            $("input[name='CampaignsVM.selectradio']").change(function () {
+                Section3Text();
+            });
+
+
+            //whatcase>visitcount
+            $("#visitOnce").click(function () {
+                Section2Text();
+
+            });
+
+            $("#visitUnlim").click(function () {
+                Section2Text();
+            });
+
+
+            //whatcase>accordingtospent
+            $("#howmuchOnce").click(function () {
+                Section2Text();
+                SendMsgTextLabel();
+                //var howmuchCash = $("#howmuchshouldSpend").val();
+                //$("#whatcasetoContent").text(howmuchCash + " ლარი " + duration);
+
+            });
+
+            $("#howmuchUnlim").click(function () {
+                Section2Text();
+                SendMsgTextLabel();
+            });
+
+            $("#giftfreqOnce").click(function () {
+                Section2Text();
+            });
+            $("#giftfreqUnlim").click(function () {
+                Section2Text();
+            });
+
+            //whatcase>timeinterval
+            $('#timeInterval').on('click', function () {
+
+                Section2Text();
+            });
+
+            $('#whatcasecolThree .btn-group').find('input').on('change', function () {
+                Section2Text();
+            });
+
+            $('#howmuchVisits').change(function () {
+                Section2Text();
+                SendMsgTextLabel();
+            });
+
+            $('#howmuchshouldSpend').keyup(function () {
+                Section2Text();
+            });
+
+            $('#voucherStartDate').keyup(function () {
+                Section2Text();
+            });
+
+            $('#voucherEndDate').keyup(function () {
+                Section2Text();
+            });
+
+
+            //whatcase>withoutany
+            $(".withoutany").click(function () {
+                $("#whatcasetoContent").text(" ");
+            });
+            //whatcase Confirm Button
+            //$("#whatcaseConfirm").click(function () {
+
+            //});
+
+            //whento Confirm
+            $("#whentoConfirm").click(function () {
+
+                Section4Text();
+
+
+
+                //var whentoStart = $('#whento-start').val();
+
+                //var dateCheckStart = $("#periodDateStart").val();
+                //var dateCheckEnd = $("#periodDateEnd").val();
+
+                //var MyDate = new Date();
+
+                //var _start_arr = dateCheckStart.split("/");
+
+                //var start = new Date(_start_arr[2], _start_arr[1] - 1, _start_arr[0]);
+
+                //if ($("#periodDateStart").val() == "" || $("#periodDateEnd").val() == "") {
+                //    swal("გთხოვთ, მიუთითოთ აქციის პერიოდი");
+                //}
+                //else if ($("#periodDateStart").val().length <= 0 || $("#periodDateEnd").val().length <= 0) {
+                //    swal("გთხოვთ, მიუთითოთ აქციის პერიოდი");
+                //}
+                //else if (isLoaded != 1 && start.getTime() < MyDate.getTime()) {
+                //    swal("გთხოვთ, აირჩიოთ მომავალი პერიოდი.");
+                //}
+                //else {
+
+                //    //$('#btnFive').removeClass('disabled');
+                //    //$('#btnFour').addClass('disabled');
+                //}
+
+            });
+
+            //whereto Confirm
+            $("#wheretoConfirm").click(function () {
+
+
+                //$('#btnSix').removeClass('disabled');
+                //$('#btnFive').addClass('disabled');
+            });
+
+            $("#btnSix").click(function () {
+                SendMsgTextLabel();
+            });
+
+
+            //campaignname Confirm
+            $("#campaignnameConfirm").click(function () {
+
+                var campaignTitle = $("#campaignnameTitle").val();
+                if (campaignTitle == "") {
+                    swal("გთხოვთ, შეიყვანოთ კამპანიის დასახელება.");
+                } else if ($("#campaignnameTitle").val().length >= 255) {
+                    swal("სათაური არ შეიძლება იყოს 155 სიმბოლოზე მეტი.");
+                }
+                else {
+                    $('#collapseSeven').removeClass('show');
+                    $('#campaignnameHead').text(campaignTitle);
+                    $('#campaignnameImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseSeven').siblings('.panel-heading').removeClass('active');
+                    campaigntextFinalCheck = 1;
+                    //$('#btnSeven').addClass('disabled');
+                }
+            });
+
+
+            $("#campaignnameTitle").keyup(function () {
+                var campaignTitle = $("#campaignnameTitle").val();
+                $('#campaignnameHead').text(campaignTitle);
+            });
+
+            $('.section1-collapse.collapse').on('show.bs.collapse', function (e) {
+                if ($(this).is(e.target)) {
+                    $(this).prev().css('border-bottom', '1px solid rgba(0,0,0,.125)');
+
+                    if ($(this).prev().hasClass('confirmed')) {
+
+                        return;
+                    }
+
+                    $(this).prev().addClass('active');
+
+
+                    $(this).prev().find('img').attr('src', '/images/edit.png');
+                }
+            });
+
+            $('.section1-collapse.collapse').on('hide.bs.collapse', function (e) {
+                if ($(this).is(e.target)) {
+                    $(this).prev().css('border-bottom', '0');
+                    if ($(this).prev().hasClass('confirmed')) { return; }
+
+                    $(this).prev().removeClass('active');
+                    $(this).prev().find('img').attr('src', '/images/unchecked-icon.png');
+
+                }
+            });
+
+
+
+
+
+
+
+
+
+            //whomto Confirm
+
+            //$("#whomtoConfirm").click(function () {
+            //    var cnt = $("#NewCampaign_SegmentID").find(":selected").text().split(':')[0];
+            //    var whomtoQuant = parseInt($("#whomtoQuant").val());
+            //    if ($("#whomtoQuant").val() === "" || whomtoQuant == 0) {
+            //        swal("გთხოვთ, მიუთითოთ მომხმარებელთა სასურველი რაოდენობა");
+
+            //    } else if ($("#whomtoQuant").val() === "" || whomtoQuant < 0) {
+            //        swal("უარყოფითი რიცხვის დაფიქსირება შეუძლებელია");
+            //    }
+            //    else if ($('#NewCampaign_SegmentID').val() === "0") {
+            //        swal("გთხოვთ, აირჩიოთ სასურველი სეგმენტი.");
+            //    } else if (isNaN(cnt) || whomtoQuant > cnt) {
+            //        swal("რაოდენობა სეგმენტში არსებულზე მეტი არ უნდა იყოს");
+            //    }
+            //    else {
+            //        //$('#collapseOne').removeClass('show');
+
+            //        Section1Text();
+
+            //        $('#whomtoImg').attr('src', '/images/checked-icon.png');
+            //        $('#collapseOne').siblings('.panel-heading').removeClass('active');
+            //        whomtoFinalCheck = 1;
+            //        //$('#btnTwo').removeClass('disabled');
+            //        //$('#btnOne').addClass('disabled');
+            //    }
+            //});
+
+            $('#whomtoQuant').keyup(function () {
+                Section1Text();
+            });
+
+            $('#NewCampaign_SegmentID').change(function () {
+                Section1Text();
+            });
+
+
+            //Save Confirm Button
+
+            $('#save-newsegment').click(function (evt) {
+
+
+                if ($('#NewCampaign_ChampName').val().length == 0) {
+                    swal('გთხოვთ, დაასათაუროთ აქცია', '', "warning");
+                    return;
+                }
+
+
+                //Variables for Validation
+                var whomToQuantCheck = parseInt($("#whomtoQuant").val());
+                var whattogiftInnerSelectCheck = $('input[name=selectedradio]:checked').val();
+
+                //Validation Logic Start
+                //if (whatcaseFinalCheck === 0 || whentoFinalCheck === 0 || whattoFinalCheck === 0 || offertextFinalCheck === 0 ||
+                //    wheretoFinalCheck === 0 || campaigntextFinalCheck === 0 || whomtoFinalCheck === 0) {
+                //    console.log("ერორია ძმაო");
+                //}
+                //else {
+                evt.preventDefault();
+
+                var data = $('form').serialize();
+                var camp_id = $('#camp_id').val();
+
+                if (camp_id) {
+                    data = data + '&NewCampaign.CampID=' + camp_id;
+                }
+
+                //var filials = $('#merchant_list').val();
+                var filials = $('#saved_filials').val();
+
+                data = data + '&NewCampaign.PresentLocation=' + filials;
+
+                blockUI();
+
+                $.ajax({
+                    url: '/Campaigns',
+                    type: 'POST',
+                    //contentType: 'application/json',
+                    headers: {
+                        RequestVerificationToken:
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    data: data
+                }).done(function (result) {
+
+                    $.unblockUI();
+                    if (result && result.result == 200) {
+                        location.reload();
+                    }
+                    else {
+                        swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                    }
+
+                });
+
+                //$.post('', data, function (result) {
+                //    $.unblockUI();
+
+                //    if (result && result.result == 200) {
+                //        location.reload();
+                //    }
+                //    else {
+                //        //showError
+                //    }
+
+                //});
+                //}
+
+
+
+            });
+
+            $('#submit-newsegment').click(function (evt) {
+
+                if ($('#NewCampaign_ChampName').val().length == 0) {
+                    swal('გთხოვთ, დაასათაუროთ აქცია', '', "warning");
+                    return;
+                }
+
+                var whomToQuantCheck = parseInt($("#whomtoQuant").val());
+                var whattogiftInnerSelectCheck = $('input[name=selectedradio]:checked').val();
+
+
+                evt.preventDefault();
+
+                var data = $('form').serialize();
+                var camp_id = $('#camp_id').val();
+
+                if (camp_id) {
+                    data = data + '&NewCampaign.CampID=' + camp_id;
+                }
+
+                //var filials = $('#merchant_list').val();
+                var filials = $('#saved_filials').val();
+
+                data = data + '&NewCampaign.PresentLocation=' + filials;
+
+                blockUI();
+
+                $.ajax({
+                    url: '/Campaigns?handler=StartCampaign',
+                    type: 'POST',
+                    //contentType: 'application/json',
+                    headers: {
+                        RequestVerificationToken:
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                    },
+                    data: data
+                }).done(function (result) {
+                    debugger
+                    $.unblockUI();
+                    if (result && result.result == 200) {
+                        location.reload();
+                    }
+                    else {
+                        OpenCamp(result.id);
+                        swal('დაფიქსირდა შეცდომა', result.resultMsg, "error")
+                    }
+
+                });
+
+                //$.post('', data, function (result) {
+                //    $.unblockUI();
+
+                //    if (result && result.result == 200) {
+                //        location.reload();
+                //    }
+                //    else {
+                //        //showError
+                //    }
+
+                //});
+                //}
+
+
+
+            });
+
+
+            //End Save Confirm Button
+
+            //START___TIMERANGEPICKER
+            $('.timerange').on('click', function (e) {
+
+                if ($(this).hasClass("timerangeopen")) {
+                    console.log("Already Open");
+                } else {
+                    e.stopPropagation();
+                    var input = $(this).find('input');
+
+                    var now = new Date();
+                    var hours = now.getHours();
+                    if (hours < 24) {
+                    } else {
+                        hours = hours - 23;
+                    }
+                    var minutes = now.getMinutes();
+
+                    var range = {
+                        from: {
+                            hour: hours,
+                            minute: minutes,
+                        },
+                        to: {
+                            hour: hours,
+                            minute: minutes,
+                        }
+                    };
+
+                    if (input.val() !== "") {
+                        var timerange = input.val();
+                        var matches = timerange.match(/([0-9]{2}):([0-9]{2}) ([0-9]{2}):([0-9]{2})/);
+                        if (matches.length === 5) {
+                            range = {
+                                from: {
+                                    hour: matches[1],
+                                    minute: matches[2],
+                                },
+                                to: {
+                                    hour: matches[3],
+                                    minute: matches[4],
+                                }
+                            }
+                        }
+                    };
+
+                    var html = '<div class="timerangepicker-container">' +
+                        '<div class="timerangepicker-from">' +
+                        '<label class="timerangepicker-label">დან:</label>' +
+                        '<div class="timerangepicker-display hour">' +
+                        '<span class="increment fa fa-angle-up"></span>' +
+                        '<span class="value">' + ('0' + range.from.hour).substr(-2) + '</span>' +
+                        '<span class="decrement fa fa-angle-down"></span>' +
+                        '</div>' +
+                        ':' +
+                        '<div class="timerangepicker-display minute">' +
+                        '<span class="increment fa fa-angle-up"></span>' +
+                        '<span class="value">' + ('0' + range.from.minute).substr(-2) + '</span>' +
+                        '<span class="decrement fa fa-angle-down"></span>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="timerangepicker-to">' +
+                        '<label class="timerangepicker-label">მდე:</label>' +
+                        '<div class="timerangepicker-display hour">' +
+                        '<span class="increment fa fa-angle-up"></span>' +
+                        '<span class="value">' + ('0' + range.to.hour).substr(-2) + '</span>' +
+                        '<span class="decrement fa fa-angle-down"></span>' +
+                        '</div>' +
+                        ':' +
+                        '<div class="timerangepicker-display minute">' +
+                        '<span class="increment fa fa-angle-up"></span>' +
+                        '<span class="value">' + ('0' + range.to.minute).substr(-2) + '</span>' +
+                        '<span class="decrement fa fa-angle-down"></span>' +
+                        '</div>' +
+                        ':' +
+                        '<div class="timerangepicker timepickersubmit">' +
+                        '<a id="timepickersubmit">არჩევა</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                    $(html).insertAfter(this);
+                    $('.timerangepicker-container').on(
+                        'click',
+                        '.timerangepicker-display.hour .increment',
+                        function () {
+                            var value = $(this).siblings('.value');
+                            value.text(
+                                increment(value.text(), 24, 1, 2)
+                            );
+                        }
+                    );
+
+                    $('.timerangepicker-container').on(
+                        'click',
+                        '.timerangepicker-display.hour .decrement',
+                        function () {
+                            var value = $(this).siblings('.value');
+                            value.text(
+                                decrement(value.text(), 24, 1, 2)
+                            );
+                        }
+                    );
+
+                    $('.timerangepicker-container').on(
+                        'click',
+                        '.timerangepicker-display.minute .increment',
+                        function () {
+                            var value = $(this).siblings('.value');
+                            value.text(
+                                increment(value.text(), 59, 0, 2)
+                            );
+                        }
+                    );
+
+                    $('.timerangepicker-container').on(
+                        'click',
+                        '.timerangepicker-display.minute .decrement',
+                        function () {
+                            var value = $(this).siblings('.value');
+                            value.text(
+                                decrement(value.text(), 24, 1, 2)
+                            );
+                        }
+                    );
+
+                    $(".timepickersubmit").click(function () {
+                        if (!$(e.target).closest('.timerangepicker-container').length) {
+                            if ($('.timerangepicker-container').is(":visible")) {
+                                var timerangeContainer = $('.timerangepicker-container');
+                                if (timerangeContainer.length > 0) {
+                                    var timeRange = {
+                                        from: {
+                                            hour: timerangeContainer.find('.value')[0].innerText,
+                                            minute: timerangeContainer.find('.value')[1].innerText,
+
+                                        },
+                                        to: {
+                                            hour: timerangeContainer.find('.value')[2].innerText,
+                                            minute: timerangeContainer.find('.value')[3].innerText,
+                                        },
+                                    };
+
+                                    timerangeContainer.parent().find('input').val(
+                                        timeRange.from.hour + ":" +
+                                        timeRange.from.minute + " " +
+                                        timeRange.to.hour + ":" +
+                                        timeRange.to.minute + " "
+                                    );
+                                    var finaltimeStart = timeRange.from.hour + ":" + timeRange.from.minute;
+                                    var finaltimeEnd = timeRange.to.hour + ":" + timeRange.to.minute;
+                                    $("#voucherStartDate").val(finaltimeStart);
+                                    $("#voucherEndDate").val(finaltimeEnd);
+                                    timerangeContainer.remove();
+                                    $(".timerange").removeClass("timerangeopen");
+                                }
+                            } else {
+
+                            }
+                        }
+                    });
+                }
+                $(this).addClass("timerangeopen");
+            });
+
+
+
+            //$('.multiselect-native-select .multiselect-container input[type="checkbox"]').click(function (ev) {
+            //    if (this.value == '0' && this.checked) {
+            //        $('.multiselect-native-select .multiselect-container input[type="checkbox"]').each(function (ind, item) {
+            //            if (item.value != '0') {
+            //                item.checked = false;
+            //                $(item).closest('li').removeClass('active');
+            //            }
+            //        });
+            //    }
+
+            //    if (this.value != '0' && this.checked) {
+            //        $('.multiselect-native-select .multiselect-container input[type="checkbox"]').each(function (ind, item) {
+            //            if (item.value == '0') {
+            //                item.checked = false;
+            //                $(item).closest('li').removeClass('active');
+            //                return;
+            //            }
+            //        });
+            //    }
+            //});
+
+
+
+            function increment(value, max, min, size) {
+                var intValue = parseInt(value);
+                if (intValue == max) {
+                    return ('0' + min).substr(-size);
+                } else {
+                    var next = intValue + 1;
+                    return ('0' + next).substr(-size);
+                }
+            }
+
+            function decrement(value, max, min, size) {
+                var intValue = parseInt(value);
+                if (intValue == min) {
+                    return ('0' + max).substr(-size);
+                } else {
+                    var next = intValue - 1;
+                    return ('0' + next).substr(-size);
+                }
+            }
+            //END___TIMERANGEPICKER
+
+        }
+
+        function Section1Text() {
+            $('#collapseOne').siblings('.panel-heading').removeClass('confirmed');
+
+            var cnt = $("#NewCampaign_SegmentID").find(":selected").text().split(':')[0];
+            var whomtoQuant = parseInt($("#whomtoQuant").val());
+            if ($('#NewCampaign_SegmentID').val() === "0") {
+                $('#section-1-error').html('გთხოვთ, აირჩიოთ სასურველი სეგმენტი.');
+                $('#section-1-error').show();
+
+            } else if ($("#whomtoQuant").val() === "" || whomtoQuant < 0) {
+                $('#section-1-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                $('#section-1-error').show();
+            }
+            else if ($("#whomtoQuant").val() === "" || whomtoQuant == 0) {
+
+                $('#section-1-error').html('გთხოვთ, მიუთითოთ მომხმარებელთა სასურველი რაოდენობა');
+                $('#section-1-error').show();
+            } else if (isNaN(cnt) || whomtoQuant > cnt) {
+                $('#section-1-error').html('რაოდენობა სეგმენტში არსებულზე მეტი არ უნდა იყოს');
+                $('#section-1-error').show();
+            }
+            else {
+                //$('#collapseOne').removeClass('show');
+
+                $('#section-1-error').hide();
+
+                $('#whomtoImg').attr('src', '/images/checked-icon.png');
+                $('#collapseOne').siblings('.panel-heading').removeClass('active');
+                $('#collapseOne').siblings('.panel-heading').addClass('confirmed');
+                whomtoFinalCheck = 1;
+
+                var t = $("#NewCampaign_SegmentID").find(":selected").text();
+
+                $('#whomtoHead').text(t);
+                $('#whomtoContent').text(whomtoQuant + " მომხმარებელი");
+
+            }
+
+
+
+        }
+
+
+        function Section2Text() {
+
+            $('#collapseThree').siblings('.panel-heading').removeClass('confirmed');
+
+            if ($('#whatcasehedOne').hasClass('active')) {
+
+                var howmuchCash = $("#howmuchCash").val();
+                var howmuchVisits = $("#howmuchVisits").val();
+
+
+                if (howmuchCash == 0) {
+                    $("#whatcasetoHead").text("გვესტუმრეთ " + howmuchVisits + "-ჯერ და მიიღეთ...");
+                } else if (howmuchCash > 0) {
+                    $("#whatcasetoHead").text("დახარჯეთ " + howmuchCash + " ლარი " + howmuchVisits + "-ჯერ და მიიღეთ...");
+                }
+
+            }
+
+            if ($('input[value=upirobod]').is(':checked')) {
+                $("#whatcasetoHead").text("უპირობოდ");
+
+            }
+
+            if ($('#whatcasehedTwo').hasClass('active')) {
+                var howmuchShouldSpend = $("#howmuchshouldSpend").val();
+
+
+                if ($('#howmuchOnce').is(':checked')) {
+                    $("#whatcasetoHead").text("დახარჯე " + howmuchShouldSpend + " ლარი და მიიღე...");
+                }
+
+
+                if ($('#howmuchUnlim').is(':checked')) {
+                    $("#whatcasetoHead").text("დახარჯე " + howmuchShouldSpend + " ლარი აქციის პერიოდში ჯამურად და მიიღეთ...");
+                }
+
+            }
+
+            if ($('#whatcasehedThree').hasClass('active')) {
+
+                var howmuchCash = $("#howmuchCash").val();
+                var howmuchVisits = $("#howmuchVisits").val();
+
+                var howmuchShouldSpend = $("#howmuchshouldSpend").val();
+
+                var hourStart = $("#voucherStartDate").val();
+                var hourEnd = $("#voucherEndDate").val();
+
+                var weeks = $('#whatcasecolThree .btn-group').closest('div').find('input:checked').closest('label').text().trim();
+                if (weeks.length <= 5 && weeks.length > 0) {
+                    $("#whatcasetoHead").text("გვესტუმრეთ ყოველ " + weeks + " და მიიღეთ...");
+                } else if (weeks.length >= 5 && hourStart.length == 0 && hourEnd.length == 0) {
+                    $("#whatcasetoHead").text("გვესტუმრეთ ყოველ " + weeks + " და მიიღეთ...");
+                } else if (weeks.length == 0) {
+                    $("#whatcasetoHead").text("გვესტუმრეთ ყოველდღე " + hourStart + "-დან " + hourEnd + " საათამდე და მიიღეთ...");
+                } else if (weeks.length > 0 && hourStart.length > 0 && hourEnd.length > 0) {
+                    $("#whatcasetoHead").text("გვესტუმრეთ ყოველ " + weeks + " " + hourStart + "-დან " + hourEnd + " საათამდე და მიიღეთ...");
+                }
+            }
+
+            if ($('#visitOnce').is(':checked')) {
+                $("#whatcasetoContent").text("ერთჯერადად, პირობის დაკმაყოფილებისას");
+
+            }
+            if ($('#visitUnlim').is(':checked')) {
+                $("#whatcasetoContent").text("შეუზღუდავად, ყოველი პირობის დაკმაყოფილებისას");
+            }
+
+
+            var howmuchVisitsCheck = parseInt($("#howmuchVisits").val());
+            var howmuchCashCheck = parseInt($("#howmuchCash").val());
+
+            var howmuchSpendCheck = parseInt($("#howmuchshouldSpend").val());
+
+            if ($('input[value=visitcount]').is(':checked') == false && $('input[value=moneyspent]').is(':checked') == false && $('input[value=timeinterval]').is(':checked') == false && $('input[value=upirobod]').is(':checked') == false) {
+                $('#section-2-error').html('გთხოვთ, აირჩიოთ პარამეტრი');
+                $('#section-2-error').show();
+                return false;
+            } else if ($('input[value=visitcount]').is(':checked') == true) {
+                if (howmuchVisitsCheck == 0 || isNaN(howmuchVisitsCheck)) {
+                    $('#section-2-error').html('გთხოვთ, მიუთითოთ ვიზიტების რაოდენობა');
+                    $('#section-2-error').show();
+                    return false;
+                } else if (howmuchVisitsCheck < 0 || isNaN(howmuchVisitsCheck)) {
+                    $('#section-2-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-2-error').show();
+                    return false;
+                }
+                else if ($('#visitOnce').is(':checked') == false && $('#visitUnlim').is(':checked') == false) {
+                   $('#section-2-error').html('აირჩიეთ ერთჯერადად ან შეუზღუდავად');
+                    $('#section-2-error').show();
+                    return false;
+                }
+                else {
+                    //$('#collapseThree').removeClass('show');
+
+                    $('input[value=visitcount]').attr('checked', 'checked');
+                    whatcaseFinalCheck = 1;
+                    $('#section-2-error').hide();
+                    $('#whatcaseImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseThree').siblings('.panel-heading').removeClass('active');
+                    $('#collapseThree').siblings('.panel-heading').addClass('confirmed');
+                    return true;
+                }
+            } else if ($('input[value=moneyspent]').is(':checked') == true) {
+                if (howmuchSpendCheck == 0 || isNaN(howmuchSpendCheck)) {
+                    $('#section-2-error').html('გთხოვთ, მიუთითოთ რამდენი დახარჯოს.');
+                    $('#section-2-error').show();
+                    return false;
+                } else if (howmuchSpendCheck < 0 || isNaN(howmuchSpendCheck)) {
+                    $('#section-2-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-2-error').show();
+                }
+                else if ($('#howmuchOnce').is(':checked') == false && $('#howmuchUnlim').is(':checked') == false) {
+                    $('#section-2-error').html('გთხოვთ, მიუთითოთ როგორ დახარჯოს, ერთჯერადად თუ ჯამურად აქციის პერიოდში.');
+                    $('#section-2-error').show();
+                    return false;
+                }
+                else if ($('#visitOnce').is(':checked') == false && $('#visitUnlim').is(':checked') == false) {
+                   $('#section-2-error').html('აირჩიეთ ერთჯერადად ან შეუზღუდავად');
+                    $('#section-2-error').show();
+                    return false;
+                }
+                else {
+                    //$('#collapseThree').removeClass('show');
+
+                    whatcaseFinalCheck = 1;
+                    $('#section-2-error').hide();
+                    $('#whatcaseImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseThree').siblings('.panel-heading').removeClass('active');
+                    $('#collapseThree').siblings('.panel-heading').addClass('confirmed');
+                    return true;
+                }
+            } else if ($('input[value=timeinterval]').is(':checked') == true) {
+                var weeks = $('#whatcasecolThree .btn-group').closest('div').find('input:checked').closest('label').text().trim();
+                if (weeks.length <= 0) {
+                    $('#section-2-error').html('გთხოვთ, მიუთითოთ სასურველი კვირის დღე/ები ან დღის მონაკვეთი');
+                    $('#section-2-error').show();
+                    return false;
+
+                    if ($("#voucherEndDate").val().length <= 0) {
+                        $('#section-2-error').html('გთხოვთ, დააფიქსიროთ აქციის დასრულების დრო');
+                        $('#section-2-error').show();
+                        return false;
+                    }
+                } else {
+
+                    whatcaseFinalCheck = 1;
+                    $('#section-2-error').hide();
+                    $('#whatcaseImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseThree').siblings('.panel-heading').removeClass('active');
+                    $('#collapseThree').siblings('.panel-heading').addClass('confirmed');
+                    return true;
+                }
+            } else if ($('input[value=upirobod]').is(':checked') == true) {
+                if ($('#visitOnce').is(':checked') == false && $('#visitUnlim').is(':checked') == false) {
+
+                    $('#section-2-error').html('გთხოვთ, მიუთითოთ რამდენჯერ მიიღოს საჩუქარი');
+                    $('#section-2-error').show();
+                    return false;
+                }
+                else {
+                    whatcaseFinalCheck = 1;
+                    $('#section-2-error').hide();
+                    $('#whatcaseImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseThree').siblings('.panel-heading').removeClass('active');
+                    $('#collapseThree').siblings('.panel-heading').addClass('confirmed');
+                }
+            }
+            else {
+                //$('#collapseThree').removeClass('show');
+
+                $('#section-2-error').hide();
+
+                $('#whatcaseImg').attr('src', '/images/checked-icon.png');
+                $('#collapseThree').siblings('.panel-heading').removeClass('active');
+                $('#collapseThree').siblings('.panel-heading').addClass('confirmed');
+
+                //$('input[value=visitcount]').attr('checked', 'checked');
+
+                whatcaseFinalCheck = 1;
+
+
+
+                return true;
+            }
+        }
+
+        function Section3Text() {
+            $('#collapseTwo').siblings('.panel-heading').removeClass('confirmed');
+
+            if ($('#hedOne').hasClass('active')) {
+                if ($('#radioPercent').is(':checked')) {
+                    $("#whattogiftHead").text($('#saleInput').val() + "% ფასდაკლება");
+                    $("#whattogiftContent").text("");
+                } else if ($('#radioCash').is(':checked')) {
+                    $("#whattogiftHead").text($('#saleInput').val() + "% ფასდაკლება");
+                    $("#whattogiftContent").text("");
+                }
+                else {
+                    $("#whattogiftHead").text("");
+                    $("#whattogiftContent").text("");
+                }
+            }
+
+            if ($('#hedTwo').hasClass('active')) {
+                var whattogiftText = $("#voucher").find("i").text();
+
+                if ($('#voucherradioCash').is(':checked')) {
+                    $("#whattogiftHead").text($('#voucherInput').val() + " ლარიანი ფულადი ვაუჩერი");
+                    $("#whattogiftContent").text("განაღდების პერიოდი " + $("#voucherdateInput").val());
+                } else if ($('#voucherradioPercent').is(':checked')) {
+                    $("#whattogiftHead").text(whattogiftText + " - დახარჯული თანხის " + $('#voucherInput').val() + "%");
+                    $("#whattogiftContent").text("განაღდების პერიოდი " + $("#voucherdateInput").val());
+                }
+                else {
+                    $("#whattogiftHead").text("");
+                    $("#whattogiftContent").text("");
+                }
+            }
+
+            if ($('#hedThree').hasClass('active')) {
+
+                if ($('#pointradioNum').is(':checked')) {
+                    $("#whattogiftHead").text($('#pointInput').val() + " ქულა");
+                    $("#whattogiftContent").text("");
+                } else if ($('#pointradioNumX').is(':checked')) {
+                    $("#whattogiftHead").text("გა" + $('#pointInput').val() + "მაგებული ქულა");
+                    $("#whattogiftContent").text("");
+                }
+                else {
+                    $("#whattogiftHead").text("");
+                    $("#whattogiftContent").text("");
+                }
+            }
+
+            if ($('#hedFour').hasClass('active')) {
+                var prodVal = $('#productQuantity').val();
+                var prodName = $('#productName').val();
+                $("#whattogiftHead").text("");
+                $("#whattogiftContent").text(prodName + "(" + prodVal + ")");
+            }
+
+
+            var saleInputInt = parseInt($('#saleInput').val());
+            var voucherInputInt = parseInt($('#voucherInput').val());
+            var pointsInputInt = parseInt($('#pointInput').val());
+            var productInputInt = parseInt($('#productQuantity').val());
+            var voucherdateInp = $("#voucherdateInput").val();
+
+            var dateCheckStart = $("#voucherDateStart").val();
+            var dateCheckEnd = $("#voucherDateEnd").val();
+
+            var MyDate = new Date();
+
+
+            var _start_arr = dateCheckStart.split("/");
+
+            var start = new Date(_start_arr[2], _start_arr[1] - 1, _start_arr[0]);
+
+            //Check Logic Start
+            if ($('input[value=sale]').is(':checked') == false && $('input[value=voucher]').is(':checked') == false && $('input[value=points]').is(':checked') == false && $('input[value=product]').is(':checked') == false) {
+                $('#section-3-error').html('გთხოვთ, აირჩიოთ საჩუქრის ტიპი');
+                $('#section-3-error').show();
+                return;
+            }
+            else if ($('input[value=sale]').is(':checked') == true) {
+                if ($('#radioPercent').is(':checked') == false) {
+                    $('#section-3-error').html('აირჩიეთ ოფცია');
+                    $('#section-3-error').show();
+                    return;
+                } else if (isNaN(saleInputInt) || saleInputInt == 0 || saleInputInt > 100) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ ფასდაკლების %');
+                    $('#section-3-error').show();
+                    return;
+                } else if (isNaN(saleInputInt) || saleInputInt < 0 || saleInputInt > 100) {
+                    $('#section-3-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-3-error').show();
+                    return;
+                } else {
+                    //$('#collapseTwo').removeClass('show');
+                    $('#whattogiftImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseTwo').siblings('.panel-heading').removeClass('active');
+                    $('#collapseTwo').siblings('.panel-heading').addClass('confirmed');
+                    whattoFinalCheck = 1;
+
+                    $('#section-3-error').hide();
+
+                }
+            } else if ($('input[value=voucher]').is(':checked') == true)    {
+                if ($('#voucherradioCash').is(':checked') == false && $('#voucherradioPercent').is(':checked') == false) {
+                   $('#section-3-error').html('გთხოვთ, აირჩიოთ ვაუჩერის ტიპი');
+                    $('#section-3-error').show();
+                    return;
+                }
+                else if (($('#voucherradioPercent').is(':checked') == true && isNaN(voucherInputInt) || voucherInputInt == 0 || voucherInputInt > 100)) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ %');
+                    $('#section-3-error').show();
+                    return;
+                } else if (($('#voucherradioPercent').is(':checked') == true && isNaN(voucherInputInt) || voucherInputInt < 0 || voucherInputInt > 100)) {
+                    $('#section-3-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-3-error').show();
+                    return;
+                }
+                else if (($('#voucherradioCash').is(':checked') == true && voucherInputInt == 0 || isNaN(voucherInputInt))) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ ვაუჩერის ნომინალი');
+                    $('#section-3-error').show();
+                    return;
+                } else if (($('#voucherradioCash').is(':checked') == true && voucherInputInt < 0 || isNaN(voucherInputInt))) {
+                    $('#section-3-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-3-error').show();
+                    return;
+                }
+                else if (dateCheckStart.length <= 0 || dateCheckEnd.length <= 0) {
+                   $('#section-3-error').html('გთხოვთ, მიუთითოთ განაღდების პერიოდი');
+                    $('#section-3-error').show();
+                    return;
+                }
+                else if (isLoaded != 1 && start.getTime() < MyDate.getTime()) {
+                    $('#section-3-error').html('გთხოვთ, აირჩიოთ მომავალი პერიოდი.');
+                    $('#section-3-error').show();
+                    return;
+                }
+                else {
+                    //$('#collapseTwo').removeClass('show');
+                    $('#whattogiftImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseTwo').siblings('.panel-heading').removeClass('active');
+                    $('#collapseTwo').siblings('.panel-heading').addClass('confirmed');
+                    whattoFinalCheck = 1;
+
+                    $('#section-3-error').hide();
+                }
+            } else if ($('input[value=points]').is(':checked') == true) {
+                if ($('#pointradioNum').is(':checked') == false && $('#pointradioNumX').is(':checked') == false) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ ქულის დარიცხვის პრინციპი.');
+                    $('#section-3-error').show();
+                    return;
+                } else if ($('#pointradioNumX').is(':checked') == true && pointsInputInt <= 1) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ 1 - ზე მეტი');
+                    $('#section-3-error').show();
+                    return;
+                } else if (pointsInputInt == 0 || isNaN(pointsInputInt)) {
+                   $('#section-3-error').html('გთხოვთ, მიუთითოთ ქულების რაოდენობა');
+                    $('#section-3-error').show();
+                    return;
+                } else if (pointsInputInt < 0 || isNaN(pointsInputInt)) {
+                    $('#section-3-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-3-error').show();
+                    return;
+                } else {
+                    $('#whattogiftImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseTwo').siblings('.panel-heading').removeClass('active');
+                    $('#collapseTwo').siblings('.panel-heading').addClass('confirmed');
+                    whattoFinalCheck = 1;
+
+                    $('#section-3-error').hide();
+                }
+            } else if ($('input[value=product]').is(':checked') == true) {
+                if ($("#productName").val().length <= 0) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ პროდუქტის/მომსახურების დასახელება.');
+                    $('#section-3-error').show();
+                    return;
+                } else if (productInputInt == 0 || isNaN(productInputInt)) {
+                    $('#section-3-error').html('გთხოვთ, მიუთითოთ პროდუქტის/მომსახურების რაოდენობა.');
+                    $('#section-3-error').show();
+                    return;
+                } else if (productInputInt < 0 || isNaN(productInputInt)) {
+                    $('#section-3-error').html('უარყოფითი რიცხვის დაფიქსირება შეუძლებელია');
+                    $('#section-3-error').show();
+                    return;
+                } else {
+                    $('#whattogiftImg').attr('src', '/images/checked-icon.png');
+                    $('#collapseTwo').siblings('.panel-heading').removeClass('active');
+                    $('#collapseTwo').siblings('.panel-heading').addClass('confirmed');
+                    whattoFinalCheck = 1;
+
+                    $('#section-3-error').hide();
+                }
+            }
+            else {
+                $('#whattogiftImg').attr('src', '/images/checked-icon.png');
+                $('#collapseTwo').siblings('.panel-heading').removeClass('active');
+                $('#collapseTwo').siblings('.panel-heading').addClass('confirmed');
+                whattoFinalCheck = 1;
+
+                $('#section-3-error').hide();
+            }
+        }
+
+
+        function Section5Text(choosed_filials) {
+            $('#collapseFive').siblings('.panel-heading').removeClass('confirmed');
+            var listCheck = (!choosed_filials) || choosed_filials.length == 0 ? 0 : choosed_filials.length;
+
+            if (listCheck <= 0) {
+                //swal("გთხოვთ, აირჩიოთ ფილიალი/ები");
+                $('#saved_filials').val('');
+                $('#wheretoHead').text('');
+            } else {
+                $('#saved_filials').val(choosed_filials);
+
+                //$('#collapseFive').removeClass('show');
+                //$('#wheretoHead').text($(this).parent().find('.multiselect-selected-text').text().trim());
+                $('#wheretoImg').attr('src', '/images/checked-icon.png');
+                $('#collapseFive').siblings('.panel-heading').removeClass('active');
+                $('#collapseFive').siblings('.panel-heading').addClass('confirmed');
+                wheretoFinalCheck = 1;
+
+                $('#wheretoHead').text(listCheck + ' ფილიალი');
+            }
+
+
+        }
+
+        //function Section4Text(validate) {
+        //    $('#headingFour').removeClass('confirmed');
+
+        //    var _dt_start = moment($('#periodDateStart').val(), 'DD/MM/YYYY kk:mm:ss').toDate();
+        //    var _dt_end = moment($('#periodDateEnd').val(), 'DD/MM/YYYY kk:mm:ss').toDate();
+
+        //    var start_text = '';
+        //    var end_text = '';
+
+        //    if (moment(_dt_start).isValid()) {
+        //        start_text = moment(_dt_start).format('DD MMM YYYY');
+        //    }
+
+        //    if (moment(_dt_end).isValid()) {
+        //        end_text = moment(_dt_end).format('DD MMM YYYY');
+        //    }
+
+        //    if (start_text.length == 0 || end_text.length == 0) {
+        //        if (validate) { swal("გთხოვთ, მიუთითოთ აქციის პერიოდი"); }
+        //        return;
+        //    }
+
+
+        //    if (validate && moment(_dt_start).isBefore()) {
+        //        swal("გთხოვთ, აირჩიოთ მომავალი პერიოდი.");
+        //        return;
+        //    }
+
+
+        //    $('#collapseFour').removeClass('show');
+        //    $('#whentogiftContent').text("");
+        //    $('#whentogiftHead').text(moment(_dt_start).format('DD MMM YYYY') + ' - ' + moment(_dt_end).format('DD MMM YYYY'));
+        //    $('#whentoImg').attr('src', '/images/checked-icon.png');
+        //    $('#collapseFour').siblings('.panel-heading').removeClass('active');
+        //    $('#headingFour').addClass('confirmed');
+        //    whentoFinalCheck = 1;
+        //}
+
+        function Section6Text() {
+            $('#headingSix').removeClass('confirmed');
+            $('#section-6-error').html('');
+
+            var offerText = $("#text").val();
+            var _dt = moment($('#sms-send-dt-hf').val(), 'DD/MM/YYYY kk:mm:ss').toDate();
+
+
+            if (offerText == "") {
+                $('#section-6-error').html('გთხოვთ, მიუთითეთ სმს ტექსტი აქციის შესახებ');
+                $('#section-6-error').show();
+                return;
+
+            } else if (offerText.length >= 255) {
+                $('#section-6-error').html('მაქსიმუმ 255 სიმბოლო');
+                $('#section-6-error').show();
+                return;
+            } if (!moment(_dt).isValid()) {
+                $('#section-6-error').html('გთხოვთ, მონიშნოთ სმს-ის გაგზავნის თარიღი და დრო');
+                $('#section-6-error').show();
+                return;
+            }
+
+
+            if ($('#continueActivity').is(":visible") && $("#remind-msg-text").val() == "") {
+                $('#section-6-error').html('გთხოვთ, მიუთითეთ სმს ტექსტი განაგრძოს აქტიურობა');
+                $('#section-6-error').show();
+                return;
+            }
+
+            if ($("#text2").val() == "") {
+                $('#section-6-error').html('გთხოვთ, მიუთითეთ სმს ტექსტი, რომ შეასრულა პირობა');
+                $('#section-6-error').show();
+                return;
+            }
+
+
+            if (!$('#updateBlackList').is(':checked') && !$('#noneedUpdateBlackList').is(':checked')) {
+                $('#section-6-error').html('გთხოვთ, მონიშნოთ საჭიროებს თუ არა შავი სია განახლებას');
+                $('#section-6-error').show();
+                return;
+            }
+
+
+
+                //$('#collapseSix').removeClass('show');
+                $('#offertextHead').text(" ");
+                $('#offertextContent').text(offerText);
+                $('#offertextImg').attr('src', '/images/checked-icon.png');
+                $('#collapseSix').siblings('.panel-heading').removeClass('active');
+                $('#collapseSix').siblings('.panel-heading').addClass('confirmed');
+                offertextFinalCheck = 1;
+                //$('#btnSeven').removeClass('disabled');
+                //$('#btnSix').addClass('disabled');
+
+        }
+    </script>
+
+}

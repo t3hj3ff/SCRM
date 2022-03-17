@@ -1,0 +1,217 @@
+﻿@page
+@model SmartCRM.Pages.UniDashboard.ReportModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+}
+
+@section Styles{
+    <style>
+        .c3-legend-item {
+            font-size: 14px !important;
+        }
+    </style>
+}
+
+
+
+
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="m-b-3">მომხმარებლები</h3>
+    </div>
+</div>
+<div class="row">
+    <!-- Column -->
+
+    <div style="" class="col-lg-2 col-md-2">
+
+        <div class="card">
+            <div data-toggle="tooltip" data-placement="top" title="მომხმარებლები, რომლებმაც პირველი ვიზიტი განახორციელეს ბოლო 30 დღის განმავლობაში" class="card-body smart-card">
+                <div class="d-flex flex-row">
+                    <div style="min-width: 50px;" class="round align-self-center round-success"><i class=""<img src="~/images/icons-02.png"/>></i></div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_new"></h3>
+                        <h5 class="text-muted m-b-0">ახალი </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-2 col-md-2">
+        <div data-toggle="tooltip" data-placement="top" title="მომხმარებლები, რომლებმაც განახორციელეს მინიმუმ 1 ვიზიტი ბოლო 30 დღის განმავლობაში" class="card">
+            <div class="card-body smart-card">
+                <div class="d-flex flex-row">
+                    <div style="min-width: 50px;" class="round align-self-center round-info"><i class=""><img src="images/nav/icons-04.png" height="45" /><</div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_active"></h3>
+                        <h5 class="text-muted m-b-0">აქტიური </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-2 col-md-2">
+        <div data-toggle="tooltip" data-placement="top" title="მომხმარებლები, რომლებსაც არ განუხორციელებიათ ვიზიტი ბოლო 30 დღის განმავლობაში" class="card">
+            <div class="card-body smart-card">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-danger" style="min-width: 50px; background:#E5CF0D !important"><i class=""><img src="images/nav/icons-03.png" height="45" /><</div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_passive"></h3>
+                        <h5 class="text-muted m-b-0">პასიური </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-3">
+        <div data-toggle="tooltip" data-placement="top" title="მომხმარებლები, რომლებმაც მინიმუმ 1 ვიზიტი განახორციელეს ბოლო 1 წლის განმავლობაში" class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-primary"><i class=""><img src="images/nav/icons-01.png" height="45" /><</div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_total"></h3>
+                        <h5 class="text-muted m-b-0">სულ </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="round align-self-center round-primary" style="background:#55CE63;"><i class=""><img src="images/nav/icons-05.png" height="45" /><</div>
+                    <div class="m-l-10 align-self-center">
+                        <h3 class="m-b-0" id="c_average"></h3>
+                        <h5 class="text-muted m-b-0">საშუალო ჩეკი</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+
+<div class="row">
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex m-b-30">
+                    <h5 class="card-title m-b-0 align-self-center">ბოლო 30 დღის გაყიდვები მომხმარებელთა აქტიურობის მიხედვით</h5>
+                </div>
+                <div id="main" style="width:100%; height:400px;"></div>
+                <div id="main_empty" style="display: none; width:100%; height:400px">მონაცემები არ არის</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="row">
+            <!-- Column -->
+            <div class="col-md-12">
+                <div class="card bg-primary band">
+                    <div class="card-body">
+                        <h4 class="card-title text-white">დარჩენილი სმს</h4>
+                        @*<h6 class="card-subtitle text-white op-5">March 2018</h6>*@
+                        <div class="d-flex no-block">
+                            <div class="align-self-end no-shrink smart-smsleft">
+                                <h2 class="m-b-0 text-white" id="c_sms_left"></h2>
+                            </div>
+                            <div class="ml-auto smart-ml-auto">
+                                <div id="rem_sms" style="width:150px; height:130px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-12">
+                <div class="card bg-info band">
+                    <div class="card-body">
+                        <h4 class="card-title text-white">დარჩენილი ქულა</h4>
+                        @*<h6 class="card-subtitle text-white op-5">March 2018</h6>*@
+                        <div class="d-flex no-block">
+                            <div class="align-self-end no-shrink smart-pointsleft">
+                                <h2 class="m-b-0 text-white" id="c_point_left"></h2>
+                            </div>
+                            <div class="ml-auto smart-ml-auto">
+                                <div id="left_point" class="spark-count" style="width:150px; height:130px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">ბოლო 30 დღის გაყიდვები და ვიზიტები</h4>
+
+                <div id="visit_turnovers" style="width:100%; height:400px;"></div>
+                <div id="visit_turnovers_empty" style="display: none; width:100%; height:auto;">მონაცემები არ არის</div>
+                <ul class="list-inline m-t-30 text-center font-12">
+                    <li><i class="fa fa-circle" style="color:#24d2b5"></i> ვიზიტები:<span id="visits_total"></span></li>
+                    <li><i class="fa fa-circle" style="color:#5B9BD5"></i> გაყიდვები: <span id="sales_total"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex m-b-30 no-block">
+                    <h5 class="card-title m-b-0 align-self-center">მომხმარებლის ასაკი</h5>
+                </div>
+                <div id="ages" style="height:300px; width:100%;"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex m-b-30 no-block">
+                    <h5 class="card-title m-b-0 align-self-center">მომხმარებლის სქესი</h5>
+                </div>
+                <div id="gender_board" style="height:300px; width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/dashboard.js"></script>
+
+    <script type="text/javascript">
+    $(function () {
+        "use strict";
+        var org_id ='@Model.OrgId';
+        $.ajax({
+            url: '/UniDashboard/Report/?handler=Dashboard&id=' + org_id
+        }).done(function (result) {
+            InitialzieDashboard(result);
+        });
+    });
+
+
+    </script>
+}

@@ -1,0 +1,18 @@
+﻿@model SmartCRMSvc.BlackListResult
+
+<table class="table" id="black-list-tb" style="height:300px;">
+    <thead>
+        <tr>
+            <th>მობილური</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var phone in Model.Phones)
+        {
+            <tr>
+                <td>@phone</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

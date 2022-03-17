@@ -1,0 +1,598 @@
+﻿@page
+@model SmartCRM.Pages.Communicate.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    @*<link href="~/css/bootstrap-glyphicons.css" rel="stylesheet" />">*@
+    <link href="~/lib/daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+
+    <style>
+        #save-communication, #submit-newsegment {
+            background-color: #4EDAC3;
+            border: 1px solid #4EDAC3;
+        }
+
+        select, textarea {
+            font-family: 'BPG Arial 2010';
+        }
+
+        .save {
+            color: white;
+            border-color: #24d2b5;
+            border-radius: 25px;
+            font-size: 16px;
+            background: #24d2b5 !important;
+        }
+
+        .start {
+            background: #24d2b5;
+            border-color: #24d2b5;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .tooltip-inner {
+            max-width: 550px;
+            /* width: 550px; */
+            text-align: left;
+        }
+
+
+
+        .card {
+            margin-bottom: 0;
+        }
+
+        .communicate-form .card .card-header img {
+            max-width: 40px;
+        }
+
+
+
+        .communicate-form .card-header.level1 {
+            background: none;
+        }
+
+        .card-header.active {
+            background: #24d2b5 !important;
+            transition: 0.5s !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+
+        input[type='radio']:before {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 60%;
+            margin: 20% auto;
+            border-radius: 50%;
+        }
+
+        input[type='radio']:checked:before {
+            background: #24d2b5;
+        }
+
+        input[type='radio'] {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #84848463;
+            border-radius: 50%;
+            outline: none;
+            box-shadow: 0 0 5px 0px white inset;
+        }
+
+        .mid {
+            margin: auto 0;
+        }
+
+        .card.level2 {
+            border-radius: 0;
+            border-bottom: 0;
+        }
+
+        .card-header {
+            /*border-bottom: 0;*/
+            padding: 1rem 1.25rem;
+        }
+
+        #visvesaubro-accordion .card:first-child {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+            #visvesaubro-accordion .card:first-child .card-header {
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+
+        #visvesaubro-accordion .card:last-child {
+            border-bottom: 1px solid rgba(0,0,0,.125);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+            #visvesaubro-accordion .card:last-child .card-header {
+                border-bottom: 0;
+            }
+
+                #visvesaubro-accordion .card:last-child .card-header.collapsed {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .disabled-item {
+            color: #e0e0e0;
+        }
+
+        h5 {
+            font-size: 14px;
+        }
+
+        .segments-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            border-radius: 25px !important;
+            font-size: 14px !important;
+            padding: 10px 0 10px 15px !important;
+            height: auto !important;
+        }
+
+
+        .select-aw:after {
+            font-family: 'Font Awesome 5 Free';
+            content: "\f0d9";
+            right: 16px;
+            height: 34px;
+            color: #24d2b5;
+            font-size: 22px;
+            padding: 10px 10px;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            text-align: center;
+            width: 10%;
+            height: 100%;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+
+
+        .select-aw-default:after {
+            font-family: 'Font Awesome 5 Free';
+            content: "\f0d9";
+            right: 16px;
+            height: 34px;
+            color: #B7B7B7;
+            font-size: 22px;
+            padding: 15px 10px;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            text-align: center;
+            width: 10%;
+            height: 100%;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+
+
+        .select-lg {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            border-radius: 15px !important;
+            font-size: 14px !important;
+            padding: 15px 0 15px 0 !important;
+            height: auto !important;
+            text-align-last: center;
+            color: #ABABAB;
+        }
+
+
+
+        .form-control:focus {
+            border-color: #ced4da;
+            box-shadow: none;
+        }
+
+        .form-control {
+            border-radius: 25px;
+            min-height: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        form.new-seg-form input[type=number]::-webkit-outer-spin-button {
+            opacity: 0.4;
+            margin-right: 5px;
+        }
+
+        .level2 .card-header.collapsed {
+            background-color: white !important;
+        }
+
+        .level2 .card-header {
+            background-color: rgba(0,0,0,.03) !important;
+        }
+
+
+        #accordion .card.level1 {
+            border-radius: 0;
+        }
+
+        #accordion .card-header.level1 {
+            border-radius: 0;
+        }
+
+        /*#accordion > .card.level1:last-child {
+            border-bottom: 1px solid rgba(0,0,0,.125);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }*/
+
+        #accordion > .card:last-child .card-header.level1 {
+            border-bottom: 0;
+        }
+
+            #accordion > .card:last-child .card-header.level1.collapsed {
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+        .card.level1:first-child {
+            border-top: 1px solid rgba(0,0,0,.125) !important;
+        }
+
+
+        .card.level1 {
+            border-top: 0;
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label.checkbox_lbl::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2324D2B5' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e")
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label.checkbox_lbl::before {
+            color: #24D2B5;
+            border-color: #24D2B5;
+            background-color: #ffffff;
+        }
+
+        .custom-control-input:focus ~ .custom-control-label.checkbox_lbl::before {
+            box-shadow: none;
+        }
+
+        .custom-control-input:not(:disabled):active ~ .custom-control-label.checkbox_lbl::before {
+            color: #24D2B5;
+            border-color: #24D2B5;
+            background-color: #ffffff;
+        }
+
+        .custom-control-input:focus:not(:checked) ~ .custom-control-label.checkbox_lbl::before {
+            border-color: #24D2B5;
+        }
+
+        .btn-send-msg {
+            background: #24D2B5;
+            border-radius: 25px;
+            color: white;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .card-header {
+            cursor: pointer;
+        }
+
+        .table thead > tr th {
+            margin: auto 0;
+        }
+
+        .offset-3 {
+            margin-left: 25% !important;
+        }
+
+        .dataTables_filter {
+            display: none;
+        }
+
+        .dataTables_wrapper {
+            padding-top: 0;
+        }
+
+        .btn-group label {
+            color: #000 !important;
+        }
+
+        .multipleselect + .btn-group {
+            border: 1px solid #ced4da;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            position: relative;
+            border-radius: 15px !important;
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+            border-bottom-right-radius: 15px !important;
+            border-bottom-left-radius: 15px !important;
+            font-size: 14px !important;
+            padding: 6px 0 6px 0 !important;
+            height: auto !important;
+            /* text-align-last: center; */
+            color: #ABABAB;
+            width: 100%;
+        }
+
+            .multipleselect + .btn-group ul {
+                width: 100%;
+            }
+
+            .multipleselect + .btn-group ul.multiselect-container > li > a > label {
+                padding: 3px 20px 3px 20px;
+            }
+
+            .multipleselect + .btn-group .dropdown-toggle::after {
+                display: none !important;
+            }
+
+
+        #NewCommunication_Name::placeholder {
+            /*color: #24D2B5;*/
+            opacity: 0.7;
+        }
+
+        #NewCommunication_Name:-ms-input-placeholder {
+            /*color: #24D2B5;*/
+            opacity: 0.7;
+        }
+
+        #NewCommunication_Name::-ms-input-placeholder {
+            /*color: #24D2B5;*/
+            opacity: 0.7;
+        }
+
+        .fa-times {
+            color: #ababab !important;
+        }
+
+        .tbodyHov tr:hover > td i.fa-times {
+            color: #ff5c6c !important;
+        }
+
+        .table#my-communications tbody tr:hover, .table#my-communications tbody tr:hover {
+            color: #4ad8c0;
+        }
+
+        .bold {
+            font-weight: bold !important;
+        }
+
+    </style>
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="m-b-3" style="color:#24D2B5; font-family:BPG DejaVu Sans Mt !important; font-weight:bold;font-size: 21px;margin-left: 20px;">კომუნიკაცია</h3>
+    </div>
+</div>
+
+<div class="">
+    <div class="col-12" style="border-radius: 20px;background-color:white;box-shadow: 0px 0px 1px 0px;">
+        <table class="table table-hover table-scrollable" style="height: 281px;" id="my-communications">
+            <thead>
+                <tr style="background: #EEEFF2; font-size:16px;
+                        border-top-left-radius: 20px;
+                        border-top-right-radius: 20px;" class="row">
+                    <th class="col-2 bold">
+                        დასახელება
+                    </th>
+                    <th class="col-3">
+                        <div class="input-group">
+                            <input class="form-control py-2 border-right-0 border" placeholder="ძებნა" style="color: #ababab7a !important; text-align:left !important; border-radius: 30px 0px 0px 30px;"
+                                   type="search" id="searchbox">
+                            <span class="input-group-append" style="color: #ababab7a !important; text-align:left !important; background-color:#ffffff; border-radius: 0 30px 30px 0;">
+                                <div class="input-group-text bg-transparent" style="color:#ababab7a; border-radius: 0 30px 30px 0;border-left: none;">
+                                    <i class="fa fa-search"></i>
+                                </div>
+                            </span>
+                        </div>
+                    </th>
+                    <th class="col-2 bold offset-2" style="text-align:center;margin-left: 16.666667%;">თარიღი</th>
+                    <th class="col-2 bold" style="text-align: center;">
+                        სტატუსი
+                        @*<a asp-action="" asp-route-status="5"
+                               style="color:grey !important;">
+                                <i data-toggle="tooltip" data-original-title="დასრულებული"
+                                   class="far fa-check-circle"></i>
+                            </a>
+                            <a asp-action="" asp-route-status="0" style="color:grey !important;">
+                                <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="color:grey !important;"></i>
+                            </a>
+                            <a asp-action="" asp-route-status="2" style="color:grey !important;">
+                                <i data-toggle="tooltip" data-original-title="მიმდინარე"
+                                   class="far fa-clock"></i>
+                            </a>*@
+                    </th>
+                    @*<th class="col-1" style="text-align: center;">
+                            <img src="~/images/search-icon.png"
+                                 width="18" height="18">
+                        </th>*@
+                    <th class="col-1" style="text-align: center;"><i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i></th>
+                </tr>
+            </thead>
+            <tbody class="tbodyHov">
+                <tr style="height: 50px;" class="row">
+                    <td class="col-6">
+                        <a href="javascript:void(0)" id="add-campaign" style="color:#24D2B5;" onclick="AddNewCommunication()">
+                            <i class="fas fa-plus"></i> დამატება
+                        </a>
+                    </td>
+                    <td class="col-4"></td>
+                    <td class="col-1"></td>
+                    @*<td class="col-1"></td>*@
+                    <td class="col-1" style="display:none;"></td>
+                    <td style="display:none;"></td>
+                </tr>
+
+                @foreach (var item in Model.Communications)
+                {
+                    <tr class="row" onclick="LoadCommunication(@item.ID);" style="cursor: pointer;">
+                        <td class="col-7">@item.Name </td>
+                        <td class="col-2" style="text-align: center; ">@(item.SendDate.HasValue ? item.SendDate.Value.ToString("dd MMM yyyy") : "") </td>
+                        <td class="col-2" style="text-align: center;">
+                            @item.StatusName
+                            @*@if (item.Status == "0")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="დაგეგმილი" class="far fa-play-circle" style="color:#24D2B5;"></i>
+                                }
+                                @if (item.Status == "5")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="დასრულებული" class="far fa-check-circle"></i>
+                                }
+                                @if (item.Status == "2")
+                                {
+                                    <i data-toggle="tooltip" data-original-title="მიმდინარე" class="far fa-clock"></i>
+                                }*@
+                        </td>
+                        @*<td class="col-1" style="text-align: center; ">
+                                <a href="javascript:void(0);" onclick="LoadCommunication(@item.ID);">
+                                    <i data-toggle="tooltip" data-original-title="ნახვა"
+                                       class="fa fa-eye"></i>
+                                </a>
+
+                            </td>*@
+                        <td class="col-1 child" style="text-align: center;">
+                            @if (item.Status != "2")
+                            {
+                                <a asp-page-handler="CommunicationDelete" onclick="return confirm('დარწმუნებული ხართ რომ გსურთ კომუნიკაციის წაშლა?')"
+                                   asp-route-id="@item.ID" data-toggle="tooltip" data-original-title="წაშლა">
+                                    <i data-toggle="tooltip" data-original-title="წაშლა" class="deleteButton fas fa-times text-danger"></i>
+                                </a>
+                            }
+                        </td>
+                        <td style="display:none"></td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div id="AddEditCommunication">
+
+</div>
+
+<div id="testers-group">
+
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="black_list_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">შავი სია</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="BlackListModalBody">
+
+
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">დახურვა</button>
+            </div>*@
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@section Scripts{
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.min.js"></script>
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/lib/datatables/datatables.min.js"></script>
+
+    <script type="text/javascript">
+        function ScrollToAdd() {
+            $('html, body').animate({
+                scrollTop: $("form").offset().top - $('header').height()
+            }, 500);
+        }
+
+        function OpenBlackList() {
+            blockUI();
+
+            $('#BlackListModalBody').load('/AjaxPartialModel?handler=BlackList', function (res) {
+
+                $('#black_list_modal').modal('show');
+
+                $.unblockUI();
+            });
+        }
+
+        function AddNewCommunication() {
+            $('#AddEditCommunication').load('/Communicate?handler=AddEditCommunication', function () {
+                $('html, body').animate({
+                    scrollTop: $("form").offset().top - $('header').height()
+                }, 500);
+            });
+        }
+
+        function LoadCommunication(id) {
+            $('#AddEditCommunication').load('/Communicate?handler=AddEditCommunication&id=' + id, function () {
+                $('html, body').animate({
+                    scrollTop: $("form").offset().top - $('header').height()
+                }, 500);
+            });
+        }
+
+
+        $(document).ready(function () {
+
+            $('#AddEditCommunication').load('/Communicate?handler=AddEditCommunication', function () {
+
+            });
+
+            var _dataTable = $('#my-communications').DataTable({
+                "language": {
+                    "search": "ძებნა",
+                    "processing": "მონაცემები იტვირთება",
+                    "zeroRecords": "ჩანაწერი ვერ მოიძებნა",
+                    "emptyTable": "ჩანაწერები ვერ მოიძებნა",
+                    "infoEmpty": "ჩანაწერები ვერ მოიძებნა",
+                    "infoFiltered": " (სულ _MAX_ ჩანაწერი)"
+                },
+                "paging": false,
+                "ordering": false,
+                "info": false,
+
+            });
+
+            $("#searchbox").keyup(function () {
+                _dataTable.search(this.value).draw();
+            });
+
+        });
+    </script>
+
+}

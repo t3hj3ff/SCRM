@@ -1,0 +1,1 @@
+There are no ODP.NET Core README items. For documentation, visit Oracle Technology Network. https://www.oracle.com/technetwork/topics/dotnet/tech-info/index.html
